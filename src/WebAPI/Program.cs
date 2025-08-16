@@ -1,8 +1,10 @@
 using CorrelationId;
 using FastEndpoints;
+using FastEndpoints.Swagger;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Extensions;
+using Scalar.AspNetCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +15,7 @@ builder.AddServiceDefaults();
 builder.Host.UseSerilog((builderContext, loggerConfig)
     => loggerConfig.ConfigureFromSettings(builderContext.Configuration));
 
-builder.Services.AddFastEndpoints();
-;
+builder.Services.AddFastEndpoints().AddSwaggerDocument();
 // Add services
 builder.Services.AddSharedKernelServices();
 builder.Services.AddApiServices(builder.Configuration);
@@ -22,6 +23,9 @@ builder.Services.AddApiServices(builder.Configuration);
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
+app.UseFastEndpoints()
+    .UseSwaggerGen()
+    .UseOpenApi();
 
 try
 {
@@ -30,8 +34,9 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        //scalar by default looks for the swagger json file here:
+        app.UseOpenApi(c => c.Path = "/openapi/{documentName}.json");
+        app.MapScalarApiReference();
     }
     else
     {
@@ -46,9 +51,6 @@ try
     app.UseRouting();
     app.UseAuthentication();
     app.UseAuthorization();
-
-    app.MapControllers();
-    app.UseFastEndpoints();
     app.Run();
 }
 catch (Exception ex)

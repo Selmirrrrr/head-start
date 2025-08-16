@@ -1,8 +1,6 @@
 using System.Net.Mime;
-using System.Reflection;
 using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.OpenApi.Models;
 using OpenIddict.Validation.AspNetCore;
 
 namespace HeadStart.WebAPI.Extensions;
@@ -32,7 +30,6 @@ public static class ServiceCollectionExtensions
             }
         );
 
-        services.AddSwagger();
         services.AddSignalR();
         services.AddHttpContextAccessor();
     }
@@ -80,41 +77,5 @@ public static class ServiceCollectionExtensions
 
         services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
         services.AddAuthorization();
-    }
-
-    /// <summary>
-    /// Adds swagger configuration.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <returns>An instance of <see cref="IServiceCollection"/>.</returns>
-    private static void AddSwagger(this IServiceCollection services)
-    {
-        Guard.Against.Null(services);
-
-        services.AddSwaggerGen(options =>
-        {
-#pragma warning disable S1075 // URIs should not be hardcoded
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Version = "v1",
-                Title = "Planning Poker API",
-                Description = "API for managing scrum poker tables.",
-                TermsOfService = new Uri("https://placeholder/terms"),
-                Contact = new OpenApiContact
-                {
-                    Name = "Vasil Kotsev",
-                    Url = new Uri("https://placeholder.vk")
-                },
-                License = new OpenApiLicense
-                {
-                    Name = "MIT Licence",
-                    Url = new Uri("https://github.com/SonnyRR/planning-poker/blob/master/LICENSE")
-                }
-            });
-#pragma warning restore S1075 // URIs should not be hardcoded
-
-            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-        });
     }
 }

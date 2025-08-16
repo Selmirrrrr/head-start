@@ -8,7 +8,9 @@
 	<ItemGroup>
 		<PackageReference Include="Destructurama.Attributed" Version="5.1.0" />
 		<PackageReference Include="FastEndpoints" Version="7.0.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
+		<PackageReference Include="FastEndpoints.ClientGen.Kiota" Version="7.0.1" />
+		<PackageReference Include="FastEndpoints.Swagger" Version="7.0.1" />
+		<PackageReference Include="Scalar.AspNetCore" Version="2.6.9" />
 		<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
 		<PackageReference Include="Serilog.AspNetCore.Ingestion" Version="1.0.0-dev-00032" />
 		<PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
