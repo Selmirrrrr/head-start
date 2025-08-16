@@ -79,6 +79,7 @@ public abstract class BaseHttpService
 public class TableService : BaseHttpService, ITableService
 {
     private const string Route = "/api/tables";
+    private const string UserRoute = "/api/users/me";
 
     public TableService(IHttpClientFactory httpClientFactory)
         : base(httpClientFactory, true)
@@ -87,9 +88,17 @@ public class TableService : BaseHttpService, ITableService
 
     public Task<Guid> GetByIdAsync(Guid id, CancellationToken ct = default)
         => GetAsync<Guid>($"{Route}/{id}", ct);
+
+    public Task<Response> GetMe(CancellationToken ct = default)
+        => GetAsync<Response>(UserRoute, ct)!;
 }
 
 public interface ITableService
 {
     Task<Guid> GetByIdAsync(Guid id, CancellationToken ct = default);
+    Task<Response> GetMe(CancellationToken ct = default);
 }
+
+public record ClaimsViewModel(string Type, string Value);
+
+public record Response(IList<ClaimsViewModel> Claims);

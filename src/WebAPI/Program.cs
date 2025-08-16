@@ -1,4 +1,5 @@
 using CorrelationId;
+using FastEndpoints;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Extensions;
@@ -12,6 +13,8 @@ builder.AddServiceDefaults();
 builder.Host.UseSerilog((builderContext, loggerConfig)
     => loggerConfig.ConfigureFromSettings(builderContext.Configuration));
 
+builder.Services.AddFastEndpoints();
+;
 // Add services
 builder.Services.AddSharedKernelServices();
 builder.Services.AddApiServices(builder.Configuration);
@@ -24,7 +27,6 @@ try
 {
     // Configure middleware
     app.UseResponseCompression();
-
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
@@ -46,7 +48,7 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
-
+    app.UseFastEndpoints();
     app.Run();
 }
 catch (Exception ex)

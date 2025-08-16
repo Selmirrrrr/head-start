@@ -3,13 +3,16 @@
 @using HeadStart.Client.Services
 @using static Constants
 
-@if (ApiData is null)
+@if (!Claims.Any())
 {
     <p><em>Loading...</em></p>
 } else
 {
     <p>
-            <text>@ApiData</text>
+        @foreach (var claim in Claims)
+        {
+            <text>@claim.Type: @claim.Value</text><br />
+        }
     </p>
 }
 
@@ -19,7 +22,7 @@
 
 
 @code {
-    public Guid? ApiData;
+    public IList<ClaimsViewModel> Claims = new List<ClaimsViewModel>();
 
     [Inject]
     public DialogService DialogService { get; set; }
@@ -35,6 +38,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ApiData = await TableService.GetByIdAsync(Guid.NewGuid());
+        Claims = (await TableService.GetMe()).Claims;
     }
 }
