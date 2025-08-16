@@ -1,0 +1,40 @@
+@attribute [Route(Routes.Index)]
+
+@using HeadStart.Client.Services
+@using static Constants
+
+@if (ApiData is null)
+{
+    <p><em>Loading...</em></p>
+} else
+{
+    <p>
+            <text>@ApiData</text>
+    </p>
+}
+
+<RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" class="rz-h-100 rz-w-100">
+
+</RadzenRow>
+
+
+@code {
+    public Guid? ApiData;
+
+    [Inject]
+    public DialogService DialogService { get; set; }
+
+    [Inject]
+    public ILogger<Index> Logger { get; set; }
+
+    [Inject]
+    public ITableService TableService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ApiData = await TableService.GetByIdAsync(Guid.NewGuid());
+    }
+}

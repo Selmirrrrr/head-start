@@ -1,0 +1,51 @@
+@page "/"
+@namespace HeadStart.BFF.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="keywords" content="planning poker, blazor, scrum, dotnet" />
+    <meta name="description" content="Utility for estimating work tasks." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+    <base href="~/" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css" con>
+    <link rel="stylesheet" href="HeadStart.Client.styles.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="_content/BlazorPro.Spinkit/spinkit.min.css" />
+    <title>Planning Poker ♦</title>
+</head>
+
+<body>
+<div id="app">
+    <div class="loading-overlay">
+        <img src="images/logo.svg" height="128" width="512" alt="Planning Poker Branding"/>
+        <div class="sk-grid">
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+            <div class="sk-grid-cube"></div>
+        </div>
+    </div>
+</div>
+
+<script src="_framework/blazor.webassembly.js"></script>
+<script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+<script src="AntiForgeryToken.js"></script>
+@Html.AntiForgeryToken()
+</body>
+
+</html>
