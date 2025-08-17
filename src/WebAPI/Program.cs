@@ -80,7 +80,6 @@ try
             c.ClientNamespaceName = "HeadStart.Client.Generated";
             c.ClientClassName = "ApiClient";
             c.CleanOutput = true;
-            c.mode
         });
 
     app.Run();

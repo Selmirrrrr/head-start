@@ -6,17 +6,10 @@
 
     <ItemGroup>
         <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
-        <PackageReference Include="CorrelationId" Version="3.0.1" />
-        <PackageReference Include="Destructurama.Attributed" Version="5.1.0" />
-        <PackageReference Include="Edi.RouteDebugger" Version="1.10.0" />
         <PackageReference Include="IdentityModel.AspNetCore" Version="4.3.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.8" />
         <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="1.1.0" />
-        <PackageReference Include="OpenIddict.AspNetCore" Version="7.0.0" />
-        <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="7.0.0" />
-        <PackageReference Include="OpenIddict.Quartz" Version="7.0.0" />
-        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.15.0" />
+        <PackageReference Include="OpenIddict.Abstractions" Version="7.0.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Serilog.AspNetCore.Ingestion" Version="1.0.0-dev-00032" />
         <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />

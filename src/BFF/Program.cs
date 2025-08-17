@@ -28,7 +28,6 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
-        app.UseRouteDebugger("/tools/route-debugger");
         app.UseWebAssemblyDebugging();
     }
     else
