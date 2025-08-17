@@ -1,9 +1,11 @@
 using CorrelationId;
 using FastEndpoints;
+using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Extensions;
+using Kiota.Builder;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -15,7 +17,16 @@ builder.AddServiceDefaults();
 builder.Host.UseSerilog((builderContext, loggerConfig)
     => loggerConfig.ConfigureFromSettings(builderContext.Configuration));
 
-builder.Services.AddFastEndpoints().AddSwaggerDocument();
+builder.Services.AddFastEndpoints()
+    .SwaggerDocument(o =>
+    {
+        o.DocumentSettings = s =>
+        {
+            s.Title = "HeadStart API";
+            s.Version = "v1";
+            s.DocumentName = "HeadStartAPIv1";
+        };
+    });
 // Add services
 builder.Services.AddSharedKernelServices();
 builder.Services.AddApiServices(builder.Configuration);
@@ -23,9 +34,6 @@ builder.Services.AddApiServices(builder.Configuration);
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
-app.UseFastEndpoints()
-    .UseSwaggerGen()
-    .UseOpenApi();
 
 try
 {
@@ -34,9 +42,6 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
-        //scalar by default looks for the swagger json file here:
-        app.UseOpenApi(c => c.Path = "/openapi/{documentName}.json");
-        app.MapScalarApiReference();
     }
     else
     {
@@ -51,6 +56,33 @@ try
     app.UseRouting();
     app.UseAuthentication();
     app.UseAuthorization();
+
+    // Configure FastEndpoints and OpenAPI
+    app.UseFastEndpoints()
+       .UseSwaggerGen();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapScalarApiReference(options =>
+        {
+            options
+                .WithTitle("HeadStart API")
+                .WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json");
+        });
+    }
+
+    await app.GenerateApiClientsAndExitAsync(
+        c =>
+        {
+            c.SwaggerDocumentName = "HeadStartAPIv1"; //must match doc name above
+            c.Language = GenerationLanguage.CSharp;
+            c.OutputPath = "../Client/Generated"; //relative to the project root
+            c.ClientNamespaceName = "HeadStart.Client.Generated";
+            c.ClientClassName = "ApiClient";
+            c.CleanOutput = true;
+            c.mode
+        });
+
     app.Run();
 }
 catch (Exception ex)

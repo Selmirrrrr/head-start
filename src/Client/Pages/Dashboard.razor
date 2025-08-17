@@ -1,5 +1,6 @@
 ﻿@page "/"
-@using HeadStart.Client.Services
+@using HeadStart.Client.Generated
+@using HeadStart.Client.Generated.Models
 
 @inject HttpClient HttpClient
 
@@ -84,7 +85,7 @@
 
 @code {
 
-    public IList<ClaimsViewModel> Claims = new List<ClaimsViewModel>();
+    public List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel> Claims = new List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel>();
 
     [Inject]
     public DialogService DialogService { get; set; }
@@ -93,14 +94,14 @@
     public ILogger<Index> Logger { get; set; }
 
     [Inject]
-    public ITableService TableService { get; set; }
+    public ApiClient ApiClient { get; set; }
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Claims = (await TableService.GetMe()).Claims;
+        Claims = (await ApiClient.Api.Users.Me.GetAsync()).Claims;
         await InvokeAsync(StateHasChanged);
     }
 

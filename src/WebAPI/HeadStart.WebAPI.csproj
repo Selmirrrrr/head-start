@@ -27,4 +27,9 @@
 		<ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
 	</ItemGroup>
 
+  <Target Name="ClientGen" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
+    <Exec WorkingDirectory="$(RunWorkingDirectory)"
+          Command="$(RunCommand) --generateclients true"/>
+  </Target>
+
 </Project>

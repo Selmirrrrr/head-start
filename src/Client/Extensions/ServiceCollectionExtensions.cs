@@ -3,11 +3,18 @@ using System.Net.Mime;
 using Ardalis.GuardClauses;
 using Blazored.LocalStorage;
 using HeadStart.Client.Authorization;
-using HeadStart.Client.Services;
+using HeadStart.Client.Generated;
 using HeadStart.SharedKernel;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Kiota.Abstractions;
+using Microsoft.Kiota.Abstractions.Authentication;
+using Microsoft.Kiota.Http.HttpClientLibrary;
+using Microsoft.Kiota.Serialization.Form;
+using Microsoft.Kiota.Serialization.Json;
+using Microsoft.Kiota.Serialization.Multipart;
+using Microsoft.Kiota.Serialization.Text;
 using MudBlazor;
 
 namespace HeadStart.Client.Extensions;
@@ -28,7 +35,6 @@ public static class ServiceCollectionExtensions
         services.AddOptions();
         services.AddAuthorizationCore();
         services.AddScoped<DialogService>();
-        services.AddScoped<ITableService, TableService>();
         services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
         services.AddTransient<AuthorizedHandler>();
@@ -50,6 +56,27 @@ public static class ServiceCollectionExtensions
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
             })
             .AddHttpMessageHandler<AuthorizedHandler>();
+
+        services.AddScoped<ApiClient>(sp =>
+        {
+            ApiClientBuilder.RegisterDefaultSerializer<JsonSerializationWriterFactory>();
+            ApiClientBuilder.RegisterDefaultSerializer<TextSerializationWriterFactory>();
+            ApiClientBuilder.RegisterDefaultSerializer<FormSerializationWriterFactory>();
+            ApiClientBuilder.RegisterDefaultSerializer<MultipartSerializationWriterFactory>();
+            ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
+            ApiClientBuilder.RegisterDefaultDeserializer<TextParseNodeFactory>();
+            ApiClientBuilder.RegisterDefaultDeserializer<FormParseNodeFactory>();
+
+            var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+            // Use the authorized HTTP client that includes the AuthorizedHandler
+            var httpClient = httpClientFactory.CreateClient(Constants.Http.AuthorizedClientId);
+            var authProvider = new AnonymousAuthenticationProvider();
+            var requestAdapter = new HttpClientRequestAdapter(authProvider, httpClient: httpClient);
+            var apiClient = new ApiClient(requestAdapter);
+
+            requestAdapter.BaseUrl = environment.BaseAddress;
+            return apiClient;
+        });
 
         services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("default"));
 

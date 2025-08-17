@@ -13,13 +13,4 @@ public static class Constants
         public const string AuthorizedClientId = "authorized";
         public const string UnauthorizedClientId = "default";
     }
-
-    /// <summary>
-    /// Constants related to Blazor pages.
-    /// </summary>
-    public static class Routes
-    {
-        public const string Index = "/";
-        public const string TablePrefix = "/table";
-    }
 }
