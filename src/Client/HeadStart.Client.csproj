@@ -24,6 +24,7 @@
     <PackageReference Include="System.Net.Http.Json" Version="9.0.8" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
     <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="9.0.8" />
     <ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
   </ItemGroup>
