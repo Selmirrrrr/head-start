@@ -2,7 +2,7 @@ using FastEndpoints;
 
 namespace HeadStart.WebAPI.Features.Users;
 
-public class GetMe
+public static class GetMe
 {
     public class Endpoint : EndpointWithoutRequest<Response>
     {
