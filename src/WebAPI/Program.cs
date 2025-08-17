@@ -15,8 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 // Configure Serilog
+builder.AddSeqEndpoint(connectionName: "seq");
 builder.Host.UseSerilog((builderContext, loggerConfig)
-    => loggerConfig.ConfigureFromSettings(builderContext.Configuration));
+    => loggerConfig.ConfigureFromSettings(builderContext.Configuration)
+        .WriteTo.Seq(builder.Configuration.GetValue<string>("Aspire:Seq:ServerUrl") ?? "http://localhost:5341"));
 
 builder.Services.AddFastEndpoints()
     .SwaggerDocument(o =>

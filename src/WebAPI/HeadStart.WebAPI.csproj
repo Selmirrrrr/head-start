@@ -4,6 +4,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Aspire.Seq" Version="9.4.1" />
     <PackageReference Include="FastEndpoints" Version="7.0.1" />
     <PackageReference Include="FastEndpoints.ClientGen.Kiota" Version="7.0.1" />
     <PackageReference Include="FastEndpoints.Swagger" Version="7.0.1" />
