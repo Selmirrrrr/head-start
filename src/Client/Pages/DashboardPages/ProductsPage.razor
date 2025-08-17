@@ -1,0 +1,61 @@
+﻿@page "/products"
+
+<BlazePage Title="Products" Breadcrumbs="@_breadCrumbs">
+    <MudGrid>
+        <MudItem sm="12">
+            <BlazePanel Title="@($"Products ({_products?.Count() ?? 0})")"
+                        PanelActionsSpacing="4">
+                <PanelActionsTemplate>
+                    <MudInput T="string"
+                              @bind-Value="@_searchString"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Placeholder="Type to search"
+                              Margin="Margin.Dense"
+                              AdornmentIcon="@Icons.Material.Rounded.Search">
+                    </MudInput>
+                    <MudButton Color="Color.Primary"
+                               DropShadow="false"
+                               StartIcon="@Icons.Material.Rounded.Add"
+                               Variant="Variant.Filled"
+                               OnClick="@(() => AddProduct())">
+                        <MudText>
+                            Add Product
+                        </MudText>
+                    </MudButton>
+                </PanelActionsTemplate>
+            </BlazePanel>
+        </MudItem>
+    </MudGrid>
+</BlazePage>
+
+@inject HttpClient HttpClient
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+@code {
+
+    private BreadcrumbItem[] _breadCrumbs =
+    [
+        new BreadcrumbItem("Dashboard", "/"),
+        new BreadcrumbItem("Products", "/products")
+    ];
+    
+    async Task AddProduct()
+    {
+    }
+
+    private string _searchString;
+    private IEnumerable<string>? _products;
+
+    private Func<string, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    };
+}

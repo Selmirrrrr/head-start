@@ -1,6 +1,9 @@
-using HeadStart.Client.Extensions;
 using HeadStart.SharedKernel.Extensions;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
+using MudBlazor.Services;
+using HeadStart.Client.Extensions;
 using Serilog;
 
 namespace HeadStart.Client;
@@ -15,7 +18,14 @@ public static class Program
 
             builder.Logging.AddSerilog(builder.Configuration);
             builder.RootComponents.Add<App>("#app");
+            // builder.RootComponents.Add<HeadOutlet>("head::after");
+
             builder.Services.AddClientLayer(builder.HostEnvironment);
+
+            builder.Services.AddMudServices(options =>
+            {
+                options.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+            });
 
             await builder.Build().RunAsync();
         }
@@ -38,3 +48,4 @@ public static class Program
         }
     }
 }
+

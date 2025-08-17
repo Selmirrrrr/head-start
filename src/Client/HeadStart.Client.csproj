@@ -1,34 +1,60 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PackageId>HeadStart.Client</PackageId>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="7.0.0" />
+    <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.8" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
+    <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.BrowserHttp" Version="1.0.0-dev-00032" />
+    <PackageReference Include="System.Net.Http.Json" Version="9.0.8" />
+  </ItemGroup>
 
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-    </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
-        <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-        <PackageReference Include="BlazorPro.Spinkit" Version="1.2.0" />
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.8" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.8" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
-        <PackageReference Include="Radzen.Blazor" Version="7.2.1" />
-        <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
-        <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="8.0.0" />
-        <PackageReference Include="Serilog.Sinks.BrowserHttp" Version="1.0.0-dev-00032" />
-        <PackageReference Include="System.Net.Http.Json" Version="9.0.8" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
-    </ItemGroup>
-
-    <ProjectExtensions>
-        <VisualStudio>
-            <UserProperties wwwroot_4appsettings_1development_1json__JsonSchema="https://json.schemastore.org/appsettings.json" />
-        </VisualStudio>
-    </ProjectExtensions>
-
+  <Target Name="Tailwind:Install" AfterTargets="BeforeBuild">
+    <Message Importance="high" Text="Installing Tailwind CLI" />
+    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.1/tailwindcss-windows-x64.exe" Condition="($([MSBuild]::IsOSPlatform('Windows')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64')">
+      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
+    </DownloadFile>
+  </Target>
+  <Target Name="Tailwind:InstallLinux" AfterTargets="BeforeBuild">
+    <Message Importance="high" Text="Installing Tailwind CLI" />
+    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.1/tailwindcss-linux-x64" Condition="($([MSBuild]::IsOSPlatform('Linux')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64')">
+      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
+    </DownloadFile>
+  </Target>
+  <Target Name="Tailwind:InstallMac" AfterTargets="BeforeBuild">
+    <Message Importance="high" Text="Installing Tailwind CLI" />
+    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.1/tailwindcss-macos-x64" Condition="($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64')">
+      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
+    </DownloadFile>
+  </Target>
+  <Target Name="Tailwind:InstallMacArm" AfterTargets="BeforeBuild">
+    <Message Importance="high" Text="Installing Tailwind CLI" />
+    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.1/tailwindcss-macos-arm64" Condition="($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'ARM64')">
+      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
+    </DownloadFile>
+  </Target>
+  <Target Name="Tailwind:Permission" AfterTargets="BeforeBuild">
+    <Message Importance="high" Text="Making Tailwind CLI executable" />
+    <Exec Command="chmod +x $(TailwindExecutable)" Condition="($([MSBuild]::IsOSPlatform('Linux')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64') OR ($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64') OR ($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'ARM64')" />
+  </Target>
+  <Target Name="Tailwind:Run" AfterTargets="AfterBuild" DependsOnTargets="Tailwind:Permission">
+    <Message Importance="high" Text="Building CSS with Tailwind" />
+    <Exec Command="$(TailwindExecutable) -i .\tailwind.css -o .\wwwroot\css\site.css" />
+  </Target>
 </Project>

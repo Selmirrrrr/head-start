@@ -14,7 +14,12 @@
     <File Path="Directory.Build.props" />
   </Folder>
   <Project Path="src/BFF/HeadStart.BFF.csproj" />
-  <Project Path="src/Client/HeadStart.Client.csproj" />
   <Project Path="src/SharedKernel/HeadStart.SharedKernel.csproj" />
   <Project Path="src/WebAPI/HeadStart.WebAPI.csproj" />
+  <Project Path="src\Client\HeadStart.Client.csproj" Type="Classic C#">
+    <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+    <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+    <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+    <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+  </Project>
 </Solution>

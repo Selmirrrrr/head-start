@@ -1,0 +1,107 @@
+﻿@page "/"
+@using HeadStart.Client.Services
+
+@inject HttpClient HttpClient
+
+<BlazePage Title="Dashboard">
+    <MudGrid>
+        <MudItem xs="12"
+                 sm="6"
+                 lg="3">
+            <BlazeSummary Content="10"
+                          Description="Products"
+                          DisplayColor="--mud-palette-primary"
+                          Icon="@Icons.Material.Rounded.Widgets"/>
+        </MudItem>
+        <MudItem xs="12" sm="6" lg="3">
+            <BlazeSummary Content="400"
+                          Description="Sales"
+                          DisplayColor="--mud-palette-secondary"
+                          Icon="@Icons.Material.Rounded.CurrencyExchange"/>
+        </MudItem>
+        <MudItem xs="12" sm="6" lg="3">
+            <BlazeSummary Content="400"
+                          Description="Sales"
+                          DisplayColor="--mud-palette-tertiary"
+                          Icon="@Icons.Material.Rounded.BarChart"/>
+        </MudItem>
+        <MudItem xs="12" sm="6" lg="3">
+            <BlazeSummary Content="400"
+                          Description="Sales"
+                          DisplayColor="--mud-palette-info"
+                          Icon="@Icons.Material.Rounded.CurrencyExchange"/>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudPaper Elevation="0"
+                              Class="pa-4 rounded-lg h-[200px]">
+                              @if (!Claims.Any())
+{
+    <p><em>Loading...</em></p>
+} else
+{
+    <p>
+        @foreach (var claim in Claims)
+        {
+            <text>@claim.Type: @claim.Value</text><br />
+        }
+    </p>
+}
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Elevation="0"
+                              Class="pa-4 rounded-lg h-[200px]">
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudPaper Elevation="0"
+                      Class="pa-4 rounded-lg h-full">
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="0"
+                      Class="pa-4 rounded-lg h-[200px]">
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="0"
+                      Class="pa-4 rounded-lg h-[200px]">
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="12" md="4">
+            <MudPaper Elevation="0"
+                      Class="pa-4 rounded-lg h-[200px]">
+
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</BlazePage>
+
+
+@code {
+
+    public IList<ClaimsViewModel> Claims = new List<ClaimsViewModel>();
+
+    [Inject]
+    public DialogService DialogService { get; set; }
+
+    [Inject]
+    public ILogger<Index> Logger { get; set; }
+
+    [Inject]
+    public ITableService TableService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Claims = (await TableService.GetMe()).Claims;
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

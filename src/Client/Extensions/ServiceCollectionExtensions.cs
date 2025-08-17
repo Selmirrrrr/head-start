@@ -8,7 +8,7 @@ using HeadStart.SharedKernel;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Radzen;
+using MudBlazor;
 
 namespace HeadStart.Client.Extensions;
 
@@ -28,9 +28,6 @@ public static class ServiceCollectionExtensions
         services.AddOptions();
         services.AddAuthorizationCore();
         services.AddScoped<DialogService>();
-        services.AddScoped<NotificationService>();
-        services.AddScoped<TooltipService>();
-        services.AddScoped<ContextMenuService>();
         services.AddScoped<ITableService, TableService>();
         services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
@@ -58,7 +55,5 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton(JsonSerializerConfigurations.Default);
         services.AddKeyedSingleton(nameof(JsonSerializerConfigurations.LoggingSettings), JsonSerializerConfigurations.LoggingSettings);
-
-        services.AddRadzenComponents();
     }
 }

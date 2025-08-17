@@ -2,15 +2,15 @@
 
 <AuthorizeView>
 	<Authorized>
-		<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="12px" class="rz-mr-6">
-			<RadzenLabel>Hello, @context.User.Identity.Name!</RadzenLabel>
+		<MudStack AlignItems="AlignItems.Center"  class="rz-mr-6">
+			<MudText>Hello, @context.User.Identity?.Name!</MudText>
 			<form method="post" action="/api/account/logout">
 				<AntiForgeryTokenInput />
-				<RadzenButton ButtonType=@ButtonType.Submit Text="Sign out" Size="ButtonSize.Small"/>
+                <MudButton ButtonType="ButtonType.Submit">Sign out</MudButton>
 			</form>
-		</RadzenStack>
+		</MudStack>
 	</Authorized>
 	<NotAuthorized>
-		<RadzenButton Text="Login" Size="ButtonSize.Small" class="rz-mr-6" Click="@(() => Navigation.NavigateTo("/api/account/login", true))" />
+		<MudButton class="rz-mr-6" OnClick="@(() => Navigation.NavigateTo("/api/account/login", true))"> Sign in </MudButton>
 	</NotAuthorized>
 </AuthorizeView>
