@@ -1,8 +1,8 @@
+using HeadStart.Client.Extensions;
 using HeadStart.SharedKernel.Extensions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
-using HeadStart.Client.Extensions;
 using Serilog;
 
 namespace HeadStart.Client;
