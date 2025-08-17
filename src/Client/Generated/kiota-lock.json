@@ -12,15 +12,10 @@
   "includeAdditionalData": true,
   "disableSSLValidation": false,
   "serializers": [
-    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory",
-    "Microsoft.Kiota.Serialization.Text.TextSerializationWriterFactory",
-    "Microsoft.Kiota.Serialization.Form.FormSerializationWriterFactory",
-    "Microsoft.Kiota.Serialization.Multipart.MultipartSerializationWriterFactory"
+    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory"
   ],
   "deserializers": [
-    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory",
-    "Microsoft.Kiota.Serialization.Text.TextParseNodeFactory",
-    "Microsoft.Kiota.Serialization.Form.FormParseNodeFactory"
+    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory"
   ],
   "structuredMimeTypes": [
     "application/json",

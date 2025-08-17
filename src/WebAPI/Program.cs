@@ -80,6 +80,8 @@ try
             c.ClientNamespaceName = "HeadStart.Client.Generated";
             c.ClientClassName = "ApiClient";
             c.CleanOutput = true;
+            c.Deserializers = ["Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory"];
+            c.Serializers = ["Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory"];
         });
 
     app.Run();

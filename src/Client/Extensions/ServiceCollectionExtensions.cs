@@ -11,10 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
-using Microsoft.Kiota.Serialization.Form;
 using Microsoft.Kiota.Serialization.Json;
-using Microsoft.Kiota.Serialization.Multipart;
-using Microsoft.Kiota.Serialization.Text;
 using MudBlazor;
 
 namespace HeadStart.Client.Extensions;
@@ -60,12 +57,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ApiClient>(sp =>
         {
             ApiClientBuilder.RegisterDefaultSerializer<JsonSerializationWriterFactory>();
-            ApiClientBuilder.RegisterDefaultSerializer<TextSerializationWriterFactory>();
-            ApiClientBuilder.RegisterDefaultSerializer<FormSerializationWriterFactory>();
-            ApiClientBuilder.RegisterDefaultSerializer<MultipartSerializationWriterFactory>();
             ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
-            ApiClientBuilder.RegisterDefaultDeserializer<TextParseNodeFactory>();
-            ApiClientBuilder.RegisterDefaultDeserializer<FormParseNodeFactory>();
 
             var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
             // Use the authorized HTTP client that includes the AuthorizedHandler
