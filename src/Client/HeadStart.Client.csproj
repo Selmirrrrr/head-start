@@ -6,7 +6,7 @@
     <PackageId>HeadStart.Client</PackageId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="7.0.0" />
+    <PackageReference Include="MudBlazor" Version="8.11.0" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
