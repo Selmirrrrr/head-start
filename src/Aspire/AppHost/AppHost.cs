@@ -1,9 +1,13 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+var postgres = builder.AddPostgres("postgres")
+                      .WithPgWeb();
+
+var postgresdb = postgres.AddDatabase("postgresdb");
+
 var keycloak = builder.AddKeycloak("keycloak", 8080)
     .WithLifetime(ContainerLifetime.Persistent)
     .WithRealmImport("./Realms");
-
 
 var seq = builder.AddSeq("seq")
     .ExcludeFromManifest()
@@ -16,7 +20,9 @@ var webapi = builder.AddProject<Projects.HeadStart_WebAPI>("webapi")
     .WithReference(keycloak)
     .WaitFor(keycloak)
     .WithReference(seq)
-    .WaitFor(seq);
+    .WaitFor(seq)
+    .WithReference(postgresdb)
+    .WaitFor(postgresdb);
 
 builder.AddProject<Projects.HeadStart_BFF>("bff")
     .WithExternalHttpEndpoints()

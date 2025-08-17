@@ -4,9 +4,11 @@ using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
+using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Extensions;
 using Kiota.Builder;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -18,7 +20,7 @@ builder.AddServiceDefaults();
 builder.AddSeqEndpoint(connectionName: "seq");
 builder.Host.UseSerilog((builderContext, loggerConfig)
     => loggerConfig.ConfigureFromSettings(builderContext.Configuration)
-        .WriteTo.Seq(builder.Configuration.GetValue<string>("Aspire:Seq:ServerUrl") ?? "http://localhost:5341"));
+        .WriteTo.Seq(builder.Configuration.GetConnectionString("seq") ?? throw new InvalidOperationException("Seq server url not configured")));
 
 builder.Services.AddFastEndpoints()
     .SwaggerDocument(o =>
@@ -30,6 +32,18 @@ builder.Services.AddFastEndpoints()
             s.DocumentName = "HeadStartAPIv1";
         };
     });
+
+builder.Services.AddDbContext<HeadStartDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("postgresdb") ?? throw new InvalidOperationException("Connection string 'postgresdb' not found."))
+        .UseAsyncSeeding(async (context, _, cancellationToken) =>
+        {
+            var testBlog = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
+            if (testBlog == null)
+            {
+                context.Set<Tenant>().Add(new Tenant { Id = Guid.NewGuid(), Name = "HeadStart" });
+                await context.SaveChangesAsync(cancellationToken);
+            }
+        }));
 // Add services
 builder.Services.AddSharedKernelServices();
 builder.Services.AddApiServices(builder.Configuration);
