@@ -2,6 +2,7 @@ using CorrelationId;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.BFF.Extensions;
 using HeadStart.SharedKernel.Extensions;
+using Microsoft.AspNetCore.Http.Features;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,21 @@ builder.Services.AddSharedKernelServices();
 builder.Services.AddApiServices(builder.Configuration, builder.Environment.IsDevelopment());
 
 builder.Services.AddDataProtection(o => o.ApplicationDiscriminator = "HeadStart");
+
+
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+        var activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+        if (activity != null)
+        {
+            context.ProblemDetails.Extensions.TryAdd("traceId", activity.Id);
+        }
+    };
+});
 
 var app = builder.Build();
 
@@ -48,7 +64,7 @@ try
     app.UseRouting();
     app.UseAuthentication();
     app.UseAuthorization();
-
+    app.UseStatusCodePages();
     app.MapRazorPages();
     app.MapControllers();
     app.MapReverseProxy();

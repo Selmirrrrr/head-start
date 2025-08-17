@@ -6,6 +6,7 @@ using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Extensions;
 using Kiota.Builder;
+using Microsoft.AspNetCore.Http.Features;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -33,6 +34,20 @@ builder.Services.AddApiServices(builder.Configuration);
 
 builder.Services.AddDataProtection(o => o.ApplicationDiscriminator = "HeadStart");
 
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+        var activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+        if (activity != null)
+        {
+            context.ProblemDetails.Extensions.TryAdd("traceId", activity.Id);
+        }
+    };
+});
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -58,7 +73,7 @@ try
     app.UseRouting();
     app.UseAuthentication();
     app.UseAuthorization();
-
+    app.UseStatusCodePages();
     // Configure FastEndpoints and OpenAPI
     app.UseFastEndpoints()
        .UseSwaggerGen();
