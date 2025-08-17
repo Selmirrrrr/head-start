@@ -26,4 +26,4 @@ builder.AddProject<Projects.HeadStart_BFF>("bff")
     .WithReference(seq)
     .WaitFor(seq);
 
-builder.Build().Run();
+await builder.Build().RunAsync();

@@ -13,7 +13,7 @@ builder.AddServiceDefaults();
 builder.AddSeqEndpoint(connectionName: "seq");
 builder.Host.UseSerilog((builderContext, loggerConfig) =>
     loggerConfig.ConfigureFromSettings(builderContext.Configuration)
-        .WriteTo.Seq(builder.Configuration.GetValue<string>("Aspire:Seq:ServerUrl") ?? "http://localhost:5341"));
+        .WriteTo.Seq(builder.Configuration.GetConnectionString("seq")?? throw new InvalidOperationException("Seq server url not configured")));
 
 // Add services
 builder.Services.AddSharedKernelServices();
@@ -72,7 +72,7 @@ try
     app.MapReverseProxy();
     app.MapFallbackToPage("/_Host");
 
-    app.Run();
+    await app.RunAsync();
 }
 catch (Exception ex)
 {
@@ -89,7 +89,7 @@ catch (Exception ex)
 finally
 {
     Log.Information("Shut down complete");
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }
 
 static HeaderPolicyCollection GetSecurityHeaderPolicy(bool isDev, string idpHost)

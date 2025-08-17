@@ -103,7 +103,7 @@ try
             c.Serializers = ["Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory"];
         });
 
-    app.Run();
+    await app.RunAsync();
 }
 catch (Exception ex)
 {
@@ -120,5 +120,5 @@ catch (Exception ex)
 finally
 {
     Log.Information("Shut down complete");
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }
