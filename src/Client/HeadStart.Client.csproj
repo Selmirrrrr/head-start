@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.19.1" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.19.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.19.1" />
+    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="9.0.8" />
     <PackageReference Include="MudBlazor" Version="8.11.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
     <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="8.0.0" />
@@ -24,7 +25,6 @@
     <PackageReference Include="System.Net.Http.Json" Version="9.0.8" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="9.0.8" />
     <ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
   </ItemGroup>
   <Target Name="Tailwind:Install" AfterTargets="BeforeBuild">
