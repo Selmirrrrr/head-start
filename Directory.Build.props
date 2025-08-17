@@ -2,10 +2,8 @@
   <PropertyGroup>
     <Company>Vasil Kotsev</Company>
     <Copyright>Copyright © 2025 Vasil Kotsev</Copyright>
-    <PackageProjectUrl>https://github.com/SonnyRR/planning-poker</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
