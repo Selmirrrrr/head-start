@@ -16,6 +16,8 @@ builder.Host.UseSerilog((builderContext, loggerConfig) =>
 builder.Services.AddSharedKernelServices();
 builder.Services.AddApiServices(builder.Configuration, builder.Environment.IsDevelopment());
 
+builder.Services.AddDataProtection(o => o.ApplicationDiscriminator = "HeadStart");
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();

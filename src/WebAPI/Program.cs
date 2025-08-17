@@ -31,6 +31,8 @@ builder.Services.AddFastEndpoints()
 builder.Services.AddSharedKernelServices();
 builder.Services.AddApiServices(builder.Configuration);
 
+builder.Services.AddDataProtection(o => o.ApplicationDiscriminator = "HeadStart");
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
