@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
-using HeadStart.SharedKernel.Models.Authorization;
+using HeadStart.SharedKernel.Models.Models.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 

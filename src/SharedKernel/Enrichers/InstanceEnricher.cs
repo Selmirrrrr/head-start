@@ -9,7 +9,7 @@ public sealed class InstanceEnricher : ILogEventEnricher
 
     public InstanceEnricher()
     {
-        _id = Guid.NewGuid();
+        _id = Guid.CreateVersion7();
     }
 
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)

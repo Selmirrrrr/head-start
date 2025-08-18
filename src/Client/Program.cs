@@ -1,5 +1,4 @@
 using HeadStart.Client.Extensions;
-using HeadStart.SharedKernel.Extensions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
@@ -20,8 +19,10 @@ public static class Program
                 .MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .Enrich.WithInstanceId()
                 .Enrich.WithExceptionDetails()
+                .Enrich.WithProperty("Application", "HeadStart.Client")
+                .Enrich.WithProperty("Platform", "WebAssembly")
+                .Enrich.WithProperty("InstanceId", Guid.CreateVersion7())
                 .WriteTo.BrowserConsole()
                 .WriteTo.BrowserHttp();
 

@@ -3,9 +3,11 @@ using Ardalis.GuardClauses;
 using HeadStart.SharedKernel.Enrichers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Configuration;
+using Serilog.Exceptions;
 using Serilog.Settings.Configuration;
 
 namespace HeadStart.SharedKernel.Extensions;
@@ -80,5 +82,57 @@ public static class LoggingExtensions
         Guard.Against.Null(enrichmentConfiguration);
 
         return enrichmentConfiguration.With<InstanceEnricher>();
+    }
+
+    /// <summary>
+    /// Configures Serilog with optimized settings for web applications.
+    /// </summary>
+    /// <param name="loggerConfiguration">The logger configuration to configure.</param>
+    /// <param name="configuration">Application configuration.</param>
+    /// <param name="environment">Hosting environment.</param>
+    /// <param name="applicationName">Name of the application for logging context.</param>
+    /// <returns>An instance of <see cref="LoggerConfiguration"/>.</returns>
+    public static LoggerConfiguration ConfigureWebApplicationLogging(
+        this LoggerConfiguration loggerConfiguration,
+        IConfiguration configuration,
+        IHostEnvironment environment,
+        string applicationName)
+    {
+        Guard.Against.Null(loggerConfiguration);
+        Guard.Against.Null(configuration);
+        Guard.Against.Null(environment);
+        Guard.Against.NullOrWhiteSpace(applicationName);
+
+        var seqUrl = configuration.GetConnectionString("seq");
+        var isDevelopment = environment.IsDevelopment();
+
+        loggerConfiguration
+            .MinimumLevel.Information()
+            .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Information)
+            .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Information)
+            .MinimumLevel.Override("Microsoft.Hosting.Lifetime", Serilog.Events.LogEventLevel.Information)
+            .MinimumLevel.Override("CorrelationId", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Override("HeadStart", isDevelopment ? Serilog.Events.LogEventLevel.Debug : Serilog.Events.LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .Enrich.WithExceptionDetails()
+            .Enrich.WithProperty("Application", applicationName)
+            .Enrich.WithProperty("Environment", environment.EnvironmentName);
+
+        // Add Seq sink with validation if URL is configured
+        if (!string.IsNullOrWhiteSpace(seqUrl))
+        {
+            loggerConfiguration.WriteTo.Async(a => a.Seq(seqUrl, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose));
+        }
+        else if (isDevelopment)
+        {
+            loggerConfiguration.WriteTo.Async(a => a.Debug());
+        }
+
+        // Always add console sink wrapped in async
+        loggerConfiguration.WriteTo.Async(a => a.Console(
+            outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Application}] {Message:lj} | Correlation ID: {CorrelationId}{NewLine}{Exception}"));
+
+        return loggerConfiguration;
     }
 }

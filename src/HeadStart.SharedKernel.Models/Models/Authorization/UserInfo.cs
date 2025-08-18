@@ -1,4 +1,4 @@
-namespace HeadStart.SharedKernel.Models.Authorization;
+namespace HeadStart.SharedKernel.Models.Models.Authorization;
 
 public class UserInfo
 {

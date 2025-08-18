@@ -11,18 +11,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.8" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="1.1.0" />
     <PackageReference Include="OpenIddict.AspNetCore" Version="7.0.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-    <PackageReference Include="Serilog.AspNetCore.Ingestion" Version="1.0.0-dev-00032" />
-    <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
-    <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
-    <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
     <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
     </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aspire\ServiceDefaults\HeadStart.Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Client\HeadStart.Client.csproj" />
+    <ProjectReference Include="..\HeadStart.SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
+    <ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
