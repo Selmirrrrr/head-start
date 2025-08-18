@@ -5,7 +5,6 @@ using HeadStart.SharedKernel.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
-using Serilog.Exceptions;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
