@@ -1,4 +1,3 @@
-using CorrelationId;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.BFF.Extensions;
 using HeadStart.SharedKernel.Extensions;
@@ -9,11 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 // Configure Serilog
-builder.AddSeqEndpoint(connectionName: "seq");
 builder.Host.UseSerilog((builderContext, loggerConfig) =>
     loggerConfig.ConfigureWebApplicationLogging(
-        builderContext.Configuration,
-        builderContext.HostingEnvironment,
+        builder,
         "HeadStart.BFF"));
 
 // Add services

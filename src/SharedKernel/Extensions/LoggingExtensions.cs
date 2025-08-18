@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Ardalis.GuardClauses;
 using HeadStart.SharedKernel.Enrichers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -88,20 +89,20 @@ public static class LoggingExtensions
     /// Configures Serilog with optimized settings for web applications.
     /// </summary>
     /// <param name="loggerConfiguration">The logger configuration to configure.</param>
-    /// <param name="configuration">Application configuration.</param>
-    /// <param name="environment">Hosting environment.</param>
+    /// <param name="builder">WebApplicationBuilder instance.</param>
     /// <param name="applicationName">Name of the application for logging context.</param>
     /// <returns>An instance of <see cref="LoggerConfiguration"/>.</returns>
     public static LoggerConfiguration ConfigureWebApplicationLogging(
         this LoggerConfiguration loggerConfiguration,
-        IConfiguration configuration,
-        IHostEnvironment environment,
+        WebApplicationBuilder builder,
         string applicationName)
     {
         Guard.Against.Null(loggerConfiguration);
-        Guard.Against.Null(configuration);
-        Guard.Against.Null(environment);
+        Guard.Against.Null(builder);
         Guard.Against.NullOrWhiteSpace(applicationName);
+
+        var configuration = builder.Configuration;
+        var environment = builder.Environment;
 
         var seqUrl = configuration.GetConnectionString("seq");
         var isDevelopment = environment.IsDevelopment();
@@ -122,6 +123,7 @@ public static class LoggingExtensions
         // Add Seq sink with validation if URL is configured
         if (!string.IsNullOrWhiteSpace(seqUrl))
         {
+            builder.AddSeqEndpoint(connectionName: "seq");
             loggerConfiguration.WriteTo.Async(a => a.Seq(seqUrl, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose));
         }
         else if (isDevelopment)

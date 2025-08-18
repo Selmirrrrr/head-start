@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
+        <PackageReference Include="Aspire.Seq" Version="9.4.1" />
         <PackageReference Include="CorrelationId" Version="3.0.1" />
         <PackageReference Include="FluentValidation" Version="12.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.8" />
