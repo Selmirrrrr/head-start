@@ -1,12 +1,15 @@
 using System.Net.Http.Headers;
 using System.Net.Mime;
+using System.Threading.RateLimiting;
 using Ardalis.GuardClauses;
 using Duende.AccessTokenManagement.OpenIdConnect;
 using HeadStart.BFF.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -29,29 +32,85 @@ public static class ServiceCollectionExtensions
         });
     }
 
-    public static void AddApiServices(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
+    public static void AddBffServices(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
     {
         Guard.Against.Null(services);
         Guard.Against.Null(configuration);
 
-        services.AddAntiforgeryConfiguration();
+        services.AddWebServices();
+        services.AddSecurityServices();
+        services.AddRateLimitingServices();
+        services.AddReverseProxyConfiguration(configuration);
+        services.AddAuthentication(configuration, isDevelopment);
+        services.AddAuthorization();
+        services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
+    }
+
+    private static void AddWebServices(this IServiceCollection services)
+    {
+        Guard.Against.Null(services);
+
         services.AddHttpClient();
         services.AddOptions();
-
+        services.AddSignalR();
+        services.AddRazorPages();
+        services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+        
         services.AddResponseCompression(opts =>
             opts.MimeTypes = new List<string>(ResponseCompressionDefaults.MimeTypes)
             {
                 MediaTypeNames.Application.Octet
             }
         );
+    }
 
-        services.AddReverseProxyConfiguration(configuration);
-        services.AddAuthentication(configuration, isDevelopment);
-        services.AddAuthorization();
-        services.AddSignalR();
-        services.AddRazorPages();
-        services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
-        services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
+    private static void AddSecurityServices(this IServiceCollection services)
+    {
+        Guard.Against.Null(services);
+
+        services.AddAntiforgeryConfiguration();
+        services.AddDataProtection(o => o.ApplicationDiscriminator = "HeadStart");
+        services.AddProblemDetails(options =>
+        {
+            options.CustomizeProblemDetails = context =>
+            {
+                context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+                context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+                var activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+                if (activity != null)
+                {
+                    context.ProblemDetails.Extensions.TryAdd("traceId", activity.Id);
+                }
+            };
+        });
+    }
+
+    private static void AddRateLimitingServices(this IServiceCollection services)
+    {
+        Guard.Against.Null(services);
+
+        services.AddRateLimiter(options =>
+        {
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+            // Add rate limiter for authentication endpoints
+            options.AddFixedWindowLimiter("auth", limiterOptions =>
+            {
+                limiterOptions.Window = TimeSpan.FromSeconds(30);
+                limiterOptions.PermitLimit = 5;
+                limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                limiterOptions.QueueLimit = 2;
+            });
+
+            // Add a stricter rate limiter for login attempts
+            options.AddFixedWindowLimiter("login", limiterOptions =>
+            {
+                limiterOptions.Window = TimeSpan.FromSeconds(30);
+                limiterOptions.PermitLimit = 10;
+                limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                limiterOptions.QueueLimit = 0;
+            });
+        });
     }
 
     private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
