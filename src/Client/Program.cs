@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
 using Serilog;
+using Serilog.Exceptions;
 
 namespace HeadStart.Client;
 
@@ -15,7 +16,16 @@ public static class Program
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            builder.Logging.AddSerilog(builder.Configuration);
+            var loggerConfig = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .Enrich.WithInstanceId()
+                .Enrich.WithExceptionDetails()
+                .WriteTo.BrowserConsole()
+                .WriteTo.BrowserHttp();
+
+            builder.Logging.AddSerilog(loggerConfig.CreateLogger());
             builder.RootComponents.Add<App>("#app");
             // builder.RootComponents.Add<HeadOutlet>("head::after");
 

@@ -5,6 +5,7 @@ using HeadStart.SharedKernel.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
+using Serilog.Exceptions;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +15,22 @@ builder.AddServiceDefaults();
 // Configure Serilog
 builder.AddSeqEndpoint(connectionName: "seq");
 builder.Host.UseSerilog((builderContext, loggerConfig) =>
-    loggerConfig.ConfigureFromSettings(builderContext.Configuration)
-        .WriteTo.Seq(builder.Configuration.GetConnectionString("seq")?? throw new InvalidOperationException("Seq server url not configured")));
+{
+    var seqUrl = builder.Configuration.GetConnectionString("seq") ?? throw new InvalidOperationException("Seq server url not configured");
+    
+    loggerConfig
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Information)
+        .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Information)
+        .MinimumLevel.Override("Microsoft.Hosting.Lifetime", Serilog.Events.LogEventLevel.Information)
+        .MinimumLevel.Override("CorrelationId", Serilog.Events.LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .Enrich.WithExceptionDetails()
+        .WriteTo.Seq(seqUrl, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose)
+        .WriteTo.Async(a => a.Console(
+            outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} | Correlation ID: {CorrelationId}{NewLine}{Exception}"));
+});
 
 // Add services
 builder.Services.AddSharedKernelServices();
