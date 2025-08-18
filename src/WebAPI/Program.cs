@@ -106,6 +106,52 @@ try
         });
     }
 
+    // Ensure database is created and seeded
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<HeadStartDbContext>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        
+        try
+        {
+            logger.LogInformation("Ensuring database is created...");
+            
+            // Create database if it doesn't exist
+            var created = await context.Database.EnsureCreatedAsync();
+            if (created)
+            {
+                logger.LogInformation("Database created successfully");
+            }
+            else
+            {
+                logger.LogInformation("Database already exists");
+            }
+
+            // Apply any pending migrations
+            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+            if (pendingMigrations.Any())
+            {
+                logger.LogInformation("Applying {Count} pending migrations: {Migrations}", 
+                    pendingMigrations.Count(), string.Join(", ", pendingMigrations));
+                
+                await context.Database.MigrateAsync();
+                logger.LogInformation("Migrations applied successfully");
+            }
+            else
+            {
+                logger.LogInformation("No pending migrations");
+            }
+
+            // Seed data (this will run automatically due to UseAsyncSeeding configuration)
+            logger.LogInformation("Database initialization completed");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while ensuring database creation");
+            throw;
+        }
+    }
+
     await app.GenerateApiClientsAndExitAsync(
         c =>
         {
