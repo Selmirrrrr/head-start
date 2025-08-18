@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using Ardalis.GuardClauses;
+using Duende.AccessTokenManagement.OpenIdConnect;
 using HeadStart.BFF.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -68,9 +69,13 @@ public static class ServiceCollectionExtensions
             .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 options.Authority = configuration["OpenIDConnectSettings:Authority"] ?? "http://localhost:8080/realms/HeadStart";
-                options.ClientId = "HeadStartWeb";
+                options.ClientId = configuration["OpenIDConnectSettings:ClientId"] ?? "HeadStartWeb";
+                options.ClientSecret = configuration["OpenIDConnectSettings:ClientSecret"];
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.ResponseType = OpenIdConnectResponseType.Code;
+                
+                // Request refresh token
+                options.Scope.Add("offline_access");
 
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
@@ -87,6 +92,9 @@ public static class ServiceCollectionExtensions
                     options.RequireHttpsMetadata = false;
                 }
             });
+        
+        // Add Duende automatic token management
+        services.AddOpenIdConnectAccessTokenManagement();
     }
 
     private static void AddAuthorization(this IServiceCollection services)
@@ -110,15 +118,20 @@ public static class ServiceCollectionExtensions
             .LoadFromConfig(configuration.GetSection("ReverseProxy"))
             .AddTransforms(builder => builder.AddRequestTransform(async context =>
             {
-                // Attach the access token retrieved from the authentication cookie.
-                //
-                // Note: in a real world application, the expiration date of the access token
-                // should be checked before sending a request to avoid getting a 401 response.
-                // Once expired, a new access token could be retrieved using the OAuth 2.0
-                // refresh token grant (which could be done transparently).
-                var token = await context.HttpContext.GetTokenAsync("access_token");
+                // Use Duende's IUserTokenManagementService for automatic token refresh
+                var tokenManagementService = context.HttpContext.RequestServices.GetRequiredService<IUserTokenManagementService>();
+                var tokenResult = await tokenManagementService.GetAccessTokenAsync(context.HttpContext.User);
+                
+                if (tokenResult.IsError)
+                {
+                    // Token retrieval failed, user needs to authenticate
+                    context.HttpContext.Response.StatusCode = 401;
+                    context.HttpContext.Response.Headers["WWW-Authenticate"] = "Bearer";
+                    return;
+                }
 
-                context.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                // Token is valid (Duende handles refresh automatically), attach it to the proxy request
+                context.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokenResult.AccessToken);
             }));
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace HeadStart.BFF.Controllers;
 
@@ -17,10 +18,11 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet("Login")]
+    [EnableRateLimiting("login")]
     public ActionResult Login(string returnUrl)
     {
-        _logger.LogInformation("Login");
-        _logger.LogInformation(returnUrl);
+        _logger.LogInformation("Login attempt from IP: {IpAddress}", HttpContext.Connection.RemoteIpAddress);
+        _logger.LogInformation("Return URL: {ReturnUrl}", returnUrl);
         return Challenge(new AuthenticationProperties
         {
             RedirectUri = !string.IsNullOrEmpty(returnUrl) ? returnUrl : "/"
@@ -30,6 +32,7 @@ public class AccountController : ControllerBase
     [ValidateAntiForgeryToken]
     [Authorize]
     [HttpPost("Logout")]
+    [EnableRateLimiting("auth")]
     public IActionResult Logout()
     {
         return SignOut(

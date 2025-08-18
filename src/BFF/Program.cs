@@ -3,7 +3,9 @@ using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.BFF.Extensions;
 using HeadStart.SharedKernel.Extensions;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,29 @@ builder.Services.AddApiServices(builder.Configuration, builder.Environment.IsDev
 
 builder.Services.AddDataProtection(o => o.ApplicationDiscriminator = "HeadStart");
 
+// Add rate limiting for authentication endpoints
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    // Add rate limiter for authentication endpoints
+    options.AddFixedWindowLimiter("auth", limiterOptions =>
+    {
+        limiterOptions.Window = TimeSpan.FromSeconds(30);
+        limiterOptions.PermitLimit = 5;
+        limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 2;
+    });
+
+    // Add a stricter rate limiter for login attempts
+    options.AddFixedWindowLimiter("login", limiterOptions =>
+    {
+        limiterOptions.Window = TimeSpan.FromSeconds(30);
+        limiterOptions.PermitLimit = 10;
+        limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 0;
+    });
+});
 
 builder.Services.AddProblemDetails(options =>
 {
@@ -64,6 +89,7 @@ try
     app.UseSerilogIngestion();
     app.UseSerilogRequestLogging();
     app.UseRouting();
+    app.UseRateLimiter();
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseStatusCodePages();
