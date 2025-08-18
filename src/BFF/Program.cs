@@ -8,9 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 // Configure Serilog
+builder.AddSeqEndpoint(connectionName: "seq");
 builder.Host.UseSerilog((builderContext, loggerConfig) =>
     loggerConfig.ConfigureWebApplicationLogging(
-        builder,
+        builderContext.Configuration,
+        builderContext.HostingEnvironment,
         "HeadStart.BFF"));
 
 // Add services
