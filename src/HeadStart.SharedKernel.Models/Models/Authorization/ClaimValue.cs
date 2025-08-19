@@ -1,18 +1,8 @@
 namespace HeadStart.SharedKernel.Models.Models.Authorization;
 
-public class ClaimValue
+public class ClaimValue(string type, string value)
 {
-    public ClaimValue()
-    {
-    }
+    public string Type { get; } = type;
 
-    public ClaimValue(string type, string value)
-    {
-        Type = type;
-        Value = value;
-    }
-
-    public string Type { get; set; }
-
-    public string Value { get; set; }
+    public string Value { get; } = value;
 }

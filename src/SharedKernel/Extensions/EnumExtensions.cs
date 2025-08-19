@@ -32,11 +32,6 @@ public static class EnumExtensions
             ?.GetName() ?? @enum.ToString();
     }
 
-    /// <summary>
-    /// Caches enumeration types & their members in order to do less reflection operations.
-    /// </summary>
-    /// <param name="type">The type of the enum.</param>
-    /// <returns>A <see> <cref>MemberInfo[]</cref> </see> instance.</returns>
     private static MemberInfo[] CacheMembers(Type @type)
     {
         if (Cache.Value.TryGetValue(@type, out var members)) return members;

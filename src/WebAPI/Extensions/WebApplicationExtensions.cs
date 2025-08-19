@@ -70,8 +70,8 @@ internal static class WebApplicationExtensions
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while ensuring database creation");
-            throw;
+            logger.LogError(ex, "An error occurred while ensuring database creation {App}", app.Environment.ApplicationName);
+            throw new InvalidDataException("An error occurred while ensuring database creation", ex);
         }
     }
 

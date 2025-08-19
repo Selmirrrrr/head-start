@@ -7,7 +7,7 @@ public static class TenantsGetList
 {
     public class Endpoint : EndpointWithoutRequest<Response>
     {
-        public HeadStartDbContext DbContext { get; set; }
+        public required HeadStartDbContext DbContext { get; set; }
 
         public override void Configure()
         {

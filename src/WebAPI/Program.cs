@@ -16,7 +16,7 @@ builder.Host.UseSerilog((builderContext, loggerConfig) =>
         "HeadStart.WebAPI"));
 
 builder.Services.AddApiFramework();
-builder.Services.AddDatabaseServices(builder.Configuration);;
+builder.Services.AddDatabaseServices(builder.Configuration);
 builder.Services.AddSecurityServices();
 builder.Services.AddOidcServices();
 
