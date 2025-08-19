@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using HeadStart.WebAPI.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadStart.WebAPI.Data;
@@ -10,12 +10,4 @@ public class HeadStartDbContext : DbContext
     }
 
     public DbSet<Tenant> Tenants { get; set; }
-}
-
-public class Tenant
-{
-    public Guid Id { get; set; }
-
-    [StringLength(250)]
-    public string Name { get; set; } = string.Empty;
 }

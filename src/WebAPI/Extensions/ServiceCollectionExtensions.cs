@@ -3,11 +3,11 @@ using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Data;
+using HeadStart.WebAPI.Data.Models;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Validation.AspNetCore;
-using Scalar.AspNetCore;
 
 namespace HeadStart.WebAPI.Extensions;
 
@@ -54,7 +54,13 @@ internal static class ServiceCollectionExtensions
                     var testBlog = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
                     if (testBlog == null)
                     {
-                        context.Set<Tenant>().Add(new Tenant { Id = Guid.NewGuid(), Name = "HeadStart" });
+                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart", Name = "HeadStart" });
+                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne", Name = "HeadStart Lausanne" });
+                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich", Name = "HeadStart Zürich" });
+                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne.Palud", Name = "HeadStart Lausanne - Palud" });
+                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne.Ouchy", Name = "HeadStart Lausanne - Ouchy" });
+                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich.Paradeplatz", Name = "HeadStart Zürich - Paradeplatz" });
+                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich.Enge", Name = "HeadStart Zürich - Enge" });
                         await context.SaveChangesAsync(cancellationToken);
                     }
                 }));
