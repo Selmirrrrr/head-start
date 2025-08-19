@@ -103,7 +103,6 @@ public static class LoggingExtensions
         Guard.Against.Null(environment);
         Guard.Against.NullOrWhiteSpace(applicationName);
 
-        var seqUrl = configuration.GetConnectionString("seq");
         var isDevelopment = environment.IsDevelopment();
 
         loggerConfiguration
@@ -119,12 +118,7 @@ public static class LoggingExtensions
             .Enrich.WithProperty("Application", applicationName)
             .Enrich.WithProperty("Environment", environment.EnvironmentName);
 
-        // Add Seq sink with validation if URL is configured
-        if (!string.IsNullOrWhiteSpace(seqUrl))
-        {
-            loggerConfiguration.WriteTo.Async(a => a.Seq(seqUrl, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose));
-        }
-        else if (isDevelopment)
+        if (isDevelopment)
         {
             loggerConfiguration.WriteTo.Async(a => a.Debug());
         }

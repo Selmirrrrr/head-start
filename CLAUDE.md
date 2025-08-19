@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Running the Application
-- **Start the entire application stack**: `dotnet run --project src/Aspire/AppHost` - Launches all services including PostgreSQL, Keycloak, Seq logging, WebAPI, and BFF
+- **Start the entire application stack**: `dotnet run --project src/Aspire/AppHost` - Launches all services including PostgreSQL, Keycloak logging, WebAPI, and BFF
 - **Run individual projects**:
   - BFF only: `dotnet run --project src/BFF`
   - WebAPI only: `dotnet run --project src/WebAPI`
@@ -48,7 +48,7 @@ This is a .NET 9 solution using a Backend-for-Frontend (BFF) pattern with the fo
 - **API Communication**: Kiota-generated clients from OpenAPI specs
 
 ### Infrastructure Services
-- **Logging**: Serilog with Seq integration for centralized logging
+- **Logging**: Serilog
 - **Monitoring**: Aspire dashboard with OpenTelemetry
 - **Reverse Proxy**: YARP for API proxying with automatic token forwarding
 - **Security**: Comprehensive security headers, CSRF protection, and data protection
