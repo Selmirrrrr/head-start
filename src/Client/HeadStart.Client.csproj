@@ -29,7 +29,7 @@
     <PackageReference Include="System.Net.Http.Json" Version="9.0.8" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HeadStart.SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
+    <ProjectReference Include="..\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
   </ItemGroup>
   <Target Name="Tailwind:Install" AfterTargets="BeforeBuild">
     <Message Importance="high" Text="Installing Tailwind CLI" />
