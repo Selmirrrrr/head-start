@@ -28,7 +28,6 @@ public static class Program
 
             builder.Logging.AddSerilog(loggerConfig.CreateLogger());
             builder.RootComponents.Add<App>("#app");
-            // builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddClientLayer(builder.HostEnvironment);
 

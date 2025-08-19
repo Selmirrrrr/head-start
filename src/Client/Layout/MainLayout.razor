@@ -1,8 +1,6 @@
 ﻿@using HeadStart.Client.Components.Shared
 @inherits LayoutComponentBase
 
-@inject NavigationManager NavigationManager
-
 <MudThemeProvider @ref="@_mudThemeProvider"
                   Theme="@_baseTheme"
                   @bind-IsDarkMode="@_isDarkMode" />
@@ -91,9 +89,9 @@
 @code {
     bool _drawerOpen = true;
     private bool _isDarkMode;
-    private MudThemeProvider _mudThemeProvider;
+    private MudThemeProvider? _mudThemeProvider;
 
-    private MudTheme _baseTheme = new MudTheme()
+    private readonly MudTheme _baseTheme = new()
     {
         PaletteLight = new PaletteLight()
         {
@@ -108,21 +106,22 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && _mudThemeProvider is not null)
         {
             await _mudThemeProvider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
             StateHasChanged();
         }
     }
 
-    void DrawerToggle()
+    private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
-    async Task OnSystemPreferenceChanged(bool isDarkMode)
+    private Task OnSystemPreferenceChanged(bool isDarkMode)
     {
         _isDarkMode = isDarkMode;
+        return Task.CompletedTask;
     }
 
 }

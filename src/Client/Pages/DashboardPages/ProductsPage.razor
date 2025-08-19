@@ -17,8 +17,7 @@
                     <MudButton Color="Color.Primary"
                                DropShadow="false"
                                StartIcon="@Icons.Material.Rounded.Add"
-                               Variant="Variant.Filled"
-                               OnClick="@(() => AddProduct())">
+                               Variant="Variant.Filled">
                         <MudText>
                             Add Product
                         </MudText>
@@ -29,33 +28,14 @@
     </MudGrid>
 </BlazePage>
 
-@inject HttpClient HttpClient
-@inject IDialogService DialogService
-@inject ISnackbar Snackbar
-
 @code {
 
-    private BreadcrumbItem[] _breadCrumbs =
+    private readonly BreadcrumbItem[] _breadCrumbs =
     [
-        new BreadcrumbItem("Dashboard", "/"),
-        new BreadcrumbItem("Products", "/products")
+        new("Dashboard", "/"),
+        new("Products", "/products")
     ];
-    
-    async Task AddProduct()
-    {
-    }
 
-    private string _searchString;
-    private IEnumerable<string>? _products;
-
-    private Func<string, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
+    private string? _searchString;
+    private readonly IEnumerable<string> _products = [];
 }

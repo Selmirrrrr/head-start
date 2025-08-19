@@ -14,12 +14,12 @@ public class UserController : ControllerBase
     [AllowAnonymous]
     public IActionResult GetCurrentUser()
     {
-        return Ok(User.Identity.IsAuthenticated ? CreateUserInfo(User) : UserInfo.Anonymous);
+        return Ok(User.Identity?.IsAuthenticated == true ? CreateUserInfo(User) : UserInfo.Anonymous);
     }
 
     private static UserInfo CreateUserInfo(ClaimsPrincipal claimsPrincipal)
     {
-        if (!claimsPrincipal.Identity.IsAuthenticated)
+        if (claimsPrincipal.Identity is not { IsAuthenticated: true })
         {
             return UserInfo.Anonymous;
         }
@@ -42,30 +42,15 @@ public class UserController : ControllerBase
 
         userInfo.EmailClaimType = JwtClaimTypes.Email;
 
-        if (claimsPrincipal.Claims.Any())
-        {
-            var claims = new List<ClaimValue>();
+        if (!claimsPrincipal.Claims.Any()) return userInfo;
+        
+        var claims = claimsPrincipal.FindAll(userInfo.NameClaimType).Select(claim => new ClaimValue(userInfo.NameClaimType, claim.Value)).ToList();
 
-            foreach (var claim in claimsPrincipal.FindAll(userInfo.NameClaimType))
-            {
-                claims.Add(new ClaimValue(userInfo.NameClaimType, claim.Value));
-            }
+        claims.AddRange(claimsPrincipal.FindAll(userInfo.EmailClaimType).Select(claim => new ClaimValue(userInfo.EmailClaimType, claim.Value)));
 
-            foreach (var claim in claimsPrincipal.FindAll(userInfo.EmailClaimType))
-            {
-                claims.Add(new ClaimValue(userInfo.EmailClaimType, claim.Value));
-            }
+        claims.AddRange(claimsPrincipal.Claims.Select(claim => new ClaimValue(claim.Type, claim.Value)));
 
-#pragma warning disable S125 // Sections of code should not be commented out
-            // Uncomment this code if you want to send additional claims to the client.
-            //foreach (var claim in claimsPrincipal.Claims.Except(nameClaims))
-            //{
-            //    claims.Add(new ClaimValue(claim.Type, claim.Value));
-            //}
-#pragma warning restore S125 // Sections of code should not be commented out
-
-            userInfo.Claims = claims;
-        }
+        userInfo.Claims = claims;
 
         return userInfo;
     }

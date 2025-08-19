@@ -12,9 +12,9 @@
 
 @code
 {
-    [Parameter, Required] public string Href { get; set; }
-    [Parameter, Required] public string Content { get; set; }
-    [Parameter, Required] public string Icon { get; set; }
+    [Parameter, Required] public string Href { get; set; } = string.Empty;
+    [Parameter, Required] public string Content { get; set; } = string.Empty;
+    [Parameter, Required] public string Icon { get; set; } = string.Empty;
     [Parameter] public Color IconColor { get; set; } = Color.Inherit;
     [Parameter] public NavLinkMatch Match { get; set; }
 }

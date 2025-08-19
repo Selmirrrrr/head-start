@@ -2,8 +2,6 @@
 @using HeadStart.Client.Generated
 @using HeadStart.Client.Generated.Models
 
-@inject HttpClient HttpClient
-
 <BlazePage Title="Dashboard">
     <MudGrid>
         <MudItem xs="12"
@@ -37,13 +35,13 @@
                 <MudItem xs="12">
                     <MudPaper Elevation="0"
                               Class="pa-4 rounded-lg h-[200px]">
-                              @if (!Claims.Any())
+@if (_claims is null)
 {
     <p><em>Loading...</em></p>
 } else
 {
     <p>
-        @foreach (var claim in Claims)
+        @foreach (var claim in _claims)
         {
             <text>@claim.Type: @claim.Value</text><br />
         }
@@ -85,24 +83,17 @@
 
 @code {
 
-    public List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel> Claims = new List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel>();
+    private List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel>? _claims;
 
     [Inject]
-    public DialogService DialogService { get; set; }
+    public required ApiClient ApiClient { get; set; }
 
     [Inject]
-    public ILogger<Index> Logger { get; set; }
-
-    [Inject]
-    public ApiClient ApiClient { get; set; }
-
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
+    public required NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Claims = (await ApiClient.Api.Users.Me.GetAsync()).Claims;
+        _claims = (await ApiClient.Api.Users.Me.GetAsync())?.Claims;
         await InvokeAsync(StateHasChanged);
     }
-
 }

@@ -3,12 +3,9 @@
 @using HeadStart.Client.Generated.Models
 
 <BlazePage Title="Tenants" Breadcrumbs="@_breadCrumbs">
-    <MudContainer>
         <MudCard>
             <MudCardHeader>
-                <MudCardTitle>
                     Tenants
-                </MudCardTitle>
             </MudCardHeader>
             <MudCardContent>
                 <MudGrid>
@@ -29,7 +26,6 @@
                 </MudButton>
             </MudCardActions>
         </MudCard>
-    </MudContainer>
 </BlazePage>
 
 @inject HttpClient HttpClient
@@ -39,8 +35,8 @@
 @code {
 
     [Inject]
-    public ApiClient ApiClient { get; set; }
-    private BreadcrumbItem[] _breadCrumbs =
+    public required ApiClient ApiClient { get; set; }
+    private readonly BreadcrumbItem[] _breadCrumbs =
     [
         new BreadcrumbItem("Dashboard", "/"),
         new BreadcrumbItem("Tenants", "/tenants")
@@ -48,10 +44,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _tenants = (await ApiClient.Api.Tenants.GetAsync())?.Tenants;
+        _tenants = (await ApiClient.Api.Tenants.GetAsync())?.Tenants ?? _tenants;
         await InvokeAsync(StateHasChanged);
     }
 
-    private IEnumerable<HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel>? _tenants;
+    private IEnumerable<HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel> _tenants = [];
 
 }

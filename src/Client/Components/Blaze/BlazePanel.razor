@@ -31,8 +31,8 @@
 
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Description { get; set; }
-    [Parameter] public int PanelActionsSpacing { get; set; }
-    [Parameter] public RenderFragment PanelActionsTemplate { get; set; }
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public required int PanelActionsSpacing { get; set; }
+    [Parameter] public required RenderFragment PanelActionsTemplate { get; set; }
+    [Parameter] public required RenderFragment ChildContent { get; set; }
 
 }

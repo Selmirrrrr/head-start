@@ -9,14 +9,11 @@
               Class="flex">
         <MudText Class="text-2xl font-medium">@Title</MudText>
         <MudSpacer/>
-        @if (ShowBreadCrumbs)
+        @if (ShowBreadCrumbs && Breadcrumbs is not null)
         {
-            if (Breadcrumbs != null)
-            {
-                <MudBreadcrumbs MaxItems="7"
-                                Items="@Breadcrumbs.ToList()"
-                                Class="my-auto font-normal p-0 pb-3 opacity-50"/>
-            }
+            <MudBreadcrumbs MaxItems="7"
+                            Items="@Breadcrumbs.ToList()"
+                            Class="my-auto font-normal p-0 pb-3 opacity-50"/>
         }
     </MudStack>
     @ChildContent
@@ -25,8 +22,8 @@
 
 @code {
 
-    [Parameter] public string Title { get; set; }
+    [Parameter] public required string Title { get; set; }
     [Parameter] public bool ShowBreadCrumbs { get; set; } = true;
     [Parameter] public BreadcrumbItem[]? Breadcrumbs { get; set; }
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public required RenderFragment ChildContent { get; set; }
 }
