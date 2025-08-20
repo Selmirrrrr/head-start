@@ -42,7 +42,6 @@ public static class WebApplicationExtensions
         app.UseBlazorFrameworkFiles();
         app.UseStaticFiles();
         app.UseCorrelationId();
-        app.UseSerilogIngestion();
         app.UseSerilogRequestLogging();
         app.UseRouting();
         app.UseRateLimiter();
