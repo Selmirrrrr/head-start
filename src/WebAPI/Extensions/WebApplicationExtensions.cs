@@ -93,7 +93,6 @@ internal static class WebApplicationExtensions
     {
         app.UseHttpsRedirection();
         app.UseCorrelationId();
-        app.UseSerilogIngestion();
         app.UseSerilogRequestLogging();
         app.UseRouting();
     }

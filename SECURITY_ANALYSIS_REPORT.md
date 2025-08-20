@@ -152,14 +152,6 @@ public ActionResult Login(string returnUrl)
 | Ardalis.GuardClauses | 5.0.0 | Input validation | ✅ Latest |
 | Microsoft.AspNetCore.* | 9.0.8 | Core framework | ✅ Latest LTS |
 
-### Vulnerable/Problematic Dependencies
-
-| Package | Issue | Risk Level |
-|---------|-------|------------|
-| Newtonsoft.Json | Multiple versions (9.0.1, 13.0.3) | High |
-| Aspire.Hosting.Keycloak | Preview version (9.4.1-preview.1) | Medium |
-| Serilog.AspNetCore.Ingestion | Development version (1.0.0-dev) | Low |
-
 ---
 
 ## SOC2 Compliance Assessment
