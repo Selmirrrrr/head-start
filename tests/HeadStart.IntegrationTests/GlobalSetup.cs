@@ -2,6 +2,7 @@
 
 // You can use attributes at the assembly level to apply to all tests in the assembly
 
+using System.Net.Http;
 using Aspire.Hosting;
 
 [assembly: Retry(3)]
@@ -22,6 +23,24 @@ public static class GlobalSetup
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
+            
+            // Configure HttpClient to accept self-signed certificates in test environment
+            clientBuilder.ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                
+                // Only bypass SSL validation in CI/test environments
+                if (Environment.GetEnvironmentVariable("CI") == "true" || 
+                    Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true")
+                {
+#pragma warning disable S4830 // Server certificate validation is intentionally disabled for CI testing
+                    handler.ServerCertificateCustomValidationCallback = 
+                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+#pragma warning restore S4830
+                }
+                
+                return handler;
+            });
         });
 
         App = await appHost.BuildAsync();
