@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Aspire\ServiceDefaults\HeadStart.Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Client\HeadStart.Client.csproj" />
-    <ProjectReference Include="..\HeadStart.SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
+    <ProjectReference Include="..\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
     <ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
   </ItemGroup>
   <ProjectExtensions>

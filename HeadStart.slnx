@@ -4,28 +4,38 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Folder Name="/Aspire/">
-    <Project Path="src/Aspire/AppHost/HeadStart.Aspire.AppHost.csproj" />
-    <Project Path="src/Aspire/ServiceDefaults/HeadStart.Aspire.ServiceDefaults.csproj" />
-  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="Directory.Packages.props" />
     <File Path="Directory.Build.props" />
   </Folder>
-  <Project Path="src/BFF/HeadStart.BFF.csproj" />
-  <Project Path="src/SharedKernel/HeadStart.SharedKernel.csproj" />
-  <Project Path="src/WebAPI/HeadStart.WebAPI.csproj" />
-  <Project Path="src\Client\HeadStart.Client.csproj" Type="Classic C#">
-    <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
-    <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
-    <Configuration Solution="Release|x64" Project="Release|Any CPU" />
-    <Configuration Solution="Release|x86" Project="Release|Any CPU" />
-  </Project>
-  <Project Path="src\HeadStart.SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" Type="Classic C#">
-    <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
-    <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
-    <Configuration Solution="Release|x64" Project="Release|Any CPU" />
-    <Configuration Solution="Release|x86" Project="Release|Any CPU" />
-  </Project>
+  <Folder Name="/src/">
+    <Project Path="src/BFF/HeadStart.BFF.csproj" />
+    <Project Path="src/SharedKernel/HeadStart.SharedKernel.csproj" />
+    <Project Path="src/WebAPI/HeadStart.WebAPI.csproj" />
+    <Project Path="src\Client\HeadStart.Client.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+  </Folder>
+  <Folder Name="/src/Aspire/">
+    <Project Path="src/Aspire/AppHost/HeadStart.Aspire.AppHost.csproj" />
+    <Project Path="src/Aspire/ServiceDefaults/HeadStart.Aspire.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\HeadStart.IntegrationTests\HeadStart.IntegrationTests.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+  </Folder>
 </Solution>
