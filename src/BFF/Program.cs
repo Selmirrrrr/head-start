@@ -5,6 +5,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.AddServiceDefaults();
 
 // Configure Serilog

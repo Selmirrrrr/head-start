@@ -253,13 +253,13 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 
 # Variable preferences
 # Don't use var for built-in types: int count = 5; instead of var count = 5;
-csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
 
 # Use var when type is apparent: var list = new List<string>(); instead of List<string> list = new List<string>();
 csharp_style_var_when_type_is_apparent = true:suggestion
 
 # Don't use var elsewhere: string name = GetName(); instead of var name = GetName();
-csharp_style_var_elsewhere = false:suggestion
+csharp_style_var_elsewhere = true:suggestion
 
 # Naming conventions
 # Interfaces must start with 'I': IUserService, IRepository<T>

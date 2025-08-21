@@ -3,7 +3,7 @@ using Serilog.Events;
 
 namespace HeadStart.SharedKernel.Enrichers;
 
-public abstract class InstanceEnricher : ILogEventEnricher
+public sealed class InstanceEnricher : ILogEventEnricher
 {
     private readonly Guid _id = Guid.CreateVersion7();
 

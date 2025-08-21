@@ -1,10 +1,4 @@
-using System.Net.Http.Json;
-using System.Text.Json;
-using HeadStart.Client.Generated;
 using HeadStart.IntegrationTests.Data;
-using HeadStart.IntegrationTests.Models;
-using HeadStart.WebAPI.Features.Users;
-using TUnit.Core.Logging;
 
 namespace HeadStart.IntegrationTests.Tests;
 

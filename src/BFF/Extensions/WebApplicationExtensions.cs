@@ -1,6 +1,4 @@
 using CorrelationId;
-using HeadStart.BFF.Utilities;
-using NetEscapades.AspNetCore.SecurityHeaders;
 using Serilog;
 
 namespace HeadStart.BFF.Extensions;

@@ -2,7 +2,6 @@
 
 // You can use attributes at the assembly level to apply to all tests in the assembly
 
-using System.Net.Http;
 using Aspire.Hosting;
 
 [assembly: Retry(3)]

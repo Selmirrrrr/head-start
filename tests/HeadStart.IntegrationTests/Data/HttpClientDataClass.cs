@@ -1,6 +1,4 @@
-using HeadStart.Client.Generated;
 using TUnit.Core.Interfaces;
-using TUnit.Core.Logging;
 
 namespace HeadStart.IntegrationTests.Data
 {
