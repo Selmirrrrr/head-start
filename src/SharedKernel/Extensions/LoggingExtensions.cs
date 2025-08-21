@@ -14,7 +14,7 @@ namespace HeadStart.SharedKernel.Extensions;
 
 public static class LoggingExtensions
 {
-    const string DefaultLoggerCfgSectionName = "Serilog";
+    private const string DefaultLoggerCfgSectionName = "Serilog";
 
     /// <summary>
     /// Adds Serilog with configuration that is read from appsettings.json.

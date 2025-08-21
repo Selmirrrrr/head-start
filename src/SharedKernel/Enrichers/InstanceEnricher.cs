@@ -3,14 +3,9 @@ using Serilog.Events;
 
 namespace HeadStart.SharedKernel.Enrichers;
 
-public sealed class InstanceEnricher : ILogEventEnricher
+public abstract class InstanceEnricher : ILogEventEnricher
 {
-    private readonly Guid _id;
-
-    public InstanceEnricher()
-    {
-        _id = Guid.CreateVersion7();
-    }
+    private readonly Guid _id = Guid.CreateVersion7();
 
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         => logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("InstanceId", _id));
