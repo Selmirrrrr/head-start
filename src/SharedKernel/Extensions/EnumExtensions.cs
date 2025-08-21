@@ -34,7 +34,11 @@ public static class EnumExtensions
 
     private static MemberInfo[] CacheMembers(Type @type)
     {
-        if (Cache.Value.TryGetValue(@type, out var members)) return members;
+        if (Cache.Value.TryGetValue(@type, out var members))
+        {
+            return members;
+        }
+
         members = @type.GetMembers();
         Cache.Value.Add(@type, members);
 

@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using System.Text.Json;
 using HeadStart.Client.Generated;
 using HeadStart.IntegrationTests.Data;
@@ -12,7 +12,7 @@ namespace HeadStart.IntegrationTests.Tests;
 public class ApiTests(HttpClientDataClass httpClientData)
 {
     [Test]
-    public async Task GetWeatherForecastReturnsOkStatusCode()
+    public async Task GetWeatherForecastReturnsOkStatusCodeAsync()
     {
         // Arrange
         var httpClient = httpClientData.HttpClient;

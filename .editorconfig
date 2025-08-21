@@ -42,7 +42,488 @@ indent_size = 2
 
 # CSharp
 [*.{cs,csx}]
-max_line_length = off
+max_line_length = 120
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = false
+
+# Suppress XML documentation warnings
 dotnet_diagnostic.CS1591.severity = none
+
+# Code style rules
+# Prefer: name instead of this.name
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# Prefer: int x = 5; instead of Int32 x = 5;
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+# Prefer: int.MaxValue instead of Int32.MaxValue
+dotnet_style_predefined_type_for_member_access = true:suggestion
+
+# Require accessibility modifiers: public void Method() instead of void Method()
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+# Prefer: private readonly int _value; instead of private int _value;
+dotnet_style_readonly_field = true:suggestion
+
+# Expression-level preferences
+# Prefer: new Person { Name = "John" } instead of var p = new Person(); p.Name = "John";
+dotnet_style_object_initializer = true:suggestion
+
+# Prefer: var list = new List<int> { 1, 2, 3 } instead of var list = new List<int>(); list.Add(1);
+dotnet_style_collection_initializer = true:suggestion
+
+# Prefer: (name: "John", age: 30) instead of ("John", 30)
+dotnet_style_explicit_tuple_names = true:suggestion
+
+# Prefer: obj?.Method() instead of obj != null ? obj.Method() : null
+dotnet_style_null_propagation = true:suggestion
+
+# Prefer: name ?? "default" instead of name != null ? name : "default"
+dotnet_style_coalesce_expression = true:suggestion
+
+# Prefer: obj is null instead of ReferenceEquals(obj, null)
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
+
+# Prefer: var tuple = (name, age) instead of var tuple = (name: name, age: age)
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
+
+# Prefer: new { name, age } instead of new { name = name, age = age }
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
+
+# Prefer: public int Property { get; set; } instead of private int _property; public int Property { get { return _property; } set { _property = value; } }
+dotnet_style_prefer_auto_properties = true:suggestion
+
+# Prefer: var result = condition ? value1 : value2; instead of if (condition) result = value1; else result = value2;
+dotnet_style_prefer_conditional_expression_over_assignment = true:silent
+dotnet_style_prefer_conditional_expression_over_return = true:silent
+
+# C# formatting rules
+# Place opening brace on new line: if (condition)\n{
+csharp_new_line_before_open_brace = all
+
+# Place else on new line: }\nelse {
+csharp_new_line_before_else = true
+
+# Place catch on new line: }\ncatch {
+csharp_new_line_before_catch = true
+
+# Place finally on new line: }\nfinally {
+csharp_new_line_before_finally = true
+
+# Place object initializer members on new lines: new Person\n{\n    Name = "John"\n}
+csharp_new_line_before_members_in_object_initializers = true
+
+# Place anonymous type members on new lines: new\n{\n    Name = "John"\n}
+csharp_new_line_before_members_in_anonymous_types = true
+
+# Place LINQ clauses on new lines: from x in list\nwhere x > 5\nselect x
+csharp_new_line_between_query_expression_clauses = true
+
+# Indentation preferences
+# Indent case contents: case 1:\n    DoSomething();
+csharp_indent_case_contents = true
+
+# Indent switch labels: switch (x)\n{\n    case 1:
+csharp_indent_switch_labels = true
+
+# Indent block contents: {\n    statement;\n}
+csharp_indent_block_contents = true
+
+# Don't indent braces: {\nstatement;\n}
+csharp_indent_braces = false
+
+# Space preferences
+# No space after cast: (int)value instead of (int) value
+csharp_space_after_cast = false
+
+# Space after keywords: if (condition) instead of if(condition)
+csharp_space_after_keywords_in_control_flow_statements = true
+
+# No space in method call params: Method(a, b) instead of Method( a, b )
+csharp_space_between_method_call_parameter_list_parentheses = false
+
+# No space in method declaration params: void Method(int a) instead of void Method( int a )
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+
+# No space in empty params: Method() instead of Method( )
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+
+# No space before method parentheses: Method() instead of Method ()
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+
+# Space after comma: Method(a, b) instead of Method(a,b)
+csharp_space_after_comma = true
+
+# No space after dot: obj.Method() instead of obj. Method()
+csharp_space_after_dot = false
+
+# Space after semicolon in for: for (int i = 0; i < 10; i++) instead of for (int i = 0;i < 10;i++)
+csharp_space_after_semicolon_in_for_statement = true
+
+# Space around operators: a + b instead of a+b
+csharp_space_around_binary_operators = before_and_after
+
+# No space around declarations: int x = 5; instead of int x = 5 ;
+csharp_space_around_declaration_statements = false
+
+# No space before brackets: array[0] instead of array [0]
+csharp_space_before_open_square_brackets = false
+
+# No space in empty brackets: int[] instead of int[ ]
+csharp_space_between_empty_square_brackets = false
+
+# No space in brackets: array[0] instead of array[ 0 ]
+csharp_space_between_square_brackets = false
+
+# Wrapping preferences
+# Allow single line statements: if (condition) DoSomething();
+csharp_preserve_single_line_statements = true
+
+# Allow single line blocks: { DoSomething(); }
+csharp_preserve_single_line_blocks = true
+
+# C# Code style rules
+# Always use braces: if (condition) { DoSomething(); } instead of if (condition) DoSomething();
+csharp_prefer_braces = true:warning
+
+# Prefer deconstruction: var (name, age) = GetPerson(); instead of var person = GetPerson(); var name = person.Name;
+csharp_style_deconstructed_variable_declaration = true:suggestion
+
+# Prefer using declarations: using var file = new FileStream(...); instead of using (var file = new FileStream(...)) { }
+csharp_prefer_simple_using_statement = true:suggestion
+
+# Prefer local functions: int LocalFunction() { } instead of Func<int> func = () => { };
+csharp_style_pattern_local_over_anonymous_function = true:suggestion
+
+# Prefer inline variable declarations: if (int.TryParse(input, out int result)) instead of int result; if (int.TryParse(input, out result))
+csharp_style_inlined_variable_declaration = true:suggestion
+
+# Expression-bodied members
+# Don't use expression body for methods: public void Method() { DoSomething(); }
+csharp_style_expression_bodied_methods = false:silent
+
+# Don't use expression body for constructors: public Class() { _field = value; }
+csharp_style_expression_bodied_constructors = false:silent
+
+# Don't use expression body for operators: public static Class operator +(Class a, Class b) { return new Class(); }
+csharp_style_expression_bodied_operators = false:silent
+
+# Use expression body for properties: public int Property => _field;
+csharp_style_expression_bodied_properties = true:silent
+
+# Use expression body for indexers: public string this[int index] => _items[index];
+csharp_style_expression_bodied_indexers = true:silent
+
+# Use expression body for accessors: get => _field; set => _field = value;
+csharp_style_expression_bodied_accessors = true:silent
+
+# Use expression body for lambdas: x => x * 2
+csharp_style_expression_bodied_lambdas = true:silent
+
+# Don't use expression body for local functions: int LocalFunc() { return 42; }
+csharp_style_expression_bodied_local_functions = false:silent
+
+# Pattern matching preferences
+# Prefer pattern matching: if (obj is string s) instead of if (obj is string) { var s = (string)obj; }
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+
+# Prefer pattern matching: if (obj is string s) instead of var s = obj as string; if (s != null)
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+# Prefer switch expressions: return value switch { 1 => "one", 2 => "two", _ => "other" };
+csharp_style_prefer_switch_expression = true:suggestion
+
+# Prefer pattern matching when possible
+csharp_style_prefer_pattern_matching = true:silent
+
+# Prefer not patterns: if (obj is not null) instead of if (!(obj is null))
+csharp_style_prefer_not_pattern = true:suggestion
+
+# Null-checking preferences
+# Prefer throw expressions: var result = value ?? throw new ArgumentNullException();
+csharp_style_throw_expression = true:suggestion
+
+# Prefer conditional delegate call: action?.Invoke() instead of if (action != null) action();
+csharp_style_conditional_delegate_call = true:suggestion
+
+# Modifier preferences - specify order: public static readonly instead of static public readonly
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:suggestion
+
+# Variable preferences
+# Don't use var for built-in types: int count = 5; instead of var count = 5;
+csharp_style_var_for_built_in_types = false:suggestion
+
+# Use var when type is apparent: var list = new List<string>(); instead of List<string> list = new List<string>();
+csharp_style_var_when_type_is_apparent = true:suggestion
+
+# Don't use var elsewhere: string name = GetName(); instead of var name = GetName();
+csharp_style_var_elsewhere = false:suggestion
+
+# Naming conventions
+# Interfaces must start with 'I': IUserService, IRepository<T>
+dotnet_naming_rule.interfaces_should_be_prefixed_with_i.severity = warning
+dotnet_naming_rule.interfaces_should_be_prefixed_with_i.symbols = interface
+dotnet_naming_rule.interfaces_should_be_prefixed_with_i.style = begins_with_i
+
+# Types should be PascalCase: UserService, ProductRepository, OrderStatus
+dotnet_naming_rule.types_should_be_pascal_case.severity = warning
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+# Public members should be PascalCase: GetUser(), UserName, UserCreated
+dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = warning
+dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
+dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
+
+# Private fields should start with underscore: _userName, _isActive, _userRepository
+dotnet_naming_rule.private_fields_should_be_prefixed_with_underscore.severity = warning
+dotnet_naming_rule.private_fields_should_be_prefixed_with_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_prefixed_with_underscore.style = underscore_camel_case
+
+# Constants should be PascalCase: MaxRetryCount, DefaultTimeout, ApiVersion
+dotnet_naming_rule.constants_should_be_pascal_case.severity = warning
+dotnet_naming_rule.constants_should_be_pascal_case.symbols = constants
+dotnet_naming_rule.constants_should_be_pascal_case.style = pascal_case
+
+# Symbol specifications
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.interface.required_modifiers =
+
+dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.types.required_modifiers =
+
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.non_field_members.required_modifiers =
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_fields.required_modifiers =
+
+dotnet_naming_symbols.constants.applicable_kinds = field, local
+dotnet_naming_symbols.constants.applicable_accessibilities = *
+dotnet_naming_symbols.constants.required_modifiers = const
+
+# Naming styles
+dotnet_naming_style.pascal_case.required_prefix =
+dotnet_naming_style.pascal_case.required_suffix =
+dotnet_naming_style.pascal_case.word_separator =
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.required_suffix =
+dotnet_naming_style.begins_with_i.word_separator =
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+dotnet_naming_style.underscore_camel_case.required_suffix =
+dotnet_naming_style.underscore_camel_case.word_separator =
+dotnet_naming_style.underscore_camel_case.capitalization = camel_case
+
+# Code analysis rules for better quality
+# Disabled - we don't use localization: string message = "Hello";
+dotnet_diagnostic.CA1303.severity = none
+
+# Avoid: catch (Exception ex) - be more specific: catch (ArgumentNullException ex)
+dotnet_diagnostic.CA1031.severity = suggestion
+
+# Disabled - we use Guard.Against.Null(): Guard.Against.Null(parameter);
+dotnet_diagnostic.CA1062.severity = none
+
+# Prefer: IEnumerable<T> GetItems() instead of List<T> GetItems()
+dotnet_diagnostic.CA1002.severity = suggestion
+
+# Use properties for simple accessors: public string Name { get; set; } instead of GetName()/SetName()
+dotnet_diagnostic.CA1024.severity = suggestion
+
+# Avoid using keywords as identifiers: public string UserName instead of public string @class
+dotnet_diagnostic.CA1716.severity = suggestion
+
+# Avoid type names in identifiers: public string UserName instead of public string UserString
+dotnet_diagnostic.CA1720.severity = suggestion
+
+# Disabled for ASP.NET Core - ConfigureAwait not needed
+dotnet_diagnostic.CA2007.severity = none
+
+# Don't initialize unnecessarily: int count; instead of int count = 0;
+dotnet_diagnostic.CA1805.severity = warning
+
+# Make methods static when possible: public static int Calculate() instead of public int Calculate()
+dotnet_diagnostic.CA1822.severity = suggestion
+
+# Use LoggerMessage for performance: [LoggerMessage(0, LogLevel.Information, "User {userId} logged in")]
+dotnet_diagnostic.CA1848.severity = suggestion
+
+# Don't throw system exceptions: throw new InvalidOperationException() instead of throw new Exception()
+dotnet_diagnostic.CA2201.severity = warning
+
+# Razor files
+[*.razor]
+indent_size = 4
+max_line_length = 120
+
+# HTML/Razor formatting
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Razor-specific rules
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# HTML/XML formatting for Razor
+ij_html_keep_blank_lines_in_code = 1
+ij_html_keep_blank_lines_in_text = 1
+ij_html_keep_indents_on_empty_lines = false
+ij_html_keep_line_breaks = true
+ij_html_keep_line_breaks_in_text = true
+ij_html_keep_whitespaces = false
+ij_html_keep_whitespaces_inside = false
+ij_html_space_after_tag_name = false
+ij_html_space_around_equality_in_attribute = false
+ij_html_space_inside_empty_tag = true
+
+# CSS in Razor
+[*.{css,scss,sass}]
+indent_size = 2
+max_line_length = 120
+
+# JavaScript/TypeScript
+[*.{js,ts,jsx,tsx}]
+indent_size = 2
+max_line_length = 120
+quote_type = single
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# Additional C# analyzer rules for maintainability and performance
+[*.{cs,csx}]
+# Performance rules
+# Prefer: IReadOnlyList<T> Items { get; } instead of T[] Items { get; }
+dotnet_diagnostic.CA1819.severity = suggestion
+
+# Use: Array.Empty<T>() instead of new T[0] or new T[] { }
+dotnet_diagnostic.CA1825.severity = warning
+
+# Use: list.Any() instead of list.Count() > 0
+dotnet_diagnostic.CA1826.severity = warning
+dotnet_diagnostic.CA1827.severity = warning
+
+# Use: await list.AnyAsync() instead of await list.CountAsync() > 0
+dotnet_diagnostic.CA1828.severity = warning
+
+# Use: array.Length instead of array.Count() when possible
+dotnet_diagnostic.CA1829.severity = warning
+# Use: sb.Append('c') instead of sb.Append("c")
+dotnet_diagnostic.CA1830.severity = warning
+
+# Use: data.AsSpan()[1..5] instead of data[1..5] for performance
+dotnet_diagnostic.CA1831.severity = warning
+dotnet_diagnostic.CA1832.severity = warning
+dotnet_diagnostic.CA1833.severity = warning
+
+# Use: sb.Append('x') instead of sb.Append("x")
+dotnet_diagnostic.CA1834.severity = warning
+
+# Use: await stream.ReadAsync(memory) instead of await stream.ReadAsync(buffer, 0, buffer.Length)
+dotnet_diagnostic.CA1835.severity = warning
+
+# Use: list.IsEmpty instead of list.Count == 0
+dotnet_diagnostic.CA1836.severity = warning
+
+# Use: Environment.ProcessId instead of Process.GetCurrentProcess().Id
+dotnet_diagnostic.CA1837.severity = warning
+
+# Avoid StringBuilder in P/Invoke signatures
+dotnet_diagnostic.CA1838.severity = warning
+
+# Design rules
+# Avoid: public static void Method<T>() - use instance methods instead
+dotnet_diagnostic.CA1000.severity = suggestion
+
+# If class has IDisposable field, implement IDisposable: public class MyClass : IDisposable
+dotnet_diagnostic.CA1001.severity = warning
+
+# Implement generic interfaces: public class MyCollection : ICollection<T>
+dotnet_diagnostic.CA1010.severity = suggestion
+
+# Add [assembly: AssemblyVersion("1.0.0.0")] to AssemblyInfo.cs
+dotnet_diagnostic.CA1016.severity = suggestion
+
+# Use [AttributeUsage(AttributeTargets.Class)] on custom attributes
+dotnet_diagnostic.CA1018.severity = warning
+
+# Override Equals, GetHashCode when implementing IComparable
+dotnet_diagnostic.CA1036.severity = suggestion
+
+# Use [Obsolete("Use NewMethod instead")] instead of [Obsolete]
+dotnet_diagnostic.CA1041.severity = warning
+
+# Use int or string for indexers: public string this[int index] or this[string key]
+dotnet_diagnostic.CA1043.severity = suggestion
+
+# Provide both get and set: public string Name { get; set; } instead of set-only
+dotnet_diagnostic.CA1044.severity = suggestion
+
+# Declare in namespace: namespace MyProject { public class MyClass { } }
+dotnet_diagnostic.CA1050.severity = warning
+
+# Use properties instead of public fields: public string Name { get; set; } instead of public string Name;
+dotnet_diagnostic.CA1051.severity = warning
+
+# Make static classes static: public static class Utilities instead of public class Utilities
+dotnet_diagnostic.CA1052.severity = warning
+dotnet_diagnostic.CA1054.severity = suggestion  # URI-like parameters should not be strings
+dotnet_diagnostic.CA1055.severity = suggestion  # URI-like return values should not be strings
+dotnet_diagnostic.CA1056.severity = suggestion  # URI-like properties should not be strings
+dotnet_diagnostic.CA1058.severity = suggestion  # Types should not extend certain base types
+dotnet_diagnostic.CA1060.severity = suggestion  # Move pinvokes to native methods class
+dotnet_diagnostic.CA1061.severity = warning     # Do not hide base class methods
+dotnet_diagnostic.CA1063.severity = warning     # Implement IDisposable Correctly
+dotnet_diagnostic.CA1064.severity = warning     # Exceptions should be public
+dotnet_diagnostic.CA1065.severity = warning     # Do not raise exceptions in unexpected locations
+dotnet_diagnostic.CA1066.severity = warning     # Implement IEquatable when overriding Object.Equals
+dotnet_diagnostic.CA1067.severity = warning     # Override Object.Equals(object) when implementing IEquatable<T>
+dotnet_diagnostic.CA1068.severity = warning     # CancellationToken parameters must come last
+dotnet_diagnostic.CA1069.severity = warning     # Enums values should not be duplicated
+
+# Reliability rules
+# Dispose objects: using var stream = new FileStream(...) or stream.Dispose()
+dotnet_diagnostic.CA2000.severity = suggestion
+
+# Don't lock on strings: lock(_lockObject) instead of lock("string")
+dotnet_diagnostic.CA2002.severity = warning
+
+# Pass TaskScheduler: Task.Factory.StartNew(action, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default)
+dotnet_diagnostic.CA2008.severity = warning
+
+# Don't call ToImmutableList() on ImmutableList: just use the existing collection
+dotnet_diagnostic.CA2009.severity = warning
+
+# Avoid infinite recursion: check base case in recursive methods
+dotnet_diagnostic.CA2011.severity = warning
+
+# Use ValueTask correctly: don't await the same ValueTask multiple times
+dotnet_diagnostic.CA2012.severity = warning
+
+# Don't use ReferenceEquals with value types: use == instead
+dotnet_diagnostic.CA2013.severity = warning
+
+# Don't use stackalloc in loops: move outside loop or use ArrayPool
+dotnet_diagnostic.CA2014.severity = warning
+
+# Don't define finalizers for MemoryManager<T> derived types
+dotnet_diagnostic.CA2015.severity = warning
+
+# Forward CancellationToken: await SomeMethodAsync(cancellationToken)
+dotnet_diagnostic.CA2016.severity = warning

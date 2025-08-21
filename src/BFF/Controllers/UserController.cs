@@ -42,7 +42,10 @@ public class UserController : ControllerBase
 
         userInfo.EmailClaimType = JwtClaimTypes.Email;
 
-        if (!claimsPrincipal.Claims.Any()) return userInfo;
+        if (!claimsPrincipal.Claims.Any())
+        {
+            return userInfo;
+        }
 
         var claims = claimsPrincipal.FindAll(userInfo.NameClaimType).Select(claim => new ClaimValue(userInfo.NameClaimType, claim.Value)).ToList();
 

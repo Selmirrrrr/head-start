@@ -55,7 +55,7 @@ public static class ServiceCollectionExtensions
         services.AddSignalR();
         services.AddRazorPages();
         services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
-        
+
         services.AddResponseCompression(opts =>
             opts.MimeTypes = new List<string>(ResponseCompressionDefaults.MimeTypes)
             {
@@ -132,7 +132,7 @@ public static class ServiceCollectionExtensions
                 options.ClientSecret = configuration["OpenIDConnectSettings:ClientSecret"];
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.ResponseType = OpenIdConnectResponseType.Code;
-                
+
                 // Request refresh token
                 options.Scope.Add("offline_access");
 
@@ -151,7 +151,7 @@ public static class ServiceCollectionExtensions
                     options.RequireHttpsMetadata = false;
                 }
             });
-        
+
         // Add Duende automatic token management
         services.AddOpenIdConnectAccessTokenManagement();
     }
@@ -180,7 +180,7 @@ public static class ServiceCollectionExtensions
                 // Use Duende's IUserTokenManagementService for automatic token refresh
                 var tokenManagementService = context.HttpContext.RequestServices.GetRequiredService<IUserTokenManagementService>();
                 var tokenResult = await tokenManagementService.GetAccessTokenAsync(context.HttpContext.User);
-                
+
                 if (tokenResult.IsError)
                 {
                     // Token retrieval failed, user needs to authenticate
