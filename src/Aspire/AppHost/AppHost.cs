@@ -21,6 +21,8 @@ builder.AddProject<Projects.HeadStart_BFF>("bff")
     .WithExternalHttpEndpoints()
     .WithHttpHealthCheck("/health")
     .WithReference(keycloak)
-    .WithReference(webapi);
+    .WaitFor(keycloak)
+    .WithReference(webapi)
+    .WaitFor(webapi);
 
 await builder.Build().RunAsync();
