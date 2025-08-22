@@ -13,8 +13,8 @@ public class ApiTests(HttpClientDataClass httpClientData)
         // Act
         var response = await httpClient.GetStringAsync("api/users/me");
 
-        File.WriteAllText("response.json", response);
-        File.WriteAllText("url.txt", httpClient.BaseAddress.ToString());
+        await File.WriteAllTextAsync("response.json", response);
+        await File.WriteAllTextAsync("url.txt", httpClient.BaseAddress.ToString());
 
         Console.WriteLine(
             $"Response: {response}");
