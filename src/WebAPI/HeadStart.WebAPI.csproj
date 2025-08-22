@@ -10,7 +10,7 @@
     <PackageReference Include="FastEndpoints.Swagger" Version="7.0.1" />
     <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="7.0.0" />
     <PackageReference Include="OpenIddict.Validation.SystemNetHttp" Version="7.0.0" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.6.9" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.7.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aspire\ServiceDefaults\HeadStart.Aspire.ServiceDefaults.csproj" />
