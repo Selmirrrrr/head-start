@@ -125,32 +125,33 @@ public static class ServiceCollectionExtensions
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
             .AddCookie()
-            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = configuration["OpenIDConnectSettings:Authority"] ?? "http://localhost:8080/realms/HeadStart";
-                options.ClientId = configuration["OpenIDConnectSettings:ClientId"] ?? "HeadStartWeb";
-                options.ClientSecret = configuration["OpenIDConnectSettings:ClientSecret"];
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.ResponseType = OpenIdConnectResponseType.Code;
-
-                // Request refresh token
-                options.Scope.Add("offline_access");
-
-                options.SaveTokens = true;
-                options.GetClaimsFromUserInfoEndpoint = true;
-                options.TokenValidationParameters = new TokenValidationParameters
+            .AddKeycloakOpenIdConnect(
+                serviceName: "keycloak",
+                realm: "HeadStart",
+                options =>
                 {
-                    NameClaimType = "name",
-                    RoleClaimType = "role"
-                };
+                    options.ClientId = "HeadStartWeb";
+                    options.ClientSecret = configuration["OpenIDConnectSettings:ClientSecret"];
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.ResponseType = OpenIdConnectResponseType.Code;
+                    // Request refresh token
+                    options.Scope.Add("offline_access");
 
-                // For development only - disable HTTPS metadata validation
-                // In production, use explicit Authority configuration instead
-                if (isDevelopment)
-                {
-                    options.RequireHttpsMetadata = false;
-                }
-            });
+                    options.SaveTokens = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
+
+                    // For development only - disable HTTPS metadata validation
+                    // In production, use explicit Authority configuration instead
+                    if (isDevelopment)
+                    {
+                        options.RequireHttpsMetadata = false;
+                    }
+                });
 
         // Add Duende automatic token management
         services.AddOpenIdConnectAccessTokenManagement();

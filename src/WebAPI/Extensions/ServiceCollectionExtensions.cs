@@ -1,12 +1,16 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mime;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using OpenIddict.Validation.AspNetCore;
 
 namespace HeadStart.WebAPI.Extensions;
@@ -87,47 +91,24 @@ internal static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Adds OIDC configuration.
+    /// Adds Auth.
     /// </summary>
     /// <param name="services">The service collection.</param>
+    /// <param name="isDevelopment">Defines if we're in dev mode</param>
     /// <returns>An instance of <see cref="IServiceCollection"/>.</returns>
-    internal static void AddOidcServices(this IServiceCollection services)
+    internal static void AddAuth(this IServiceCollection services, bool isDevelopment)
     {
         Guard.Against.Null(services);
 
-        using var serviceProvider = services.BuildServiceProvider();
-        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-
-        Guard.Against.Null(configuration);
-
-        var authority = configuration["OidcConfiguration:Authority"];
-        Guard.Against.NullOrWhiteSpace(authority);
-
-        var clientSecret = configuration["OidcConfiguration:ClientSecret"];
-        Guard.Against.NullOrWhiteSpace(clientSecret);
-
-        // Register the OpenIddict validation components.
-        services.AddOpenIddict()
-            .AddValidation(options =>
+        services.AddAuthentication()
+            .AddKeycloakJwtBearer("keycloak", realm: "HeadStart", options =>
             {
-                // Note: the validation handler uses OpenID Connect discovery
-                // to retrieve the address of the introspection endpoint.
-                options.SetIssuer(authority);
-
-                // Configure audience validation
-                options.AddAudiences("headstart.api");
-
-                // Configure the introspection endpoint.
-                options.UseIntrospection().SetClientId("headstart.api").SetClientSecret(clientSecret);
-
-                // Register the System.Net.Http integration.
-                options.UseSystemNetHttp();
-
-                // Register the ASP.NET Core host.
-                options.UseAspNetCore();
+                if (isDevelopment)
+                {
+                    options.RequireHttpsMetadata = false;
+                }
+                options.Audience = "headstart.api";
             });
-
-        services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
-        services.AddAuthorization();
+        services.AddAuthorizationBuilder();
     }
 }

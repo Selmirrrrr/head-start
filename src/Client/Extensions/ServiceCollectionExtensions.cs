@@ -35,10 +35,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
         services.AddTransient<AuthorizedHandler>();
 
-        services.AddBlazoredLocalStorage(config =>
-        {
-            config.JsonSerializerOptions = JsonSerializerConfigurations.LocalStorageSettings;
-        });
+        services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions = JsonSerializerConfigurations.LocalStorageSettings);
 
         services.AddHttpClient(Constants.Http.UnauthorizedClientId, client =>
         {

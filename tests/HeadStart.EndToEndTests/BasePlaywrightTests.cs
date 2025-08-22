@@ -1,5 +1,6 @@
 ﻿using Aspire.Hosting;
 using Microsoft.Playwright;
+using Microsoft.Playwright.Xunit;
 
 namespace HeadStart.EndToEndTests;
 
@@ -7,9 +8,9 @@ namespace HeadStart.EndToEndTests;
 /// Base class for Playwright tests, providing common functionality and setup for Playwright testing with ASP.NET Core.
 /// </summary>
 /// <param name="aspireManager"></param>
-public abstract class BasePlaywrightTests(AspireManager aspireManager) : IClassFixture<AspireManager>, IAsyncDisposable
+public abstract class BasePlaywrightTests(AspireManager aspireManager) : PageTest, IClassFixture<AspireManager>, IAsyncDisposable
 {
-    protected AspireManager AspireManager { get; } = aspireManager ?? throw new ArgumentNullException(nameof(aspireManager));
+    private AspireManager AspireManager { get; } = aspireManager ?? throw new ArgumentNullException(nameof(aspireManager));
     private PlaywrightManager PlaywrightManager => AspireManager.PlaywrightManager;
     private string? DashboardUrl { get; set; }
 	public string DashboardLoginToken { get; private set; } = "";

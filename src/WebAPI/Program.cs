@@ -17,7 +17,7 @@ builder.Host.UseSerilog((builderContext, loggerConfig) =>
 builder.Services.AddApiFramework();
 builder.Services.AddDatabaseServices(builder.Configuration);
 builder.Services.AddSecurityServices();
-builder.Services.AddOidcServices();
+builder.Services.AddAuth(builder.Environment.IsDevelopment());
 
 builder.Services.AddSharedKernelServices();
 
