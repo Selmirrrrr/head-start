@@ -13,35 +13,15 @@
     <Project Path="src/BFF/HeadStart.BFF.csproj" />
     <Project Path="src/SharedKernel/HeadStart.SharedKernel.csproj" />
     <Project Path="src/WebAPI/HeadStart.WebAPI.csproj" />
-    <Project Path="src\Client\HeadStart.Client.csproj" Type="Classic C#">
-      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
-      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
-      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
-      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
-    </Project>
-    <Project Path="src\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" Type="Classic C#">
-      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
-      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
-      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
-      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
-    </Project>
+    <Project Path="src/Client/HeadStart.Client.csproj" />
+    <Project Path="src/SharedKernel.Models/HeadStart.SharedKernel.Models.csproj" />
   </Folder>
   <Folder Name="/src/Aspire/">
     <Project Path="src/Aspire/AppHost/HeadStart.Aspire.AppHost.csproj" />
     <Project Path="src/Aspire/ServiceDefaults/HeadStart.Aspire.ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests\HeadStart.EndToEndTests\HeadStart.EndToEndTests.csproj" Type="Classic C#">
-      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
-      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
-      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
-      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
-    </Project>
-    <Project Path="tests\HeadStart.IntegrationTests\HeadStart.IntegrationTests.csproj" Type="Classic C#">
-      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
-      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
-      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
-      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
-    </Project>
+    <Project Path="tests/HeadStart.EndToEndTests/HeadStart.EndToEndTests.csproj"  />
+    <Project Path="tests/HeadStart.IntegrationTests/HeadStart.IntegrationTests.csproj" />
   </Folder>
 </Solution>
