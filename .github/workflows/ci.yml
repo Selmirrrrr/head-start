@@ -34,7 +34,7 @@ jobs:
         run: dotnet restore
 
       - name: Generate dev certificate
-        run: dotnet dev-certs https --verbose
+        run: dotnet dev-certs https --verbose --trust 
 
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
