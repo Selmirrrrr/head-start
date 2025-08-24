@@ -11,17 +11,16 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/BFF/HeadStart.BFF.csproj" />
-    <Project Path="src/SharedKernel/HeadStart.SharedKernel.csproj" />
-    <Project Path="src/WebAPI/HeadStart.WebAPI.csproj" />
     <Project Path="src/Client/HeadStart.Client.csproj" />
     <Project Path="src/SharedKernel.Models/HeadStart.SharedKernel.Models.csproj" />
+    <Project Path="src/SharedKernel/HeadStart.SharedKernel.csproj" />
+    <Project Path="src/WebAPI/HeadStart.WebAPI.csproj" />
   </Folder>
   <Folder Name="/src/Aspire/">
     <Project Path="src/Aspire/AppHost/HeadStart.Aspire.AppHost.csproj" />
     <Project Path="src/Aspire/ServiceDefaults/HeadStart.Aspire.ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/HeadStart.EndToEndTests/HeadStart.EndToEndTests.csproj"  />
     <Project Path="tests/HeadStart.IntegrationTests/HeadStart.IntegrationTests.csproj" />
   </Folder>
 </Solution>

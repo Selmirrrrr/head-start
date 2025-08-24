@@ -1,12 +1,12 @@
 ﻿using Microsoft.Playwright;
-using System.Diagnostics;
+using TUnit.Core.Interfaces;
 
-namespace HeadStart.EndToEndTests.Infrastructure;
+namespace HeadStart.IntegrationTests.Infrastructure;
 
 /// <summary>
 /// Configure Playwright for interacting with the browser in tests.
 /// </summary>
-public class PlaywrightManager : IAsyncLifetime
+public class PlaywrightManager :  IAsyncInitializer, IAsyncDisposable
 {
 	private static bool IsHeadless => false;
 
@@ -28,10 +28,9 @@ public class PlaywrightManager : IAsyncLifetime
 		Browser = await _playwright.Chromium.LaunchAsync(options).ConfigureAwait(false);
 	}
 
-	public async Task DisposeAsync()
-	{
-		await Browser.CloseAsync();
-
-		_playwright?.Dispose();
-	}
+    public async ValueTask DisposeAsync()
+    {
+        await Browser.CloseAsync();
+        _playwright?.Dispose();
+    }
 }

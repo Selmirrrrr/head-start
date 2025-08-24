@@ -15,10 +15,19 @@ public static class GlobalSetup
     public static ResourceNotificationService? NotificationService { get; private set; }
 
     [Before(TestSession)]
-    public static async Task SetUpAsync()
+    [Timeout(300_000)] // 5 minutes in milliseconds
+    public static async Task SetUpAsync(CancellationToken cancellationToken)
     {
         // Arrange
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.HeadStart_Aspire_AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.HeadStart_Aspire_AppHost>(
+            [
+                "DcpPublisher:RandomizePorts=false"
+            ],
+            configureBuilder: static (options, _) =>
+            {
+                options.DisableDashboard = true; // Disable dashboard to speed up startup
+            }, cancellationToken);
+
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -42,9 +51,9 @@ public static class GlobalSetup
             });
         });
 
-        App = await appHost.BuildAsync();
+        App = await appHost.BuildAsync(cancellationToken);
         NotificationService = App.Services.GetRequiredService<ResourceNotificationService>();
-        await App.StartAsync();
+        await App.StartAsync(cancellationToken);
     }
 
     [After(TestSession)]

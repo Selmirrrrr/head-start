@@ -1,15 +1,16 @@
 ﻿using Aspire.Hosting;
 
-namespace HeadStart.EndToEndTests;
+namespace HeadStart.IntegrationTests;
 
 public class EnvVarTests
 {
-	[Fact]
-	public async Task WebResourceEnvVarsResolveToApiService()
+	[Test]
+	public async Task WebResourceEnvVarsResolveToApiServiceAsync()
 	{
 		// Arrange
 		var appHost = await DistributedApplicationTestingBuilder
 				.CreateAsync<Projects.HeadStart_Aspire_AppHost>();
+
 		var frontend = (IResourceWithEnvironment)appHost.Resources
 				.Single(static r => r.Name == "bff");
 
@@ -17,6 +18,6 @@ public class EnvVarTests
 		var envVars = await frontend.GetEnvironmentVariableValuesAsync(DistributedApplicationOperation.Publish);
 
 		// Assert
-        Assert.Contains(new KeyValuePair<string, string>("services__webapi__https__0", "{webapi.bindings.https.url}"), envVars);
+        await Assert.That(envVars).Contains(new KeyValuePair<string, string>("services__webapi__https__0", "{webapi.bindings.https.url}"));
     }
 }

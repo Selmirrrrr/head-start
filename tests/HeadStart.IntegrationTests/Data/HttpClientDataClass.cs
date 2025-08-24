@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using TUnit.Core.Interfaces;
 
 namespace HeadStart.IntegrationTests.Data
@@ -7,7 +8,9 @@ namespace HeadStart.IntegrationTests.Data
         public HttpClient HttpClient { get; private set; } = new();
         public async Task InitializeAsync()
         {
-            HttpClient = (GlobalSetup.App ?? throw new NullReferenceException()).CreateHttpClient("bff");
+            Guard.Against.Null(GlobalSetup.App);
+
+            HttpClient = (GlobalSetup.App).CreateHttpClient("bff");
             if (GlobalSetup.NotificationService != null)
             {
                 await GlobalSetup.NotificationService.WaitForResourceAsync("bff", KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));

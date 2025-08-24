@@ -14,10 +14,10 @@ public class ApiTests(HttpClientDataClass httpClientData)
         var response = await httpClient.GetStringAsync("api/users/me");
 
         await File.WriteAllTextAsync("response.json", response);
-        await File.WriteAllTextAsync("url.txt", httpClient.BaseAddress.ToString());
+        await File.WriteAllTextAsync("url.txt", httpClient.BaseAddress?.ToString());
 
-        Console.WriteLine(
-            $"Response: {response}");
+        Console.WriteLine($"Response: {response}");
+
         // Assert
         await Assert.That(response).IsNotNull();
     }
