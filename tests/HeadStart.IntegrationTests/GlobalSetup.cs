@@ -33,7 +33,7 @@ public static class GlobalSetup
             {
                 var handler = new HttpClientHandler();
 
-                //handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
                 return handler;
             });
