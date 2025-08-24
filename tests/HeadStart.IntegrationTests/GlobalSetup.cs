@@ -11,7 +11,7 @@ public static class GlobalSetup
     public static ResourceNotificationService? NotificationService { get; private set; }
 
     [Before(TestSession)]
-    [Timeout(300_000)] // 5 minutes in milliseconds
+    [Timeout(1_800)] // 3 minutes in milliseconds
     public static async Task SetUpAsync(CancellationToken cancellationToken)
     {
         // Arrange
@@ -33,14 +33,7 @@ public static class GlobalSetup
             {
                 var handler = new HttpClientHandler();
 
-                // Only bypass SSL validation in CI/test environments
-                // if (Environment.GetEnvironmentVariable("CI") == "true" ||
-                    // Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true")
-                {
-#pragma warning disable S4830 // Server certificate validation is intentionally disabled for CI testing
-                    handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-#pragma warning restore S4830
-                }
+                //handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
                 return handler;
             });
