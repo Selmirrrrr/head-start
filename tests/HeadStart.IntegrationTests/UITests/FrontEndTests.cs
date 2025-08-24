@@ -1,11 +1,10 @@
 using HeadStart.IntegrationTests.Data;
 using Microsoft.Playwright;
-using TUnit.Playwright;
 
 namespace HeadStart.IntegrationTests.UITests;
 
 [ClassDataSource<PlaywrightDataClass>]
-public class FrontEndTests(PlaywrightDataClass playwrightDataClass) : PageTest
+public class FrontEndTests(PlaywrightDataClass playwrightDataClass) : PlaywrightTestBase
 {
     [Test]
     public async Task TestWebAppHomePageAsync()
