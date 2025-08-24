@@ -1,6 +1,6 @@
-﻿using TUnit.Core.Interfaces;
+using TUnit.Core.Interfaces;
 
-namespace HeadStart.IntegrationTests;
+namespace HeadStart.IntegrationTests.Data;
 
 /// <summary>
 /// Base class for Playwright tests, providing common functionality and setup for Playwright testing with ASP.NET Core.

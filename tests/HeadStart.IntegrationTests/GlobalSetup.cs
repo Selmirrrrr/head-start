@@ -42,8 +42,7 @@ public static class GlobalSetup
                     Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true")
                 {
 #pragma warning disable S4830 // Server certificate validation is intentionally disabled for CI testing
-                    handler.ServerCertificateCustomValidationCallback =
-                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                    handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 #pragma warning restore S4830
                 }
 

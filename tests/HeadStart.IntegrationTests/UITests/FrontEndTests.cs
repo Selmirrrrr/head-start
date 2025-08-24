@@ -1,14 +1,15 @@
-﻿using Microsoft.Playwright;
+using HeadStart.IntegrationTests.Data;
+using Microsoft.Playwright;
 using TUnit.Playwright;
 
-namespace HeadStart.IntegrationTests;
+namespace HeadStart.IntegrationTests.UITests;
 
 [ClassDataSource<PlaywrightDataClass>]
 public class FrontEndTests(PlaywrightDataClass playwrightDataClass) : PageTest
 {
     [Test]
-	public async Task TestWebAppHomePageAsync()
-	{
+    public async Task TestWebAppHomePageAsync()
+    {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
         var title = await Page.TitleAsync();
