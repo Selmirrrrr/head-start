@@ -7,12 +7,6 @@ namespace HeadStart.IntegrationTests.UITests;
 [ClassDataSource<PlaywrightDataClass>]
 public class FrontEndTests(PlaywrightDataClass playwrightDataClass) : PageTest
 {
-    protected override BrowserNewContextOptions ContextOptions()
-    {
-        var options = base.ContextOptions();
-        options.IgnoreHTTPSErrors = true;
-        return options;
-    }
     [Test]
     public async Task TestWebAppHomePageAsync()
     {
