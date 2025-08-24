@@ -1,7 +1,5 @@
 using System.Diagnostics;
 
-[assembly: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-
 namespace HeadStart.IntegrationTests;
 
 public static class Hooks
