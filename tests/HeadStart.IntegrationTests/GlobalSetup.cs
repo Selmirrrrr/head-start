@@ -29,20 +29,8 @@ public static class GlobalSetup
                 options.DisableDashboard = true; // Disable dashboard to speed up startup
             }, cancellationToken);
 
-        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
-        {
-            clientBuilder.AddStandardResilienceHandler();
-
-            // Configure HttpClient to accept self-signed certificates in test environment
-            clientBuilder.ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                var handler = new HttpClientHandler();
-
-                handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-
-                return handler;
-            });
-        });
+        // The HttpClient configuration is now handled individually in each test
+        // to ensure SSL certificate validation bypass is properly applied
 
         App = await appHost.BuildAsync(cancellationToken);
         NotificationService = App.Services.GetRequiredService<ResourceNotificationService>();

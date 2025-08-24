@@ -8,10 +8,10 @@ public class IntegrationTests
         // Arrange
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.HeadStart_Aspire_AppHost>();
 
-        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
-        {
-            clientBuilder.AddStandardResilienceHandler();
-        });
+        // Environment variables should be set before creating the app
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Test");
+        Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", "Test");
+        Environment.SetEnvironmentVariable("CI", "true");
 
         await using var app = await appHost.BuildAsync();
 
