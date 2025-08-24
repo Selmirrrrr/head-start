@@ -14,6 +14,11 @@ public static class GlobalSetup
     [Timeout(1_800)] // 3 minutes in milliseconds
     public static async Task SetUpAsync(CancellationToken cancellationToken)
     {
+        // Set environment variables for test environment
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Test");
+        Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", "Test");
+        Environment.SetEnvironmentVariable("CI", "true");
+
         // Arrange
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.HeadStart_Aspire_AppHost>(
             [

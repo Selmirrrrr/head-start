@@ -8,6 +8,8 @@ using Microsoft.Extensions.ServiceDiscovery;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using System;
+using System.Net.Http;
 
 namespace HeadStart.Aspire.ServiceDefaults;
 
@@ -34,6 +36,17 @@ public static class Extensions
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
+
+            // Bypass SSL certificate validation in test/CI environments
+            if (builder.Environment.IsEnvironment("Test") || Environment.GetEnvironmentVariable("CI") == "true")
+            {
+                http.ConfigurePrimaryHttpMessageHandler(() =>
+                {
+                    var handler = new HttpClientHandler();
+                    handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                    return handler;
+                });
+            }
         });
 
         // Uncomment the following to restrict the allowed schemes for service discovery.
