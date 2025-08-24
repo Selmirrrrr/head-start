@@ -34,8 +34,8 @@ public static class GlobalSetup
                 var handler = new HttpClientHandler();
 
                 // Only bypass SSL validation in CI/test environments
-                if (Environment.GetEnvironmentVariable("CI") == "true" ||
-                    Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true")
+                // if (Environment.GetEnvironmentVariable("CI") == "true" ||
+                    // Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true")
                 {
 #pragma warning disable S4830 // Server certificate validation is intentionally disabled for CI testing
                     handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
