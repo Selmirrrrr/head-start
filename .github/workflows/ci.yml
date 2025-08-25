@@ -12,10 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set environment variables
-        run: |
-          echo "NODE_TLS_REJECT_UNAUTHORIZED=0" >> $GITHUB_ENV
-          
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
