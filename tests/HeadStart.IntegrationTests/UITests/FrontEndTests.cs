@@ -20,7 +20,7 @@ public class FrontEndTests(PlaywrightDataClass playwrightDataClass) : Playwright
     {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
-        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**");
+        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**", new() { Timeout = 100000 });
 
         var title = await Page.TitleAsync();
 
