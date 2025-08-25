@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Authentication;
-using OpenIddict.Abstractions;
 
 namespace HeadStart.BFF.Utilities;
 
@@ -18,7 +17,7 @@ public sealed class ClaimsTransformer : IClaimsTransformation
 
         var claimsMap = new Dictionary<string, string>()
         {
-            { ClaimTypes.Email, OpenIddictConstants.Claims.Email}
+            { ClaimTypes.Email, "email" }
         };
 
         foreach (var claimMap in claimsMap)

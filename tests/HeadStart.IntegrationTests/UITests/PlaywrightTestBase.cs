@@ -1,5 +1,4 @@
 using Microsoft.Playwright;
-using TUnit.Core;
 using TUnit.Playwright;
 
 namespace HeadStart.IntegrationTests.UITests;
@@ -12,7 +11,7 @@ public abstract class PlaywrightTestBase : PageTest
         {
             IgnoreHTTPSErrors = true,
             AcceptDownloads = true,
-            Locale = "en-US",
+            Locale = "fr-CH",
             ColorScheme = ColorScheme.Light
         };
     }

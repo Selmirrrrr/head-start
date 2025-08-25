@@ -9,8 +9,6 @@
     <PackageReference Include="FastEndpoints" Version="7.0.1" />
     <PackageReference Include="FastEndpoints.ClientGen.Kiota" Version="7.0.1" />
     <PackageReference Include="FastEndpoints.Swagger" Version="7.0.1" />
-    <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="7.0.0" />
-    <PackageReference Include="OpenIddict.Validation.SystemNetHttp" Version="7.0.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.7.0" />
   </ItemGroup>
   <ItemGroup>

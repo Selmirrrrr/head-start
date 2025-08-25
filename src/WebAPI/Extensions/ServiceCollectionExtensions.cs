@@ -1,17 +1,12 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mime;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using OpenIddict.Validation.AspNetCore;
 
 namespace HeadStart.WebAPI.Extensions;
 
