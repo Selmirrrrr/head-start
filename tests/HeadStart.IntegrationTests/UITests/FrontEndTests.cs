@@ -3,8 +3,8 @@ using Microsoft.Playwright;
 
 namespace HeadStart.IntegrationTests.UITests;
 
-[ClassDataSource<PlaywrightDataClass>]
-public class FrontEndTests(PlaywrightDataClass playwrightDataClass) : PlaywrightTestBase
+[ClassDataSource<AspireDataClass>]
+public class FrontEndTests(AspireDataClass playwrightDataClass) : PlaywrightTestBase
 {
     [Test]
     public async Task TestWebAppHomePageAsync()
@@ -20,7 +20,7 @@ public class FrontEndTests(PlaywrightDataClass playwrightDataClass) : Playwright
     {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
-        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**", new() { Timeout = 100000 });
+        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**", new() { Timeout = 10000 });
 
         var title = await Page.TitleAsync();
 

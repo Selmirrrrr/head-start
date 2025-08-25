@@ -2,14 +2,14 @@ using HeadStart.IntegrationTests.Data;
 
 namespace HeadStart.IntegrationTests.Tests;
 
-[ClassDataSource<HttpClientDataClass>]
-public class ApiTests(HttpClientDataClass httpClientData)
+[ClassDataSource<AspireDataClass>]
+public class ApiTests(AspireDataClass aspire)
 {
     [Test]
     public async Task GetWeatherForecastReturnsOkStatusCodeAsync()
     {
         // Arrange
-        var httpClient = httpClientData.HttpClient;
+        var httpClient = aspire.BffHttpClient;
         // Act
         var response = await httpClient.GetStringAsync("api/users/me");
 
