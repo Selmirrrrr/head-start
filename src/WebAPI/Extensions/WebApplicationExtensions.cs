@@ -17,7 +17,7 @@ internal static class WebApplicationExtensions
         await app.GenerateApiClientsAndExitAsync(
             c =>
             {
-                c.SwaggerDocumentName = "HeadStartAPIv1"; //must match doc name above
+                c.SwaggerDocumentName = "headstart-api-v1"; //must match doc name above
                 c.Language = GenerationLanguage.CSharp;
                 c.OutputPath = "../Client/Generated"; //relative to the project root
                 c.ClientNamespaceName = "HeadStart.Client.Generated";
@@ -26,6 +26,8 @@ internal static class WebApplicationExtensions
                 c.Deserializers = ["Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory"];
                 c.Serializers = ["Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory"];
             });
+
+        await app.ExportSwaggerJsonAndExitAsync("headstart-api-v1", "./docs/");
     }
 
     internal static async Task InitializeDatabaseAsync(this WebApplication app)

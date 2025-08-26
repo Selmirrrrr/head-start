@@ -26,7 +26,7 @@ internal static class ServiceCollectionExtensions
                 {
                     s.Title = "HeadStart API";
                     s.Version = "v1";
-                    s.DocumentName = "HeadStartAPIv1";
+                    s.DocumentName = "headstart-api-v1";
                 };
             });
 

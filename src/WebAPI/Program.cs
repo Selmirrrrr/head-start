@@ -1,3 +1,4 @@
+using FastEndpoints.ClientGen.Kiota;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Extensions;
@@ -32,14 +33,24 @@ try
     app.ConfigureAuthentication();
     app.ConfigureApiDocumentation();
 
-    await app.InitializeDatabaseAsync();
-    await app.InitializeKiotaAsync();
+    if (app.IsNotGenerationMode())
+    {
+        await app.InitializeDatabaseAsync();
+    }
+    else if (app.IsApiClientGenerationMode())
+    {
+        await app.InitializeKiotaAsync();
+    }
+    else if (app.IsSwaggerJsonExportMode())
+    {
+        await app.InitializeKiotaAsync();
+    }
 
     await app.RunAsync();
 }
 catch (Exception ex)
 {
-    if (Log.Logger.GetType().Name == "SilentLogger")
+    if (Log.Logger.GetType()?.Name == "SilentLogger")
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
