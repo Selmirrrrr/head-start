@@ -36,6 +36,9 @@ public class FrontEndTests(AspireDataClass playwrightDataClass) : PlaywrightTest
         await Page.Locator("#kc-login").ClickAsync();
         // Wait to be redirected back to the main application
         await Page.GetByRole(AriaRole.Heading, new() { Name = "Dashboard" }).WaitForAsync();
-        await Expect(Page.GetByText("Hello, Default User!", new() { Exact = true })).ToBeVisibleAsync();
+
+        // Verifiy that we see the logout button
+        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Logout" })).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Default User", new() { Exact = true })).ToBeVisibleAsync();
     }
 }

@@ -1,5 +1,7 @@
-﻿@using HeadStart.Client.Components.Shared
+﻿@using HeadStart.Client.Components
+@using HeadStart.Client.Components.Shared
 @inherits LayoutComponentBase
+@inject NavigationManager Navigation
 
 <MudThemeProvider @ref="@_mudThemeProvider"
                   Theme="@_baseTheme"
@@ -21,51 +23,70 @@
             <MudText Color="Color.Default"
                         Typo="Typo.h6"
                         Class="my-auto text-[#424242] dark:text-white">
-                Blazewind
+                HeadStart
             </MudText>
         </MudStack>
         <MudSpacer/>
         <MudStack Row="true"
                     Spacing="1">
             <MudToggleIconButton @bind-Toggled="@_isDarkMode"
-                                    Size="Size.Medium"
-                                    Color="Color.Default"
-                                    Icon="@Icons.Material.Rounded.LightMode"
-                                    ToggledIcon="@Icons.Material.Rounded.DarkMode"
-                                    Class="p-2 my-auto"/>
+                                 Size="Size.Medium"
+                                 Color="Color.Default"
+                                 Icon="@Icons.Material.Rounded.LightMode"
+                                 ToggledIcon="@Icons.Material.Rounded.DarkMode"
+                                 Class="p-2 my-auto"/>
             <MudBadge Content="3"
-                        Color="Color.Error"
-                        Overlap="true"
-                        Class="my-auto">
+                      Color="Color.Error"
+                      Overlap="true"
+                      Class="my-auto">
                 <MudIconButton
                     Size="Size.Medium"
                     Class="p-2"
                     Color="Color.Default"
                     Icon="@Icons.Material.Rounded.Notifications"/>
             </MudBadge>
+            <AuthorizeView>
+                <Authorized>
+                    <form method="post" action="/api/account/logout" class="my-auto">
+                        <AntiForgeryTokenInput />
+                        <MudIconButton
+                            Size="Size.Medium"
+                            Class="p-2"
+                            Color="Color.Default"
+                            Icon="@Icons.Material.Rounded.Logout"
+                            ButtonType="ButtonType.Submit"
+                            aria-label="Logout" />
+                    </form>
+                </Authorized>
+                <NotAuthorized>
+                    <MudButton class="rz-mr-6" OnClick="@(() => Navigation.NavigateTo("/api/account/login", true))"> Sign in </MudButton>
+                </NotAuthorized>
+            </AuthorizeView>
+
             <MudMenu AnchorOrigin="Origin.BottomRight"
-                        TransformOrigin="Origin.TopRight">
+                     TransformOrigin="Origin.TopRight">
                 <ActivatorContent>
                     <MudChip T="string" Size="Size.Large"
-                                Color="Color.Inherit">
+                             Color="Color.Inherit">
                         <MudStack Spacing="0"
-                                    Row="true"
-                                    Class="flex flex-row">
+                                  Row="true"
+                                  Class="flex flex-row">
                             <MudAvatar>
                                 <MudImage Src="img/avatar.png"></MudImage>
                             </MudAvatar>
                             <MudText Typo="Typo.body2"
-                                        Class="my-auto">
-                                User
+                                     Class="my-auto">
+                                <AuthorizeView>
+                                    <Authorized>
+                                        @context.User.Identity?.Name
+                                    </Authorized>
+                                </AuthorizeView>
                             </MudText>
                         </MudStack>
                     </MudChip>
                 </ActivatorContent>
                 <ChildContent>
                     <MudMenuItem>Profile</MudMenuItem>
-                    <MudMenuItem>Theme</MudMenuItem>
-                    <MudMenuItem>Usage</MudMenuItem>
-                    <MudMenuItem>Sign Out</MudMenuItem>
                 </ChildContent>
             </MudMenu>
         </MudStack>
