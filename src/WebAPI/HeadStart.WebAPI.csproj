@@ -9,7 +9,7 @@
     <PackageReference Include="FastEndpoints" Version="7.0.1" />
     <PackageReference Include="FastEndpoints.ClientGen.Kiota" Version="7.0.1" />
     <PackageReference Include="FastEndpoints.Swagger" Version="7.0.1" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.7.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.7.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aspire\ServiceDefaults\HeadStart.Aspire.ServiceDefaults.csproj" />
