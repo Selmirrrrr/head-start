@@ -8,7 +8,7 @@ public class AuthorizedHandler : DelegatingHandler
 
     public AuthorizedHandler(HostAuthenticationStateProvider authenticationStateProvider)
     {
-        this._authenticationStateProvider = authenticationStateProvider;
+        _authenticationStateProvider = authenticationStateProvider;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

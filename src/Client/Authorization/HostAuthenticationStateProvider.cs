@@ -21,9 +21,9 @@ public class HostAuthenticationStateProvider : AuthenticationStateProvider
 
     public HostAuthenticationStateProvider(NavigationManager navigation, HttpClient client, ILogger<HostAuthenticationStateProvider> logger)
     {
-        this._navigation = navigation;
-        this._client = client;
-        this._logger = logger;
+        _navigation = navigation;
+        _client = client;
+        _logger = logger;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()

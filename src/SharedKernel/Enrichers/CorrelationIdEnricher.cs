@@ -13,7 +13,7 @@ public class CorrelationIdEnricher : ILogEventEnricher
 
     public CorrelationIdEnricher(ICorrelationContextAccessor correlationContextAccessor)
     {
-        this._correlationContextAccessor = correlationContextAccessor;
+        _correlationContextAccessor = correlationContextAccessor;
     }
 
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
