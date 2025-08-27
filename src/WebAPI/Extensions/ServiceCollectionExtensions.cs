@@ -22,6 +22,7 @@ internal static class ServiceCollectionExtensions
         services.AddFastEndpoints()
             .SwaggerDocument(o =>
             {
+                o.MaxEndpointVersion = 1;
                 o.DocumentSettings = s =>
                 {
                     s.Title = "HeadStart API";

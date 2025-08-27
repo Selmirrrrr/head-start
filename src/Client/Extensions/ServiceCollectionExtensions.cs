@@ -50,7 +50,7 @@ public static class ServiceCollectionExtensions
             })
             .AddHttpMessageHandler<AuthorizedHandler>();
 
-        services.AddScoped<ApiClient>(sp =>
+        services.AddScoped<ApiClientV1>(sp =>
         {
             ApiClientBuilder.RegisterDefaultSerializer<JsonSerializationWriterFactory>();
             ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
@@ -60,7 +60,7 @@ public static class ServiceCollectionExtensions
             var httpClient = httpClientFactory.CreateClient(Constants.Http.AuthorizedClientId);
             var authProvider = new AnonymousAuthenticationProvider();
             var requestAdapter = new HttpClientRequestAdapter(authProvider, httpClient: httpClient);
-            var apiClient = new ApiClient(requestAdapter);
+            var apiClient = new ApiClientV1(requestAdapter);
 
             requestAdapter.BaseUrl = environment.BaseAddress;
             return apiClient;

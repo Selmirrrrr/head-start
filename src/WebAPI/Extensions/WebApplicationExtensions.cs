@@ -19,15 +19,13 @@ internal static class WebApplicationExtensions
             {
                 c.SwaggerDocumentName = "headstart-api-v1"; //must match doc name above
                 c.Language = GenerationLanguage.CSharp;
-                c.OutputPath = "../Client/Generated"; //relative to the project root
+                c.OutputPath = "../Client/Generated/"; //relative to the project root
                 c.ClientNamespaceName = "HeadStart.Client.Generated";
-                c.ClientClassName = "ApiClient";
+                c.ClientClassName = "ApiClientV1";
                 c.CleanOutput = true;
                 c.Deserializers = ["Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory"];
                 c.Serializers = ["Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory"];
             });
-
-        await app.ExportSwaggerJsonAndExitAsync("headstart-api-v1", "./docs/");
     }
 
     internal static async Task InitializeDatabaseAsync(this WebApplication app)
@@ -108,7 +106,13 @@ internal static class WebApplicationExtensions
 
     internal static void ConfigureApiDocumentation(this WebApplication app)
     {
-        app.UseFastEndpoints()
+        app.UseFastEndpoints(c =>
+            {
+                c.Endpoints.RoutePrefix = "api";
+                c.Versioning.Prefix = "v";
+                c.Versioning.DefaultVersion = 1;
+                c.Versioning.PrependToRoute = true;
+            })
            .UseSwaggerGen();
 
         if (app.Environment.IsDevelopment())

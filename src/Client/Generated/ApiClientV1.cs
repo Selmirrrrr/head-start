@@ -14,7 +14,7 @@ namespace HeadStart.Client.Generated
     /// The main entry point of the SDK, exposes the configuration and the fluent API.
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-    public partial class ApiClient : BaseRequestBuilder
+    public partial class ApiClientV1 : BaseRequestBuilder
     {
         /// <summary>The api property</summary>
         public global::HeadStart.Client.Generated.Api.ApiRequestBuilder Api
@@ -22,10 +22,10 @@ namespace HeadStart.Client.Generated
             get => new global::HeadStart.Client.Generated.Api.ApiRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.ApiClient"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.ApiClientV1"/> and sets the default values.
         /// </summary>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public ApiClient(IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}", new Dictionary<string, object>())
+        public ApiClientV1(IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}", new Dictionary<string, object>())
         {
             ApiClientBuilder.RegisterDefaultSerializer<JsonSerializationWriterFactory>();
             ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();

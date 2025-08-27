@@ -86,14 +86,14 @@
     private List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel>? _claims;
 
     [Inject]
-    public required ApiClient ApiClient { get; set; }
+    public required ApiClientV1 ApiClient { get; set; }
 
     [Inject]
     public required NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        _claims = (await ApiClient.Api.Users.Me.GetAsync())?.Claims;
+        _claims = (await ApiClient.Api.V1.Users.Me.GetAsync())?.Claims;
         await InvokeAsync(StateHasChanged);
     }
 }

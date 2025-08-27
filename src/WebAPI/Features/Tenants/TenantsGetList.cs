@@ -11,8 +11,9 @@ public static class TenantsGetList
 
         public override void Configure()
         {
-            Get("/api/tenants");
+            Get("/tenants");
             Scopes("profile");
+            Version(1);
         }
 
         public override async Task HandleAsync(CancellationToken ct)

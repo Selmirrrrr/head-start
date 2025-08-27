@@ -18,7 +18,4 @@
   <Target Name="ClientGen" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
     <Exec WorkingDirectory="$(RunWorkingDirectory)" Command="$(RunCommand) --generateclients true" />
   </Target>
-  <Target Name="ClientGen" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
-    <Exec WorkingDirectory="$(RunWorkingDirectory)" Command="$(RunCommand) --exportswaggerjson true"/>
-  </Target>
 </Project>

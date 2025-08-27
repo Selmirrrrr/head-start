@@ -44,3 +44,11 @@ playwright
 # Install browsers (required for test execution)
 playwright install
 ```
+
+## API Client Generation
+
+To generate the API clients, run the following command:
+
+```bash
+dotnet run --generateclients true --project src/WebAPI/HeadStart.WebAPI.csproj
+```

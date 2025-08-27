@@ -9,28 +9,28 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-namespace HeadStart.Client.Generated.Api.Tenants
+namespace HeadStart.Client.Generated.Api.V1.Tenants
 {
     /// <summary>
-    /// Builds and executes requests for operations under \api\tenants
+    /// Builds and executes requests for operations under \api\v1\tenants
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public partial class TenantsRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.Tenants.TenantsRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public TenantsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/tenants", pathParameters)
+        public TenantsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/tenants", pathParameters)
         {
         }
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.Tenants.TenantsRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public TenantsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/tenants", rawUrl)
+        public TenantsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/tenants", rawUrl)
         {
         }
         /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_Response"/></returns>
@@ -67,11 +67,11 @@ namespace HeadStart.Client.Generated.Api.Tenants
         /// <summary>
         /// Returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.Tenants.TenantsRequestBuilder"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder"/></returns>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
-        public global::HeadStart.Client.Generated.Api.Tenants.TenantsRequestBuilder WithUrl(string rawUrl)
+        public global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder WithUrl(string rawUrl)
         {
-            return new global::HeadStart.Client.Generated.Api.Tenants.TenantsRequestBuilder(rawUrl, RequestAdapter);
+            return new global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder(rawUrl, RequestAdapter);
         }
         /// <summary>
         /// Configuration for the request such as headers, query parameters, and middleware options.

@@ -35,7 +35,7 @@
 @code {
 
     [Inject]
-    public required ApiClient ApiClient { get; set; }
+    public required ApiClientV1 ApiClient { get; set; }
     private readonly BreadcrumbItem[] _breadCrumbs =
     [
         new BreadcrumbItem("Dashboard", "/"),
@@ -44,7 +44,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _tenants = (await ApiClient.Api.Tenants.GetAsync())?.Tenants ?? _tenants;
+        _tenants = (await ApiClient.Api.V1.Tenants.GetAsync())?.Tenants ?? _tenants;
         await InvokeAsync(StateHasChanged);
     }
 

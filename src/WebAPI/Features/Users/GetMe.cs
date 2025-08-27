@@ -8,7 +8,8 @@ public static class GetMe
     {
         public override void Configure()
         {
-            Get("/api/users/me");
+            Get("/users/me");
+            Version(1);
             AllowAnonymous();
         }
 

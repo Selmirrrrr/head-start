@@ -1,9 +1,9 @@
 {
-  "descriptionHash": "8887BC332E02C6C511B1159FFC265F6B47AAC037985ECB53398A0EE0F8EEFFD83C41611DD4FFC3FC06FF5C26AC6F0057CF592D530E5ADBC4EBAA4E488AD4C1E3",
-  "descriptionLocation": "../../../../../../../../../var/folders/18/brn7wkh51118gf78b25kblw40000gp/T/KiotaClientGen/headstartapiv1.json",
+  "descriptionHash": "8077292636441AABECBF44A6D55013AB803C3902B743A9796CC9D18EF036A0E9E43E2F340B1680F03B716B6F132EC4B80D1B6E994335EA4D28E2B8A31F2F74AD",
+  "descriptionLocation": "../../../../../../../../../var/folders/18/brn7wkh51118gf78b25kblw40000gp/T/KiotaClientGen/headstart-api-v1.json",
   "lockFileVersion": "1.0.0",
   "kiotaVersion": "1.28.0",
-  "clientClassName": "ApiClient",
+  "clientClassName": "ApiClientV1",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "HeadStart.Client.Generated",
   "language": "CSharp",

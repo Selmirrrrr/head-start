@@ -9,28 +9,28 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-namespace HeadStart.Client.Generated.Api.Users.Me
+namespace HeadStart.Client.Generated.Api.V1.Users.Me
 {
     /// <summary>
-    /// Builds and executes requests for operations under \api\users\me
+    /// Builds and executes requests for operations under \api\v1\users\me
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public partial class MeRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.Users.Me.MeRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.Users.Me.MeRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public MeRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/users/me", pathParameters)
+        public MeRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/users/me", pathParameters)
         {
         }
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.Users.Me.MeRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.Users.Me.MeRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public MeRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/users/me", rawUrl)
+        public MeRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/users/me", rawUrl)
         {
         }
         /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_Response"/></returns>
@@ -67,11 +67,11 @@ namespace HeadStart.Client.Generated.Api.Users.Me
         /// <summary>
         /// Returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.Users.Me.MeRequestBuilder"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.V1.Users.Me.MeRequestBuilder"/></returns>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
-        public global::HeadStart.Client.Generated.Api.Users.Me.MeRequestBuilder WithUrl(string rawUrl)
+        public global::HeadStart.Client.Generated.Api.V1.Users.Me.MeRequestBuilder WithUrl(string rawUrl)
         {
-            return new global::HeadStart.Client.Generated.Api.Users.Me.MeRequestBuilder(rawUrl, RequestAdapter);
+            return new global::HeadStart.Client.Generated.Api.V1.Users.Me.MeRequestBuilder(rawUrl, RequestAdapter);
         }
         /// <summary>
         /// Configuration for the request such as headers, query parameters, and middleware options.
