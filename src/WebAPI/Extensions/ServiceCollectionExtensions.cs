@@ -7,6 +7,7 @@ using HeadStart.WebAPI.Data.Models;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using NSwag;
 
 namespace HeadStart.WebAPI.Extensions;
 
@@ -28,6 +29,20 @@ internal static class ServiceCollectionExtensions
                     s.Title = "HeadStart API";
                     s.Version = "v1";
                     s.DocumentName = "headstart-api-v1";
+                    s.AddSecurity("OAuth2", [], new OpenApiSecurityScheme
+                    {
+                        Type = OpenApiSecuritySchemeType.OAuth2,
+                        Description = "OAuth2 Keyycloak",
+                        Flow = OpenApiOAuth2Flow.Password,
+                        Flows = new OpenApiOAuthFlows()
+                        {
+                            Password = new OpenApiOAuthFlow()
+                            {
+                                AuthorizationUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/auth",
+                                TokenUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/token"
+                            }
+                        }
+                    });
                 };
             });
 

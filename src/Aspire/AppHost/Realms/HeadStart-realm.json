@@ -447,7 +447,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": true,
             "frontchannelLogout": true,
@@ -464,8 +464,71 @@
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "headstart:all", "microprofile-jwt" ]
+        },
+        {
+          "clientId": "HeadStart-Test",
+          "name": "HeadStart-Test",
+          "description": "",
+          "rootUrl": "",
+          "adminUrl": "",
+          "baseUrl": "",
+          "surrogateAuthRequired": false,
+          "enabled": true,
+          "alwaysDisplayInConsole": false,
+          "clientAuthenticatorType": "client-secret",
+          "secret": "eaH1n5YflVUjTlCLQVPVyInPF4Z41VVb",
+          "redirectUris": [
+            "*"
+          ],
+          "webOrigins": [
+            "*"
+          ],
+          "notBefore": 0,
+          "bearerOnly": false,
+          "consentRequired": false,
+          "standardFlowEnabled": true,
+          "implicitFlowEnabled": false,
+          "directAccessGrantsEnabled": true,
+          "serviceAccountsEnabled": true,
+          "publicClient": false,
+          "frontchannelLogout": true,
+          "protocol": "openid-connect",
+          "attributes": {
+            "realm_client": "false",
+            "oidc.ciba.grant.enabled": "false",
+            "client.secret.creation.time": "1756307295",
+            "backchannel.logout.session.required": "true",
+            "standard.token.exchange.enabled": "false",
+            "oauth2.device.authorization.grant.enabled": "false",
+            "backchannel.logout.revoke.offline.tokens": "false"
+          },
+          "authenticationFlowBindingOverrides": {},
+          "fullScopeAllowed": true,
+          "nodeReRegistrationTimeout": -1,
+          "defaultClientScopes": [
+            "web-origins",
+            "service_account",
+            "acr",
+            "profile",
+            "roles",
+            "basic",
+            "email", 
+            "headstart:all"
+          ],
+          "optionalClientScopes": [
+            "address",
+            "phone",
+            "offline_access",
+            "headstart:all",
+            "microprofile-jwt"
+          ],
+          "access": {
+            "view": true,
+            "configure": true,
+            "manage": true
+          }
         },
         {
             "id": "016c17d1-8e0f-4a67-9116-86b4691ba99c",
@@ -486,7 +549,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": true,
             "frontchannelLogout": true,
@@ -521,7 +584,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": true,
             "frontchannelLogout": false,
@@ -532,7 +595,7 @@
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "microprofile-jwt" ]
         },
         {
@@ -552,7 +615,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": true,
             "frontchannelLogout": false,
@@ -574,7 +637,7 @@
                     "config": {}
                 }
             ],
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "microprofile-jwt" ]
         },
         {
@@ -603,7 +666,7 @@
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "microprofile-jwt" ]
         },
         {
@@ -621,7 +684,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": false,
             "frontchannelLogout": false,
@@ -632,7 +695,7 @@
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "microprofile-jwt" ]
         },
         {
@@ -650,7 +713,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": false,
             "frontchannelLogout": false,
@@ -661,7 +724,7 @@
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "microprofile-jwt" ]
         },
         {
@@ -681,7 +744,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": true,
             "frontchannelLogout": false,
@@ -711,7 +774,7 @@
                     }
                 }
             ],
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "microprofile-jwt" ]
         },
         {
@@ -734,7 +797,7 @@
             "consentRequired": false,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
+            "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": false,
             "publicClient": false,
             "frontchannelLogout": true,
@@ -750,7 +813,7 @@
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
-            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email" ],
+            "defaultClientScopes": [ "web-origins", "acr", "profile", "roles", "email", "headstart:all" ],
             "optionalClientScopes": [ "address", "phone", "offline_access", "microprofile-jwt" ]
         }
     ],

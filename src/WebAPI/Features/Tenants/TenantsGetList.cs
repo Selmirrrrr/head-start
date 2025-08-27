@@ -12,7 +12,6 @@ public static class TenantsGetList
         public override void Configure()
         {
             Get("/tenants");
-            Scopes("profile");
             Version(1);
         }
 

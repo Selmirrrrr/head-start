@@ -121,7 +121,13 @@ internal static class WebApplicationExtensions
             {
                 options
                     .WithTitle("HeadStart API")
-                    .WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json");
+                    .WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json")
+                    .AddPreferredSecuritySchemes("OAuth2")
+                    .AddPasswordFlow("OAuth2", flow =>
+                    {
+                        flow.ClientId = "HeadStart-Test";
+                        flow.Username = "user";
+                    });
             });
         }
     }
