@@ -8,6 +8,7 @@ namespace HeadStart.IntegrationTests.Data
         public HttpClient BffHttpClient { get; private set; } = new();
         public Uri BaseUrl { get; private set; } = new("/");
         public Uri KeycloakUrl { get; private set; } = new("/");
+
         public async Task InitializeAsync()
         {
             Guard.Against.Null(GlobalSetup.App);
@@ -24,7 +25,7 @@ namespace HeadStart.IntegrationTests.Data
 
         public async ValueTask DisposeAsync()
         {
-            await Console.Out.WriteLineAsync("And when the class is finished with, we can clean up any resources.");
+            await Task.CompletedTask;
         }
     }
 }
