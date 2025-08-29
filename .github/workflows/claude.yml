@@ -43,5 +43,4 @@ jobs:
           label_trigger: "claude"
           additional_permissions: |
             actions: read
-          Optional: allow bot users to trigger the action
           allowed_bots: "dependabot[bot],renovate[bot]"
