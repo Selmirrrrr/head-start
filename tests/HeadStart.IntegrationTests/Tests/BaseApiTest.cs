@@ -8,7 +8,7 @@ namespace HeadStart.IntegrationTests.Tests;
 /// Base class for API integration tests providing common functionality
 /// and ensuring test independence.
 /// </summary>
-public abstract class BaseApiTest(ApiTestDataClass apiTestDataClass)
+public abstract class BaseApiTest()
 {
     /// <summary>
     /// Asserts that an API call throws an unauthorized exception

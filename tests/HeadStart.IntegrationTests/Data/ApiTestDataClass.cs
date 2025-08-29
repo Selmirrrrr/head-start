@@ -3,6 +3,7 @@ using System.Text.Json;
 using Ardalis.GuardClauses;
 using HeadStart.Client.Generated;
 using Microsoft.Kiota.Abstractions.Authentication;
+using Microsoft.Kiota.Bundle;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using TUnit.Core.Interfaces;
 
@@ -16,7 +17,8 @@ public class ApiTestDataClass() : IAsyncInitializer, IAsyncDisposable
 {
     private HttpClient? _authenticatedHttpClient;
 
-    public ApiClientV1 ApiClient { get; private set; } = null!;
+    public ApiClientV1 AuthApiClient { get; private set; } = null!;
+    public ApiClientV1 AnonymousApiClient { get; private set; } = null!;
     public Uri BffUrl { get; private set; } = null!;
     public Uri WebApiUrl { get; private set; } = null!;
     public Uri KeycloakUrl { get; private set; } = null!;
@@ -45,26 +47,33 @@ public class ApiTestDataClass() : IAsyncInitializer, IAsyncDisposable
         }
 
         // Create authenticated API client that goes directly to WebAPI
-        await SetupAuthenticatedApiClientAsync();
+        AuthApiClient = await SetupApiClientAsync("user", "user");
+        AnonymousApiClient = await SetupApiClientAsync(null, null);
     }
 
-    private async Task SetupAuthenticatedApiClientAsync()
+    private async Task<ApiClientV1> SetupApiClientAsync(string? username, string? password)
     {
-        // Get a test user token from Keycloak using password grant
-        var tokenData = await GetTestUserTokenAsync();
-
-        _authenticatedHttpClient = new HttpClient()
+        _authenticatedHttpClient = new HttpClient
         {
             BaseAddress = WebApiUrl
         };
 
-        var authProvider = new HeadStartAuthenticationProvider(tokenData.AccessToken);
+        IAuthenticationProvider authProvider;
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            authProvider = new AnonymousAuthenticationProvider();
+        }
+        else
+        {
+            authProvider = new HeadStartAuthenticationProvider((await GetTestUserTokenAsync(username, password)).AccessToken);
+        }
+
         var requestAdapter = new HttpClientRequestAdapter(authProvider, httpClient: _authenticatedHttpClient);
 
-        ApiClient = new ApiClientV1(requestAdapter);
+        return new ApiClientV1(requestAdapter);
     }
 
-    private async Task<TokenResponse> GetTestUserTokenAsync()
+    private async Task<TokenResponse> GetTestUserTokenAsync(string username = "user", string password = "user")
     {
         using var keycloakClient = new HttpClient();
         var tokenEndpoint = $"{KeycloakUrl}/realms/HeadStart/protocol/openid-connect/token";
@@ -73,10 +82,10 @@ public class ApiTestDataClass() : IAsyncInitializer, IAsyncDisposable
             new KeyValuePair<string, string>("grant_type", "password"),
             new KeyValuePair<string, string>("client_id", "HeadStart-Test"),
             new KeyValuePair<string, string>("client_secret", "eaH1n5YflVUjTlCLQVPVyInPF4Z41VVb"),
-            new KeyValuePair<string, string>("username", "user"),
-            new KeyValuePair<string, string>("password", "user"),
+            new KeyValuePair<string, string>("username", username),
+            new KeyValuePair<string, string>("password", password),
             new KeyValuePair<string, string>("scope", "openid profile"),
-            new KeyValuePair<string, string>("audience", "headstart.api") // Required for WebAPI access
+            new KeyValuePair<string, string>("audience", "headstart.api")
         ]);
 
         var tokenResponse = await keycloakClient.PostAsync(tokenEndpoint, tokenRequest);
@@ -104,16 +113,8 @@ public class ApiTestDataClass() : IAsyncInitializer, IAsyncDisposable
     {
         public string AccessToken { get; init; } = string.Empty;
         public string RefreshToken { get; init; } = string.Empty;
-        public int ExpiresIn { get; init; }
         public string TokenType { get; init; } = string.Empty;
     }
 }
 
-public sealed class HeadStartAuthenticationProvider : ApiKeyAuthenticationProvider
-{
-    public HeadStartAuthenticationProvider(string apiKey)
-        : base("Bearer " + apiKey, "Authorization", KeyLocation.Header)
-    {
-    }
-}
-
+public sealed class HeadStartAuthenticationProvider(string apiKey) : ApiKeyAuthenticationProvider("Bearer " + apiKey, "Authorization", KeyLocation.Header);
