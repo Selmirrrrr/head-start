@@ -13,7 +13,7 @@ namespace HeadStart.IntegrationTests.Data
         {
             Guard.Against.Null(GlobalSetup.App);
 
-            BffHttpClient = (GlobalSetup.App).CreateHttpClient("bff");
+            BffHttpClient = GlobalSetup.App.CreateHttpClient("bff");
             BaseUrl = (GlobalSetup.App ?? throw new InvalidOperationException()).GetEndpoint("bff");
             KeycloakUrl = GlobalSetup.App.GetEndpoint("keycloak");
 
