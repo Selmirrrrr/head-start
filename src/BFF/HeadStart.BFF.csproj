@@ -3,14 +3,14 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
-    <PackageReference Include="Aspire.Keycloak.Authentication" Version="9.4.1-preview.1.25408.4" />
-    <PackageReference Include="Duende.AccessTokenManagement.OpenIdConnect" Version="3.2.0" />
-    <PackageReference Include="IdentityModel.AspNetCore" Version="4.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.8" />
-    <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="1.1.0" />
-    <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
+    <PackageReference Include="Ardalis.GuardClauses" />
+    <PackageReference Include="Aspire.Keycloak.Authentication" />
+    <PackageReference Include="Duende.AccessTokenManagement.OpenIdConnect" />
+    <PackageReference Include="IdentityModel.AspNetCore" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+    <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" />
+    <PackageReference Include="Yarp.ReverseProxy" />
     </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aspire\ServiceDefaults\HeadStart.Aspire.ServiceDefaults.csproj" />
