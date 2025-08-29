@@ -47,7 +47,7 @@ public class ApiTestDataClass() : IAsyncInitializer, IAsyncDisposable
         }
 
         // Create authenticated API client that goes directly to WebAPI
-        AuthApiClient = await SetupApiClientAsync("user", "user");
+        AuthApiClient = await SetupApiClientAsync("user@example.com", "user");
         AnonymousApiClient = await SetupApiClientAsync(null, null);
     }
 
@@ -73,7 +73,7 @@ public class ApiTestDataClass() : IAsyncInitializer, IAsyncDisposable
         return new ApiClientV1(requestAdapter);
     }
 
-    private async Task<TokenResponse> GetTestUserTokenAsync(string username = "user", string password = "user")
+    private async Task<TokenResponse> GetTestUserTokenAsync(string username = "user@example.com", string password = "user")
     {
         using var keycloakClient = new HttpClient();
         var tokenEndpoint = $"{KeycloakUrl}/realms/HeadStart/protocol/openid-connect/token";

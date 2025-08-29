@@ -24,12 +24,12 @@ public class FrontEndTests(AspireDataClass playwrightDataClass) : PlaywrightTest
 
         var title = await Page.TitleAsync();
 
-        await Assert.That(title).IsEqualTo("Sign in to HeadStart");
+        await Assert.That(title).IsEqualTo("Se connecter à HeadStart");
 
         await Page.WaitForSelectorAsync("input[name='username']", new() { Timeout = 10000 });
 
         // Fill in the login credentials
-        await Page.FillAsync("input[name='username']", "user");
+        await Page.FillAsync("input[name='username']", "user@example.com");
         await Page.FillAsync("input[name='password']", "user");
 
         // Submit the login form
@@ -55,7 +55,7 @@ public class FrontEndTests(AspireDataClass playwrightDataClass) : PlaywrightTest
         await Page.WaitForSelectorAsync("input[name='username']", new() { Timeout = 10000 });
 
         // Fill in the login credentials
-        await Page.FillAsync("input[name='username']", "user");
+        await Page.FillAsync("input[name='username']", "user@example.com");
         await Page.FillAsync("input[name='password']", "user");
 
         // Submit the login form
@@ -75,6 +75,6 @@ public class FrontEndTests(AspireDataClass playwrightDataClass) : PlaywrightTest
 
         // Verify we're back at the login page
         var title = await Page.TitleAsync();
-        await Assert.That(title).IsEqualTo("Sign in to HeadStart");
+        await Assert.That(title).IsEqualTo("Se connecter à HeadStart");
     }
 }
