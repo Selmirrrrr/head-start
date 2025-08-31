@@ -4,6 +4,8 @@ using Ardalis.GuardClauses;
 using Blazored.LocalStorage;
 using HeadStart.Client.Authorization;
 using HeadStart.Client.Generated;
+using HeadStart.Client.Services;
+using HeadStart.Client.Services.UserPreferences;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -12,11 +14,38 @@ using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Kiota.Serialization.Json;
 using MudBlazor;
+using MudBlazor.Services;
 
 namespace HeadStart.Client.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static void TryAddMudBlazor(this IServiceCollection services, IConfiguration config)
+    {
+        #region register MudBlazor.Services
+        services.AddMudServices(config =>
+        {
+            MudGlobal.InputDefaults.ShrinkLabel = true;
+            config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+            config.SnackbarConfiguration.NewestOnTop = false;
+            config.SnackbarConfiguration.ShowCloseIcon = true;
+            config.SnackbarConfiguration.VisibleStateDuration = 3000;
+            config.SnackbarConfiguration.HideTransitionDuration = 500;
+            config.SnackbarConfiguration.ShowTransitionDuration = 500;
+            config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+        });
+        services.AddLocalization();
+        services.AddMudPopoverService();
+        services.AddMudBlazorSnackbar();
+        services.AddMudBlazorDialog();
+        services.AddMudLocalization();
+        services.AddBlazoredLocalStorage();
+        services.AddScoped<IStorageService, LocalStorageService>();
+        services.AddScoped<IUserPreferencesService, UserPreferencesService>();
+        services.AddScoped<LayoutService>();
+        services.AddScoped<DialogServiceHelper>();
+        #endregion
+    }
     /// <summary>
     /// Registers dependencies for the Blazor Client Application.
     /// </summary>

@@ -31,10 +31,7 @@ public static class Program
 
             builder.Services.AddClientLayer(builder.HostEnvironment);
 
-            builder.Services.AddMudServices(options =>
-            {
-                options.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
-            });
+            builder.Services.TryAddMudBlazor(builder.Configuration);
 
             await builder.Build().RunAsync();
         }

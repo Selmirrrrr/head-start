@@ -1,0 +1,687 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Don't have an account?" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="Signup" xml:space="preserve">
+    <value>Signup</value>
+  </data>
+  <data name="A comprehensive library. Takes the hassle out of designing for Blazor. Used in many ongoing projects at the Mail Solutions Group. The MudBlazor team has a real gem here." xml:space="preserve">
+    <value>A comprehensive library. Takes the hassle out of designing for Blazor. Used in many ongoing projects at the Mail Solutions Group. The MudBlazor team has a real gem here.</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Activating offline mode grants access to critical features and data without the need for an active internet connection. This feature is ideal for environments where connectivity is unreliable or unavailable. Ensure your device is secure to prevent potential data risks." xml:space="preserve">
+    <value>Activating offline mode grants access to critical features and data without the need for an active internet connection. This feature is ideal for environments where connectivity is unreliable or unavailable. Ensure your device is secure to prevent potential data risks.</value>
+  </data>
+  <data name="Add a profile picture to personalize your account" xml:space="preserve">
+    <value>Add a profile picture to personalize your account</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Are you sure you want to delete your account? This action cannot be undone." xml:space="preserve">
+    <value>Are you sure you want to delete your account? This action cannot be undone.</value>
+  </data>
+  <data name="Authenticating, please wait..." xml:space="preserve">
+    <value>Authenticating, please wait...</value>
+  </data>
+  <data name="Authenticator app" xml:space="preserve">
+    <value>Authenticator app</value>
+  </data>
+  <data name="Authenticator code" xml:space="preserve">
+    <value>Authenticator code</value>
+  </data>
+  <data name="Authenticator code is required" xml:space="preserve">
+    <value>Authenticator code is required</value>
+  </data>
+  <data name="Basic info" xml:space="preserve">
+    <value>Basic info</value>
+  </data>
+  <data name="Best open source component library for Blazor out there and easy to understand!" xml:space="preserve">
+    <value>Best open source component library for Blazor out there and easy to understand!</value>
+  </data>
+  <data name="Button Text" xml:space="preserve">
+    <value>Button Text</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Category is required" xml:space="preserve">
+    <value>Category is required</value>
+  </data>
+  <data name="Change Your Email" xml:space="preserve">
+    <value>Change Your Email</value>
+  </data>
+  <data name="Change email" xml:space="preserve">
+    <value>Change email</value>
+  </data>
+  <data name="Change email confirm" xml:space="preserve">
+    <value>Change email confirm</value>
+  </data>
+  <data name="Change my email" xml:space="preserve">
+    <value>Change my email</value>
+  </data>
+  <data name="Changing your username can have unintended side effects." xml:space="preserve">
+    <value>Changing your username can have unintended side effects.</value>
+  </data>
+  <data name="Check Your Inbox" xml:space="preserve">
+    <value>Check Your Inbox</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Coming of an Angular project back to .NET, Blazor was the ideal choice and MudBlazor was the icing on the cake. . . not \&quot;mud\&quot; but a rich creamy sweet chocolate." xml:space="preserve">
+    <value>Coming of an Angular project back to .NET, Blazor was the ideal choice and MudBlazor was the icing on the cake. . . not \"mud\" but a rich creamy sweet chocolate.</value>
+  </data>
+  <data name="Comprehensive, ambitious, fresh and clean. Some really cool implementations. The development and improvement of components is really fast, and if a course correction is needed, they will do it. Garderoben, henon and all the other contributors are approachable. They are getting stuff done!" xml:space="preserve">
+    <value>Comprehensive, ambitious, fresh and clean. Some really cool implementations. The development and improvement of components is really fast, and if a course correction is needed, they will do it. Garderoben, henon and all the other contributors are approachable. They are getting stuff done!</value>
+  </data>
+  <data name="Configure Authenticator App" xml:space="preserve">
+    <value>Configure Authenticator App</value>
+  </data>
+  <data name="Confirm Verification" xml:space="preserve">
+    <value>Confirm Verification</value>
+  </data>
+  <data name="Confirm new email" xml:space="preserve">
+    <value>Confirm new email</value>
+  </data>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="Confirm password is required" xml:space="preserve">
+    <value>Confirm password is required</value>
+  </data>
+  <data name="Confirm password reset" xml:space="preserve">
+    <value>Confirm password reset</value>
+  </data>
+  <data name="Copy Codes to Clipboard" xml:space="preserve">
+    <value>Copy Codes to Clipboard</value>
+  </data>
+  <data name="Create an Account" xml:space="preserve">
+    <value>Create an Account</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="Currency is required" xml:space="preserve">
+    <value>Currency is required</value>
+  </data>
+  <data name="Customer Name" xml:space="preserve">
+    <value>Customer Name</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Delete account" xml:space="preserve">
+    <value>Delete account</value>
+  </data>
+  <data name="Delete my account" xml:space="preserve">
+    <value>Delete my account</value>
+  </data>
+  <data name="Delete your account" xml:space="preserve">
+    <value>Delete your account</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Email is required" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="Email is required!" xml:space="preserve">
+    <value>Email is required!</value>
+  </data>
+  <data name="Enable Offline Mode" xml:space="preserve">
+    <value>Enable Offline Mode</value>
+  </data>
+  <data name="Enabling offline mode stores certain data locally to ensure secure authentication and continued access when an internet connection is unavailable. However, local data storage may increase the risk of data breaches if your device is compromised. Please ensure your device is secure to mitigate this risk." xml:space="preserve">
+    <value>Enabling offline mode stores certain data locally to ensure secure authentication and continued access when an internet connection is unavailable. However, local data storage may increase the risk of data breaches if your device is compromised. Please ensure your device is secure to mitigate this risk.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="For enhanced security, two-factor authentication will be required for your account. This helps protect your account with an additional layer of security." xml:space="preserve">
+    <value>For enhanced security, two-factor authentication will be required for your account. This helps protect your account with an additional layer of security.</value>
+  </data>
+  <data name="Forget password?" xml:space="preserve">
+    <value>Forget password?</value>
+  </data>
+  <data name="Forgot Password?" xml:space="preserve">
+    <value>Forgot Password?</value>
+  </data>
+  <data name="Generate Codes" xml:space="preserve">
+    <value>Generate Codes</value>
+  </data>
+  <data name="Generate recovery codes to regain access if you lose your two-factor authentication device." xml:space="preserve">
+    <value>Generate recovery codes to regain access if you lose your two-factor authentication device.</value>
+  </data>
+  <data name="Give me ideas about how to plan my New Years resolutions" xml:space="preserve">
+    <value>Give me ideas about how to plan my New Years resolutions</value>
+  </data>
+  <data name="H1 Title" xml:space="preserve">
+    <value>H1 Title</value>
+  </data>
+  <data name="H2 Title" xml:space="preserve">
+    <value>H2 Title</value>
+  </data>
+  <data name="Have an account?" xml:space="preserve">
+    <value>Have an account?</value>
+  </data>
+  <data name="Help me pick an outfit that will look good on camera" xml:space="preserve">
+    <value>Help me pick an outfit that will look good on camera</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="I agree to the terms and privacy" xml:space="preserve">
+    <value>I agree to the terms and privacy</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Important: Recovery codes are shown only once and will not be stored on the server. Please save them securely." xml:space="preserve">
+    <value>Important: Recovery codes are shown only once and will not be stored on the server. Please save them securely.</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Info about you and your preferences" xml:space="preserve">
+    <value>Info about you and your preferences</value>
+  </data>
+  <data name="Invoiced amount" xml:space="preserve">
+    <value>Invoiced amount</value>
+  </data>
+  <data name="Keywords" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Login with Google" xml:space="preserve">
+    <value>Login with Google</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Looking to manage account security settings? You can find them in the Password and authentication page." xml:space="preserve">
+    <value>Looking to manage account security settings? You can find them in the Password and authentication page.</value>
+  </data>
+  <data name="Make a sandwich using ingredients from my kitchen" xml:space="preserve">
+    <value>Make a sandwich using ingredients from my kitchen</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Name is required" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="New email address" xml:space="preserve">
+    <value>New email address</value>
+  </data>
+  <data name="New password" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="New password confirm" xml:space="preserve">
+    <value>New password confirm</value>
+  </data>
+  <data name="Nickname" xml:space="preserve">
+    <value>Nickname</value>
+  </data>
+  <data name="No recovery codes to copy." xml:space="preserve">
+    <value>No recovery codes to copy.</value>
+  </data>
+  <data name="No worries! Just enter your email address below and we'll send you a link to reset your password." xml:space="preserve">
+    <value>No worries! Just enter your email address below and we'll send you a link to reset your password.</value>
+  </data>
+  <data name="Offline Mode" xml:space="preserve">
+    <value>Offline Mode</value>
+  </data>
+  <data name="Offline mode allows access to essential features without requiring an internet connection, which is particularly useful in areas with limited or no connectivity." xml:space="preserve">
+    <value>Offline mode allows access to essential features without requiring an internet connection, which is particularly useful in areas with limited or no connectivity.</value>
+  </data>
+  <data name="Order Date" xml:space="preserve">
+    <value>Order Date</value>
+  </data>
+  <data name="Order Number" xml:space="preserve">
+    <value>Order Number</value>
+  </data>
+  <data name="Orders List" xml:space="preserve">
+    <value>Orders List</value>
+  </data>
+  <data name="Organization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="Organization selection is required" xml:space="preserve">
+    <value>Organization selection is required</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Password is required" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="Personal info" xml:space="preserve">
+    <value>Personal info</value>
+  </data>
+  <data name="Please type your username to confirm. Your current username is:" xml:space="preserve">
+    <value>Please type your username to confirm. Your current username is:</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Price is required" xml:space="preserve">
+    <value>Price is required</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Profile picture" xml:space="preserve">
+    <value>Profile picture</value>
+  </data>
+  <data name="Public profile" xml:space="preserve">
+    <value>Public profile</value>
+  </data>
+  <data name="Quiz me on world capitals to enhance my geography skills" xml:space="preserve">
+    <value>Quiz me on world capitals to enhance my geography skills</value>
+  </data>
+  <data name="Recovery codes" xml:space="preserve">
+    <value>Recovery codes</value>
+  </data>
+  <data name="Recovery codes copied to clipboard!" xml:space="preserve">
+    <value>Recovery codes copied to clipboard!</value>
+  </data>
+  <data name="Recovery codes generated. Save them securely as they will not be shown again." xml:space="preserve">
+    <value>Recovery codes generated. Save them securely as they will not be shown again.</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="SKU" xml:space="preserve">
+    <value>SKU</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Save Profile" xml:space="preserve">
+    <value>Save Profile</value>
+  </data>
+  <data name="Saving us from tons of tiny details and allowing us to deliver sharp looking modern web applications, MudBlazor is the king of open source UI frameworks that no one should miss when building apps with Blazor!" xml:space="preserve">
+    <value>Saving us from tons of tiny details and allowing us to deliver sharp looking modern web applications, MudBlazor is the king of open source UI frameworks that no one should miss when building apps with Blazor!</value>
+  </data>
+  <data name="Secondary" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="Select Organization" xml:space="preserve">
+    <value>Select Organization</value>
+  </data>
+  <data name="Send Email" xml:space="preserve">
+    <value>Send Email</value>
+  </data>
+  <data name="Send Notifications" xml:space="preserve">
+    <value>Send Notifications</value>
+  </data>
+  <data name="Set new password" xml:space="preserve">
+    <value>Set new password</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Sign In" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="Signup Successful" xml:space="preserve">
+    <value>Signup Successful</value>
+  </data>
+  <data name="Sku is required" xml:space="preserve">
+    <value>Sku is required</value>
+  </data>
+  <data name="Some info may be visible to other people using Google services. Learn more" xml:space="preserve">
+    <value>Some info may be visible to other people using Google services. Learn more</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Suggest fun activities to help me make friends in a new city" xml:space="preserve">
+    <value>Suggest fun activities to help me make friends in a new city</value>
+  </data>
+  <data name="Tell me a fun fact about the Roman Empire" xml:space="preserve">
+    <value>Tell me a fun fact about the Roman Empire</value>
+  </data>
+  <data name="Thank you for signing up. To complete your registration, please activate your account by clicking the activation link sent to your email address. If you do not receive the email within a few minutes, please check your spam or junk folder." xml:space="preserve">
+    <value>Thank you for signing up. To complete your registration, please activate your account by clicking the activation link sent to your email address. If you do not receive the email within a few minutes, please check your spam or junk folder.</value>
+  </data>
+  <data name="Time zone" xml:space="preserve">
+    <value>Time zone</value>
+  </data>
+  <data name="To disable, click here." xml:space="preserve">
+    <value>To disable, click here.</value>
+  </data>
+  <data name="To use an authenticator app go through the following steps:" xml:space="preserve">
+    <value>To use an authenticator app go through the following steps:</value>
+  </data>
+  <data name="Two-factor authentication" xml:space="preserve">
+    <value>Two-factor authentication</value>
+  </data>
+  <data name="Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in. Learn more about two-factor authentication." xml:space="preserve">
+    <value>Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in. Learn more about two-factor authentication.</value>
+  </data>
+  <data name="Two-factor methods" xml:space="preserve">
+    <value>Two-factor methods</value>
+  </data>
+  <data name="Type your password to confirm changing your email address to" xml:space="preserve">
+    <value>Type your password to confirm changing your email address to</value>
+  </data>
+  <data name="UOM" xml:space="preserve">
+    <value>UOM</value>
+  </data>
+  <data name="Uom is required" xml:space="preserve">
+    <value>Uom is required</value>
+  </data>
+  <data name="Use an authentication app or browser extension to get two-factor authentication codes when prompted." xml:space="preserve">
+    <value>Use an authentication app or browser extension to get two-factor authentication codes when prompted.</value>
+  </data>
+  <data name="User name" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="User name is required!" xml:space="preserve">
+    <value>User name is required!</value>
+  </data>
+  <data name="Verification Code" xml:space="preserve">
+    <value>Verification Code</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="Very practical, convenient and user-friendly library that has massively helped us in developing our applications. Great community as well!" xml:space="preserve">
+    <value>Very practical, convenient and user-friendly library that has massively helped us in developing our applications. Great community as well!</value>
+  </data>
+  <data name="View all available products in our inventory." xml:space="preserve">
+    <value>View all available products in our inventory.</value>
+  </data>
+  <data name="We've sent an email to the address you provided. Please check your inbox for a link to reset your password. If you don't see the email, be sure to check your spam or junk folder." xml:space="preserve">
+    <value>We've sent an email to the address you provided. Please check your inbox for a link to reset your password. If you don't see the email, be sure to check your spam or junk folder.</value>
+  </data>
+  <data name="Write a message that goes with a kitten gif for a friend on a rough day" xml:space="preserve">
+    <value>Write a message that goes with a kitten gif for a friend on a rough day</value>
+  </data>
+  <data name="Write a text inviting my neighbors to a barbecue" xml:space="preserve">
+    <value>Write a text inviting my neighbors to a barbecue</value>
+  </data>
+  <data name="You must remove yourself, transfer ownership, or delete these organizations before you can delete your user." xml:space="preserve">
+    <value>You must remove yourself, transfer ownership, or delete these organizations before you can delete your user.</value>
+  </data>
+  <data name="external login" xml:space="preserve">
+    <value>external login</value>
+  </data>
+  <data name="user name is required" xml:space="preserve">
+    <value>user name is required</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="All Products" xml:space="preserve">
+    <value>All Products</value>
+  </data>
+  <data name="Stock Inquiry" xml:space="preserve">
+    <value>Stock Inquiry</value>
+  </data>
+  <data name="Check product stock levels." xml:space="preserve">
+    <value>Check product stock levels.</value>
+  </data>
+  <data name="Best Sellers" xml:space="preserve">
+    <value>Best Sellers</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Order Overview" xml:space="preserve">
+    <value>Order Overview</value>
+  </data>
+  <data name="Overview of all customer orders." xml:space="preserve">
+    <value>Overview of all customer orders.</value>
+  </data>
+  <data name="Shipment Details" xml:space="preserve">
+    <value>Shipment Details</value>
+  </data>
+  <data name="Track the shipment details of orders." xml:space="preserve">
+    <value>Track the shipment details of orders.</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="View an overview of all reports." xml:space="preserve">
+    <value>View an overview of all reports.</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="Analyze detailed statistics for performance tracking." xml:space="preserve">
+    <value>Analyze detailed statistics for performance tracking.</value>
+  </data>
+  <data name="Activity Log" xml:space="preserve">
+    <value>Activity Log</value>
+  </data>
+  <data name="View the activity log for user actions." xml:space="preserve">
+    <value>View the activity log for user actions.</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="Access the user and developer documentation." xml:space="preserve">
+    <value>Access the user and developer documentation.</value>
+  </data>
+  <data name="GitHub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="Visit our GitHub repository." xml:space="preserve">
+    <value>Visit our GitHub repository.</value>
+  </data>
+  <data name="Blazor Aspire" xml:space="preserve">
+    <value>Blazor Aspire</value>
+  </data>
+  <data name="Product is required." xml:space="preserve">
+    <value>Product is required.</value>
+  </data>
+  <data name="Location is required." xml:space="preserve">
+    <value>Location is required.</value>
+  </data>
+  <data name="Quantity must be greater than 0." xml:space="preserve">
+    <value>Quantity must be greater than 0.</value>
+  </data>
+  <data name="Stock received successfully." xml:space="preserve">
+    <value>Stock received successfully.</value>
+  </data>
+  <data name="Stock dispatched successfully." xml:space="preserve">
+    <value>Stock dispatched successfully.</value>
+  </data>
+  <data name="Commands" xml:space="preserve">
+    <value>Commands</value>
+  </data>
+  <data name="Product Name" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Receiving" xml:space="preserve">
+    <value>Receiving</value>
+  </data>
+  <data name="Stock receiving" xml:space="preserve">
+    <value>Stock receiving</value>
+  </data>
+  <data name="Stock dispatching" xml:space="preserve">
+    <value>Stock dispatching</value>
+  </data>
+</root>
