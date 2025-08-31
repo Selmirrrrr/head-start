@@ -25,11 +25,6 @@ public class LayoutService
     private bool _systemPreferences;
 
     /// <summary>
-    /// Gets or sets a value indicating whether the layout is right-to-left (RTL).
-    /// </summary>
-    public bool IsRTL { get; private set; }
-
-    /// <summary>
     /// Gets or sets the current dark/light mode.
     /// </summary>
     public DarkLightMode CurrentDarkLightMode { get; private set; } = DarkLightMode.Light;
@@ -85,8 +80,6 @@ public class LayoutService
                 DarkLightMode.System => isDarkModeDefaultTheme,
                 _ => IsDarkMode
             };
-
-            IsRTL = _userPreferences.RightToLeft;
         }
         else
         {
@@ -147,18 +140,6 @@ public class LayoutService
         }
 
         _userPreferences!.DarkLightTheme = CurrentDarkLightMode;
-        await _userPreferencesService.SaveUserPreferences(_userPreferences);
-        OnMajorUpdateOccurred();
-    }
-
-    /// <summary>
-    /// Toggles the right-to-left (RTL) layout.
-    /// </summary>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    public async Task ToggleRightToLeft()
-    {
-        IsRTL = !IsRTL;
-        _userPreferences!.RightToLeft = IsRTL;
         await _userPreferencesService.SaveUserPreferences(_userPreferences);
         OnMajorUpdateOccurred();
     }

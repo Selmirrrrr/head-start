@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using Ardalis.GuardClauses;
 using Blazored.LocalStorage;
+using CleanAspire.ClientApp.Configurations;
 using HeadStart.Client.Authorization;
 using HeadStart.Client.Generated;
 using HeadStart.Client.Services;
@@ -34,7 +35,7 @@ public static class ServiceCollectionExtensions
             config.SnackbarConfiguration.ShowTransitionDuration = 500;
             config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
         });
-        services.AddLocalization();
+        services.AddLocalization(options => options.ResourcesPath = "Resources");
         services.AddMudPopoverService();
         services.AddMudBlazorSnackbar();
         services.AddMudBlazorDialog();
@@ -51,7 +52,6 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="environment"></param>
-    /// <returns>An instance of <see cref="IServiceCollection"/>.</returns>
     public static void AddClientLayer(this IServiceCollection services, IWebAssemblyHostEnvironment environment)
     {
         Guard.Against.Null(services);
@@ -63,6 +63,9 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
         services.AddTransient<AuthorizedHandler>();
+        services.AddSingleton<LanguageService>();
+        // Configuration
+        services.AddSingleton(new ClientAppSettings()!);
 
         services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions = JsonSerializerConfigurations.LocalStorageSettings);
 

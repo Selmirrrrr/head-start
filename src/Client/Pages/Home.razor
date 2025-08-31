@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using HeadStart.Client.Generated
+@using HeadStart.Client.Generated.Models
 @inject IHttpClientFactory HttpClientFactory
 <PageTitle>@L["Home"]</PageTitle>
 
@@ -155,4 +157,17 @@
 </MudPaper>
 
 @code {
+    private List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel>? _claims;
+
+    [Inject]
+    public required ApiClientV1 ApiClient { get; set; }
+
+    [Inject]
+    public required NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _claims = (await ApiClient.Api.V1.Users.Me.GetAsync())?.Claims;
+        await InvokeAsync(StateHasChanged);
+    }
 }

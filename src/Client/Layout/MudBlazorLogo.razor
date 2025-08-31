@@ -1,0 +1,50 @@
+﻿
+
+<?xml version="1.0" encoding="utf-8" ?>
+<svg class="@Class" style="@Style"   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- 外部圆圈 (线条填充为渐变，背景透明) -->
+    <circle cx="12" cy="12" r="11" stroke="url(#circleGradient)" stroke-width="1.5" fill="none" />
+
+    <!-- 渐变定义 -->
+    <defs>
+        <!-- 外部圆圈的渐变效果 -->
+        <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="rgb(89, 74, 226)" />
+            <stop offset="100%" stop-color="rgb(255, 102, 153)" />
+        </linearGradient>
+    </defs>
+
+    <!-- 左侧路径 (缩小并居中) -->
+    <path d="M11.25 6V12.5C11.25 12.75 11.1 13.05 10.85 13.25L6 16.5C5.5 16.85 4.75 16.5 4.65 15.9C4.5 15.25 4.65 14.5 5.05 13.8L7 10L9 6.5C9.2 6.1 9.4 5.8 9.6 5.55C10.1 5 11.25 5.4 11.25 6Z"
+          fill="url(#gradient1)" />
+
+    <!-- 右侧路径 (缩小并居中) -->
+    <path d="M18 16.5L13.15 13.25C12.9 13.05 12.75 12.75 12.75 12.5V6C12.75 5.4 13.9 5 14.4 5.55C14.6 5.8 14.8 6.1 15 6.5L17 10L18.95 13.8C19.35 14.5 19.5 15.25 19.35 15.9C19.25 16.5 18.5 16.85 18 16.5Z"
+          fill="url(#gradient2)" />
+
+    <!-- 底部路径 (缩小并居中) -->
+    <path d="M7 17L11.4 14C11.7 13.8 12.3 13.8 12.6 14L17 17C18.2 17.8 18 18.5 16.6 18.5H7.4C6 18.5 5.8 17.8 7 17Z"
+          fill="url(#gradient3)" />
+
+    <!-- 渐变定义 -->
+    <defs>
+        <linearGradient id="gradient1" x1="4" y1="6" x2="12" y2="16" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#D0BFFF" />
+            <stop offset="1" stop-color="#B48AFF" />
+        </linearGradient>
+        <linearGradient id="gradient2" x1="12" y1="6" x2="20" y2="16" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#B48AFF" />
+            <stop offset="1" stop-color="#9F6EFF" />
+        </linearGradient>
+        <linearGradient id="gradient3" x1="7" y1="14" x2="17" y2="18" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#9F6EFF" />
+            <stop offset="1" stop-color="#7D5FFF" />
+        </linearGradient>
+    </defs>
+</svg>
+
+
+@code {
+    [Parameter] public string Style { get; set; } = default!;
+    [Parameter] public string Class { get; set; } = default!;
+}

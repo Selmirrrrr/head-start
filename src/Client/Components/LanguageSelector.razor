@@ -1,0 +1,47 @@
+﻿@using System.Globalization
+@using HeadStart.Client.Services
+@inject LanguageService LanguageService
+@inject IStorageService StorageService
+<MudTooltip Text="@CurrentLanguage">
+    <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Class="mx-1" Icon="@Icons.Material.Outlined.Translate" Color="Color.Default" Dense="true">
+        @foreach (var language in SupportedLocalization.SupportedLanguages)
+        {
+            if (language.Code == CurrentLanguage)
+            {
+                <MudMenuItem Style="font-weight: bold;background:var(--mud-palette-primary); color:var(--mud-palette-primary-text)">@language.DisplayName</MudMenuItem>
+            }
+            else
+            {
+                <MudMenuItem OnClick="() => ChangeLanguageAsync(language.Code)">@language.DisplayName</MudMenuItem>
+            }
+        }
+    </MudMenu>
+</MudTooltip>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        CurrentLanguage = CultureInfo.CurrentCulture.Name;
+        LanguageService.OnLanguageChanged += UpdateLanguage;
+    }
+
+    public void Dispose()
+    {
+        LanguageService.OnLanguageChanged -= UpdateLanguage;
+    }
+
+    private void UpdateLanguage()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public string? CurrentLanguage { get; set; } = "fr";
+    private async Task ChangeLanguageAsync(string languageCode)
+    {
+        LanguageService.SetLanguage(languageCode);
+        await StorageService.SetItemAsync("_Culture", languageCode);
+        CurrentLanguage = languageCode;
+        Navigation.NavigateTo(Navigation.BaseUri + "?culture=" + languageCode, true);
+    }
+}
