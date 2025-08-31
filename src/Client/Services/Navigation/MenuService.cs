@@ -17,7 +17,7 @@ public class MenuService : IMenuService
                 new()
                 {
                     Title = "Claims",
-                    Icon = Icons.Material.Filled.Sick,
+                    Icon = Icons.Material.Filled.LocalHospital,
                     PageStatus = PageStatus.Completed,
                     IsParent = true,
                     MenuItems = new List<MenuSectionSubItemModel>

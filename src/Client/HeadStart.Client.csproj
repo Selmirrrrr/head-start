@@ -33,12 +33,4 @@
   <ItemGroup>
     <ProjectReference Include="..\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\Blaze\BlazeNavLink.razor" />
-    <_ContentIncludedByDefault Remove="Components\Blaze\BlazePage.razor" />
-    <_ContentIncludedByDefault Remove="Components\Blaze\BlazePanel.razor" />
-    <_ContentIncludedByDefault Remove="Components\Blaze\BlazeSummary.razor" />
-    <_ContentIncludedByDefault Remove="Pages\DashboardPages\ProductsPage.razor" />
-    <_ContentIncludedByDefault Remove="Pages\DashboardPages\TenantsPage.razor" />
-  </ItemGroup>
 </Project>
