@@ -8,89 +8,9 @@
 <MudContainer MaxWidth="MaxWidth.Large">
     <div class="@ContentClassNames">
         <MudPaper Class="pa-4 mb-3">
-            <style>
-
-                .circle {
-                    width: 0.5rem;
-                    height: 0.5rem;
-                    display: inline-block;
-                }
-
-                .rounded-circle{
-                    border-radius: 50%;
-                }
-                .bg-success {
-                    background-color: #28a745 !important;
-                }
-                .bg-warning {
-                    background-color: #ffc107 !important;
-                }
-
-                .bg-primary {
-                    background-color: #0d6efd !important;
-                }
-
-                .bg-danger {
-                    background-color: #dc3545 !important;
-                }
-
-                .bg-secondary {
-                    background-color: #6c757d !important;
-                }
-
-                .bg-dark {
-                    background-color: #343a40 !important;
-                }
-
-                .bar-label {
-                    font-size: .625rem;
-                    color: #6c757d;
-                }
-
-                .text-nowrap {
-                    white-space: nowrap;
-                }
-
-                .fw-semibold {
-                    font-weight: 600;
-                }
-
-                .small, small {
-                    font-size: .875em;
-                }
-
-                .progress {
-                    background-color: #e9ecef;
-                    border-radius: 0.25rem;
-                    overflow: hidden;
-                    height: 8px;
-                    display: flex;
-                }
-
-                .progress-bar {
-                    height: 100%;
-                    transition: width 0.6s ease;
-                }
-                @@media (max-width: 850px) {
-                    .flex-row
-
-                {
-                    flex-wrap: wrap;
-                }
-
-                }
-
-                .fw-bold {
-                    font-weight: 700 !important;
-                }
-
-                .fs-5 {
-                    font-size: 1.25rem !important;
-                }
-            </style>
             <div class="d-flex flex-row gap-3">
                 <div class="d-flex flex-column">
-                    <div class="text-muted text-nowrap small">Invoiced amount</div>
+                    <div class="text-muted text-nowrap small">@L["Invoiced amount"]</div>
                     <div class="fs-5 fw-bold text-nowrap">1,167,986 EUR</div>
                 </div>
                 <div class="d-flex flex-column flex-grow-1 gap-3">
