@@ -1,14 +1,97 @@
-﻿@inherits LayoutComponentBase
+﻿@using HeadStart.Client.Services
+@using HeadStart.Client.Services.UserPreferences
+@inherits LayoutComponentBase
 @layout MainLayout
+@inject LayoutService LayoutService
+@inject IDialogService DialogService
+@inject IUserProfileState UserProfileState
+
 <MudLayout>
-    <Appbar></Appbar>
-    <Navbar></Navbar>
-    <MudMainContent Style="padding-top:1.5rem !important">
-        <MudContainer Gutters="false">
-            @Body
+    <HeaderMenu NavigationMenuDrawerOpen="_navigationMenuDrawerOpen"
+                OpenSearchDialog="OpenSearchDialog"
+                IsDarkMode="@LayoutService.IsDarkMode"
+                ToggleNavigationMenuDrawer="ToggleNavigationMenuDrawer" />
+    <NavigationMenu DrawerOpen="_navigationMenuDrawerOpen" Roles="@(UserProfile?.AssignedRoles??[])"
+                    DrawerOpenChanged="NavigationMenuDrawerOpenChangedHandler"/>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mb-4 mt-4">
+            <ErrorBoundary @ref="ErrorBoundary">
+                <ChildContent>
+                    <CascadingValue Value="@UserProfile">
+                        @Body
+                    </CascadingValue>
+                </ChildContent>
+                <ErrorContent Context="exception">
+                    <CustomError Exception="exception"></CustomError>
+                </ErrorContent>
+            </ErrorBoundary>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 @code {
+private bool _commandPaletteOpen;
+    private bool _navigationMenuDrawerOpen = true;
+    private UserProfile? UserProfile;
+    private ErrorBoundary? ErrorBoundary { set; get; }
+    [CascadingParameter] private Task<AuthenticationState> AuthState { get; set; } = default!;
 
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthState;
+        UserProfileState.Changed += OnUserProfileChanged;
+
+        await UserProfileState.EnsureInitializedAsync();
+        UserProfile = UserProfileState.Value;
+    }
+
+    public void Dispose()
+    {
+        UserProfileState.Changed -= OnUserProfileChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        ResetBoundary();
+    }
+
+    private void OnUserProfileChanged(object? sender, UserProfile userProfile)
+    {
+        UserProfile = userProfile;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void ResetBoundary()
+    {
+        // On each page navigation, reset any error state
+        ErrorBoundary?.Recover();
+    }
+
+    protected void NavigationMenuDrawerOpenChangedHandler(bool state)
+    {
+        _navigationMenuDrawerOpen = state;
+    }
+
+    protected void ToggleNavigationMenuDrawer()
+    {
+        _navigationMenuDrawerOpen = !_navigationMenuDrawerOpen;
+    }
+
+    private async Task OpenSearchDialog()
+    {
+        if (!_commandPaletteOpen)
+        {
+            var options = new DialogOptions
+            {
+                NoHeader = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            };
+
+            var commandPalette = await DialogService.ShowAsync<SearchDialog>("", options);
+            _commandPaletteOpen = true;
+
+            await commandPalette.Result;
+            _commandPaletteOpen = false;
+        }
+    }
 }

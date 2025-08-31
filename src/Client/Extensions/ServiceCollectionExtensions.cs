@@ -2,10 +2,12 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using Ardalis.GuardClauses;
 using Blazored.LocalStorage;
-using CleanAspire.ClientApp.Configurations;
 using HeadStart.Client.Authorization;
+using HeadStart.Client.Configurations;
 using HeadStart.Client.Generated;
 using HeadStart.Client.Services;
+using HeadStart.Client.Services.Navigation;
+using HeadStart.Client.Services.Notifications;
 using HeadStart.Client.Services.UserPreferences;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -64,6 +66,16 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
         services.AddTransient<AuthorizedHandler>();
         services.AddSingleton<LanguageService>();
+        services.AddScoped<IMenuService, MenuService>();
+        services.AddScoped<InMemoryNotificationService>();
+        services.AddScoped<IUserProfileState, UserProfileState>();
+        services.AddScoped<INotificationService>(sp =>
+        {
+            var service = sp.GetRequiredService<InMemoryNotificationService>();
+            service.Preload();
+            return service;
+        });
+
         // Configuration
         services.AddSingleton(new ClientAppSettings()!);
 

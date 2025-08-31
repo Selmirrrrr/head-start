@@ -1,32 +1,36 @@
+html {
+  font-size: 14px; /* 默认：1rem = 14px */
+}
 .mud-main-content {
   height: 100%;
   min-height: 100vh;
   display: flex;
 }
 
-.mud-chip {
-  font-size: var(--mud-typography-default-size);
+.mud-chip.mud-chip-size-medium {
+  font-size: var(--mud-typography-default-size) !important;
 }
 
 .mud-chip.mud-chip-size-small {
-  font-size: var(--mud-typography-body1-size);
+  font-size: var(--mud-typography-body2-size) !important;
 }
 
+.mud-chip {
+  font-size: var(--mud-typography-default-size);
+}
 .mud-tabs {
   background-color: var(--mud-palette-surface);
 }
 
+.mud-input-control-margin-dense .mud-input > input.mud-input-root,
+.mud-input-control-margin-dense div.mud-input-slot.mud-input-root {
+  font-size: 0.90em;
+}
+
 .mud-input-control > .mud-input-control-input-container > .mud-input-label-inputcontrol {
-  font-size: var(--mud-typography-subtitle1-size);
-}
-
-.mud-input > input.mud-input-root, div.mud-input-slot.mud-input-root {
   font-size: var(--mud-typography-default-size) !important;
 }
 
-.mud-input > textarea.mud-input-root {
-  font-size: var(--mud-typography-default-size) !important;
-}
 
 .mud-simple-table table * tr > td, .mud-simple-table table * tr th {
   font-size: var(--mud-typography-default-size) !important;
@@ -34,6 +38,7 @@
 
 .mud-expand-panel .mud-expand-panel-header {
   font-size: var(--mud-typography-default-size) !important;
+
 }
 
 .mud-button-year {
@@ -43,21 +48,10 @@
 .mud-table-cell {
   font-size: var(--mud-typography-default-size) !important;
 }
-
-
-.mud-typography-subtitle2 {
-  font-size: var(--mud-typography-subtitle2-size);
-  color: var(--mud-palette-text-secondary);
+.mud-table-dense .mud-table-cell {
+  font-size: var(--mud-typography-body2-size) !important;
 }
 
-.mud-typography-body1 {
-  font-size: var(--mud-typography-body1-size);
-}
-
-.mud-typography-body2 {
-  font-size: var(--mud-typography-body2-size);
-  /*color: var(--mud-palette-text-secondary);*/
-}
 
 .mud-button-outlined-size-small {
   font-size: var(--mud-typography-body2-size);
@@ -65,7 +59,7 @@
 
 .mud-grid.readonly-grid > .mud-grid-item {
   border-bottom: 1px solid var(--mud-palette-table-lines);
-  padding-bottom: 2px;
+  padding-bottom:2px;
 }
 
 .mud-nav-link {
@@ -76,164 +70,35 @@
   text-transform: none;
   background: rgba(var(--mud-palette-primary-rgb), 0.1)
 }
-.mud-list-item-icon{
-  min-width:none !important;
-}
+
 .side-menu .mud-chip.mud-chip-size-small {
   font-size: 0.625rem;
   height: 1.125rem;
 }
-.appbar-special-menu
-.mud-list-item
 
-{
-  border-radius: 6px;
-  margin: 4px 0;
-}
-.appbar-special-menu
-.mud-list-subheader {
-  font-weight: 700;
-  font-size: 1rem;
-  color: #8898aa;
-}
-.appbar-special-menu
-.mud-typography-body1 {
-  font-weight: 600;
-}
-.appbar-special-menu
-.mud-typography-body2 {
-  font-weight: 600;
-  color: #8898aa;
-}
-.appbar-special-menu
-.mud-list-item-disabled
-.mud-typography-body2 {
-  font-weight: 600;
-  color: rgba(136, 152, 170, 0.6);
-}
-.layout-menu-shadow {
-  box-shadow: 0 30px 60px rgba(0,0,0,0.12) !important;
-}
-
-.mud-table.mud-data-grid.mud-xs-table.mud-table-dense.mud-table-hover.mud-elevation-1 .mud-toolbar {
+.mud-table.mud-data-grid .mud-toolbar {
   height: auto !important;
   padding: 1rem
 }
 
 
-.mud-table.mud-data-grid.mud-xs-table.mud-table-dense.mud-table-hover.mud-elevation-1 .mud-toolbar-gutters {
+.mud-table.mud-data-grid .mud-toolbar-gutters {
   height: auto !important;
   padding: 1rem
 }
 
-.mud-table.mud-data-grid.mud-xs-table.mud-table-dense.mud-table-hover.mud-elevation-1 .mud-table-toolbar {
+.mud-table.mud-data-grid .mud-table-toolbar {
   height: auto !important;
   padding: 1rem
 }
 
-.mud-table.mud-data-grid.mud-xs-table.mud-table-dense.mud-table-hover.mud-elevation-1 .mud-table-pagination-toolbar {
+.mud-table.mud-data-grid .mud-table-pagination-toolbar {
   height: auto !important;
   padding: 0rem !important;
 }
 
-.network-status-indicator {
-  width: 43px;
-  height: 43px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto; /* Center horizontally if needed */
-  box-sizing: border-box;
-}
 
-.avatar-container {
-  position: relative;
-  width: 35px; /* Fixed container width, same as avatar */
-  height: 35px; /* Fixed container height, same as avatar */
-}
 
-/* Red rotating border (common style) */
-.rotating-border {
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: 43px;
-  height: 43px;
-  border: 3px solid transparent; /* Default transparent */
-  border-radius: 50%;
-  animation: spin 2s linear infinite; /* Rotating animation */
-  z-index: 1;
-  box-sizing: border-box;
-}
-
-/* Red border in dark mode */
-.rotating-border.dark-mode {
-  border-top: 3px solid rgba(255, 0, 0, 0.8); /* Dark red border */
-  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6), 0 0 12px rgba(255, 50, 50, 0.4); /* Enhanced shadow */
-}
-
-/* Red border in light mode */
-.rotating-border.light-mode {
-  border-top: 3px solid rgba(255, 50, 50, 0.8); /* Light red border */
-  box-shadow: 0 0 6px rgba(255, 50, 50, 0.5), 0 0 10px rgba(255, 100, 100, 0.3); /* Soft shadow */
-}
-
-/* Dynamic green border (common style) */
-.online-border {
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: 43px;
-  height: 43px;
-  border-radius: 50%;
-  animation: green-pulse 2s infinite; /* Breathing animation */
-  z-index: 1;
-  box-sizing: border-box;
-}
-
-/* Green border in dark mode */
-.online-border.dark-mode {
-  border: 3px solid rgba(0, 128, 0, 1); /* Dark green border */
-  box-shadow: 0 0 8px rgba(0, 128, 0, 0.6), 0 0 12px rgba(0, 255, 0, 0.4);
-}
-
-/* Green border in light mode */
-.online-border.light-mode {
-  border: 3px solid rgba(0, 200, 0, 1); /* Light green border */
-  box-shadow: 0 0 6px rgba(0, 200, 0, 0.5), 0 0 10px rgba(0, 255, 0, 0.3);
-}
-/* Breathing animation */
-@keyframes green-pulse {
-  0% {
-    box-shadow: 0 0 8px rgba(0, 128, 0, 0.6), 0 0 12px rgba(0, 255, 0, 0.4);
-    transform: scale(1);
-  }
-
-  50% {
-    box-shadow: 0 0 10px rgba(0, 128, 0, 0.8), 0 0 14px rgba(0, 255, 0, 0.5);
-    transform: scale(1.03); /* Reduce scaling amplitude */
-  }
-
-  100% {
-    box-shadow: 0 0 8px rgba(0, 128, 0, 0.6), 0 0 12px rgba(0, 255, 0, 0.4);
-    transform: scale(1);
-  }
-}
-
-MudAvatar {
-  position: relative;
-  z-index: 2; /* Ensure avatar is above the border */
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 
 .blazor-error-boundary {
@@ -245,3 +110,4 @@ MudAvatar {
 .blazor-error-boundary::after {
   content: "An error has occurred."
 }
+
