@@ -16,7 +16,7 @@ public class Role : IMayHaveTenant
     public LTree? TenantPath { get; set; }
     public Tenant Tenant { get; set; } = null!;
 
-    public ICollection<UserTenantRole> UserTenantRoles { get; set; } = new List<UserTenantRole>();
+    public ICollection<Droit> Droits { get; set; } = new List<Droit>();
 }
 
 public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>

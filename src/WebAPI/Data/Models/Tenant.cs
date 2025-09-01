@@ -8,6 +8,8 @@ public class Tenant
     public required LTree Path { get; set; }
 
     public required string Name { get; set; }
+
+    public ICollection<Droit> Droits { get; set; } = new List<Droit>();
 }
 
 public class TenantEntityTypeConfiguration : IEntityTypeConfiguration<Tenant>

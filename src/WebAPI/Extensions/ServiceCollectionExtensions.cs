@@ -1,9 +1,11 @@
 using System.Net.Mime;
+using System.Security.Claims;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +71,8 @@ internal static class ServiceCollectionExtensions
                     var testBlog = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
                     if (testBlog == null)
                     {
+                        var roleAdminId = Guid.CreateVersion7();
+                        var roleUserId = Guid.CreateVersion7();
                         context.Set<Tenant>().Add(new Tenant { Path = "HeadStart", Name = "HeadStart" });
                         context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne", Name = "HeadStart Lausanne" });
                         context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich", Name = "HeadStart Zürich" });
@@ -76,6 +80,8 @@ internal static class ServiceCollectionExtensions
                         context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne.Ouchy", Name = "HeadStart Lausanne - Ouchy" });
                         context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich.Paradeplatz", Name = "HeadStart Zürich - Paradeplatz" });
                         context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich.Enge", Name = "HeadStart Zürich - Enge" });
+                        context.Set<Role>().Add(new Role { Id = roleAdminId, Code = "Admin", CodeTrads = new Dictionary<string, string> { { "fr", "Administrateur" }, { "de", "Administrator" }, { "it", "Amministratore" }, { "en", "Administrator" } }, TenantPath = "HeadStart" });
+                        context.Set<Role>().Add(new Role { Id = roleUserId, Code = "User", CodeTrads = new Dictionary<string, string> { { "fr", "Utilisteur" }, { "de", "Benutzer" }, { "it", "Utilizatore" }, { "en", "User" } }, TenantPath = "HeadStart" });
                         await context.SaveChangesAsync(cancellationToken);
                     }
                 }));

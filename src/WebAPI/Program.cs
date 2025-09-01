@@ -37,11 +37,7 @@ try
     {
         await app.InitializeDatabaseAsync();
     }
-    else if (app.IsApiClientGenerationMode())
-    {
-        await app.InitializeKiotaAsync();
-    }
-    else if (app.IsSwaggerJsonExportMode())
+    else if (app.IsApiClientGenerationMode() || app.IsSwaggerJsonExportMode())
     {
         await app.InitializeKiotaAsync();
     }

@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadStart.WebAPI.Data.Models;
 
-public class User
+public class Utilisateur
 {
     public Guid Id { get; set; }
+    public Guid IdpId { get; set; }
 
     public required string Email { get; set; }
 
@@ -13,26 +14,32 @@ public class User
 
     public required string Prenom { get; set; }
 
-    public bool IsDarkMode { get; set; }
+    public bool DarkMode { get; set; }
 
     public string LanguageCode { get; set; } = "fr";
 
-    public Tenant? LastSelectedTenant { get; set; }
-    public LTree? LastSelectedTenantPath { get; set; }
+    public Tenant? DernierTenantSelectionne { get; set; }
+    public LTree? DernierTenantSelectionneId { get; set; }
 
-    public ICollection<UserTenantRole> UserTenantRoles { get; set; } = new List<UserTenantRole>();
+    public ICollection<Droit> Droits { get; set; } = new List<Droit>();
 }
 
-public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
+public class UserEntityTypeConfiguration : IEntityTypeConfiguration<Utilisateur>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<Utilisateur> builder)
     {
-        builder.ToTable("Users");
+        builder.ToTable("Utilisateurs");
 
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)
             .ValueGeneratedOnAdd();
+
+        builder.Property(u => u.IdpId)
+            .IsRequired();
+
+        builder.HasIndex(u => u.IdpId)
+            .IsUnique();
 
         builder.Property(u => u.Email)
             .HasMaxLength(255)
@@ -49,7 +56,7 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(u => u.IsDarkMode)
+        builder.Property(u => u.DarkMode)
             .HasDefaultValue(false);
 
         builder.Property(u => u.LanguageCode)
@@ -57,13 +64,13 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .HasDefaultValue("fr")
             .IsRequired();
 
-        builder.Property(u => u.LastSelectedTenantPath)
+        builder.Property(u => u.DernierTenantSelectionneId)
             .HasColumnType("ltree")
             .IsRequired(false);
 
-        builder.HasOne(u => u.LastSelectedTenant)
+        builder.HasOne(u => u.DernierTenantSelectionne)
             .WithMany()
-            .HasForeignKey(u => u.LastSelectedTenantPath)
+            .HasForeignKey(u => u.DernierTenantSelectionneId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.SetNull);
     }

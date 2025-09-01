@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aspire\ServiceDefaults\HeadStart.Aspire.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
     <ProjectReference Include="..\SharedKernel\HeadStart.SharedKernel.csproj" />
   </ItemGroup>
   <Target Name="ClientGen" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">

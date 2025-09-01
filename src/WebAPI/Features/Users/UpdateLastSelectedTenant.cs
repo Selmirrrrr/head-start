@@ -37,9 +37,9 @@ public static class UpdateLastSelectedTenant
             }
 
             var user = await DbContext.Users
-                .Include(u => u.UserTenantRoles)
+                .Include(u => u.Droits)
                 .FirstOrDefaultAsync(u => u.Id == userId, ct);
-                
+
             if (user == null)
             {
                 await Send.NotFoundAsync(ct);
@@ -49,26 +49,26 @@ public static class UpdateLastSelectedTenant
             // Validate that the user has access to this tenant
             if (!string.IsNullOrEmpty(req.LastSelectedTenantPath))
             {
-                var hasAccess = user.UserTenantRoles.Any(utr => 
+                var hasAccess = user.Droits.Any(utr =>
                     utr.TenantPath.ToString() == req.LastSelectedTenantPath);
-                    
+
                 if (!hasAccess)
                 {
                     AddError("User does not have access to this tenant");
                     await Send.ErrorsAsync(403, ct);
                     return;
                 }
-                
-                user.LastSelectedTenantPath = new LTree(req.LastSelectedTenantPath);
+
+                user.DernierTenantSelectionneId = new LTree(req.LastSelectedTenantPath);
             }
             else
             {
-                user.LastSelectedTenantPath = null;
+                user.DernierTenantSelectionneId = null;
             }
 
             await DbContext.SaveChangesAsync(ct);
 
-            await Send.OkAsync(new Response { LastSelectedTenantPath = user.LastSelectedTenantPath?.ToString() }, ct);
+            await Send.OkAsync(new Response { LastSelectedTenantPath = user.DernierTenantSelectionneId?.ToString() }, ct);
         }
     }
 }

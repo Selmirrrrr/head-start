@@ -10,9 +10,9 @@ public class HeadStartDbContext : DbContext
     }
 
     public DbSet<Tenant> Tenants { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<Utilisateur> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<UserTenantRole> UserTenantRoles { get; set; }
+    public DbSet<Droit> UserTenantRoles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

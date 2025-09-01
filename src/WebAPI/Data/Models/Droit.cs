@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadStart.WebAPI.Data.Models;
 
-public class UserTenantRole
+public class Droit
 {
     public Guid UserId { get; set; }
-    public User User { get; set; } = null!;
+    public Utilisateur Utilisateur { get; set; } = null!;
 
     public LTree TenantPath { get; set; }
     public Tenant Tenant { get; set; } = null!;
@@ -18,26 +18,26 @@ public class UserTenantRole
     public DateTime? ExpiresAt { get; set; }
 }
 
-public class UserTenantRoleEntityTypeConfiguration : IEntityTypeConfiguration<UserTenantRole>
+public class UserTenantRoleEntityTypeConfiguration : IEntityTypeConfiguration<Droit>
 {
-    public void Configure(EntityTypeBuilder<UserTenantRole> builder)
+    public void Configure(EntityTypeBuilder<Droit> builder)
     {
-        builder.ToTable("UserTenantRoles");
+        builder.ToTable("Droits");
 
         builder.HasKey(utr => new { utr.UserId, utr.TenantPath, utr.RoleId });
 
-        builder.HasOne(utr => utr.User)
-            .WithMany(u => u.UserTenantRoles)
+        builder.HasOne(utr => utr.Utilisateur)
+            .WithMany(u => u.Droits)
             .HasForeignKey(utr => utr.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(utr => utr.Tenant)
-            .WithMany()
+            .WithMany(utr => utr.Droits)
             .HasForeignKey(utr => utr.TenantPath)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(utr => utr.Role)
-            .WithMany(r => r.UserTenantRoles)
+            .WithMany(r => r.Droits)
             .HasForeignKey(utr => utr.RoleId)
             .OnDelete(DeleteBehavior.Cascade);
 

@@ -42,10 +42,10 @@ public static class UpdateDarkMode
                 return;
             }
 
-            user.IsDarkMode = req.IsDarkMode;
+            user.DarkMode = req.IsDarkMode;
             await DbContext.SaveChangesAsync(ct);
 
-            await Send.OkAsync(new Response { IsDarkMode = user.IsDarkMode }, ct);
+            await Send.OkAsync(new Response { IsDarkMode = user.DarkMode }, ct);
         }
     }
 }
