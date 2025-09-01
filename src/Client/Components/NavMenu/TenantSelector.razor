@@ -1,8 +1,7 @@
 ﻿@using HeadStart.Client.Generated
 @using HeadStart.Client.Generated.Models
-@using HeadStart.Client.Services.UserPreferences
+@using HeadStart.Client.Services.Users
 @inject IStringLocalizer<TenantSelector> L
-@inject IUserProfileState UserProfileState
 
 <MudStack Class="flex-grow-1" Row="true" AlignItems="AlignItems.Center" Spacing="2" Justify="Justify.SpaceBetween">
     <MudIcon Class="ml-4 mr-2"
@@ -17,7 +16,7 @@
                         @L[AppSettings.AppName]
                     </MudText>
                     <MudText Typo="Typo.subtitle1" Class="mud-secondary-text">
-                        @(UserProfile?.TenantName ?? "No Organization")
+                        @(_userState.DernierTenantSelectionne ?? "No Organization")
                     </MudText>
                 </MudStack>
                 <MudIcon Icon="@Icons.Material.Outlined.KeyboardDoubleArrowDown" Size="Size.Small" Class="mr-4" />
@@ -25,15 +24,12 @@
         </ActivatorContent>
         <ChildContent>
             <div style="min-width: 200px;">
-                @if (UserProfile is not null)
-                {
-                    <div class="mx-4 mt-2 mb-3">
-                        <MudText Typo="Typo.body2" Class="mud-secondary-text">
-                            @L["Switch Organization"]
-                        </MudText>
-                    </div>
-                    <MudDivider Class="my-2" />
-                }
+                <div class="mx-4 mt-2 mb-3">
+                    <MudText Typo="Typo.body2" Class="mud-secondary-text">
+                        @L["Switch Organization"]
+                    </MudText>
+                </div>
+                <MudDivider Class="my-2" />
 
                 @if (_availableTenants != null)
                 {
@@ -47,7 +43,7 @@
                     }
                     @foreach (var tenant in _availableTenants)
                     {
-                        <MudMenuItem OnClick="() => SwitchToTenant(tenant.Id)" Disabled="@(IsSwitching)">
+                        <MudMenuItem OnClick="() => SwitchToTenant(tenant.Id)" Disabled="@(_isSwitching)">
                             <div class="d-flex align-center">
                                 <MudStack Spacing="0">
                                     <MudText Typo="Typo.body2">
@@ -59,7 +55,7 @@
                                     </MudText>
 
                                 </MudStack>
-                                @if (tenant.Id == UserProfile?.TenantId)
+                                @if (tenant.Id == _userState.DernierTenantSelectionne)
                                 {
                                     <MudIcon Icon="@Icons.Material.Filled.Check" Class="ml-2" Color="Color.Primary" />
                                 }
@@ -85,19 +81,27 @@
 {
     [Inject]
     private ApiClientV1 Apiclient { get; set; } = null!;
+    
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
 
     private List<HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel>? _availableTenants;
-    private const bool IsSwitching = false;
+    private UserState _userState => UserState.CurrentState;
+    private bool _isSwitching = false;
     private const bool HasSwitchPermission = true;
-    private UserProfile? UserProfile => UserProfileState.Value;
 
     protected override async Task OnInitializedAsync()
     {
         _availableTenants = (await Apiclient.Api.V1.Tenants.GetAsync())?.Tenants;
     }
 
-    private static Task SwitchToTenant(string? tenantId)
+    private async Task SwitchToTenant(string? tenantId)
     {
-        throw new NotImplementedException();
+        _isSwitching = true;
+        StateHasChanged();
+        
+        await UserState.SetLastSelectedTenantAsync(tenantId);
+        
+        _isSwitching = false;
+        StateHasChanged();
     }
 }

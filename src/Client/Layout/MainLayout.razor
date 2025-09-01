@@ -1,30 +1,36 @@
-﻿@using HeadStart.Client.Services
+﻿@using HeadStart.Client.Services.Users
+@using HeadStart.Client.Themes
 @inherits LayoutComponentBase
+@implements IDisposable
 
 <PageTitle>Claimly</PageTitle>
 
-<MudThemeProvider Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="@LayoutService.SetDarkMode" />
+<MudThemeProvider Theme="@Theme.ApplicationTheme()" IsDarkMode="@UserState.CurrentState.DarkMode" IsDarkModeChanged="@OnDarkModeChanged" />
 <MudPopoverProvider />
 <MudSnackbarProvider />
 <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" />
 @Body
 
 @code{
-    [Inject]
-    public LayoutService LayoutService { get; set; } = default!;
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        LayoutService.MajorUpdateOccurred += LayoutServiceOnMajorUpdateOccured;
-        await ApplyUserPreferences();
+        UserState.OnStateChanged += OnStateChanged;
     }
 
-    private async Task ApplyUserPreferences()
+    private async Task OnDarkModeChanged(bool isDarkMode)
     {
-        {
-            await LayoutService.ApplyUserPreferences(false);
-        }
+        await UserState.SetDarkModeAsync(isDarkMode);
     }
 
-    private void LayoutServiceOnMajorUpdateOccured(object? sender, EventArgs e) => StateHasChanged();
+    private void OnStateChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        UserState.OnStateChanged -= OnStateChanged;
+    }
 }

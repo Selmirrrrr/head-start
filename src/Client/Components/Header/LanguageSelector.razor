@@ -1,7 +1,9 @@
 ﻿@using System.Globalization
 @using HeadStart.Client.Services
-@inject LanguageService LanguageService
+@using HeadStart.Client.Services.Users
 @inject IStorageService StorageService
+@implements IDisposable
+
 <MudTooltip Text="@CurrentLanguage">
     <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Class="mx-1" Icon="@Icons.Material.Outlined.Translate" Color="Color.Default" Dense="true">
         @foreach (var language in SupportedLocalization.SupportedLanguages)
@@ -20,28 +22,31 @@
 
 @code
 {
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
+    
     protected override void OnInitialized()
     {
-        CurrentLanguage = CultureInfo.CurrentCulture.Name;
-        LanguageService.OnLanguageChanged += UpdateLanguage;
+        CurrentLanguage = UserState.CurrentState.LangueCode;
+        UserState.OnStateChanged += UpdateLanguage;
     }
 
     public void Dispose()
     {
-        LanguageService.OnLanguageChanged -= UpdateLanguage;
+        UserState.OnStateChanged -= UpdateLanguage;
     }
 
     private void UpdateLanguage()
     {
+        CurrentLanguage = UserState.CurrentState.LangueCode;
         InvokeAsync(StateHasChanged);
     }
 
-    public string? CurrentLanguage { get; set; } = "fr";
-    private async Task ChangeLanguageAsync(string languageCode)
+    public string CurrentLanguage { get; set; } = "fr";
+
+    public async Task ChangeLanguageAsync(string languageCode)
     {
-        LanguageService.SetLanguage(languageCode);
+        await UserState.SetLanguageAsync(languageCode);
         await StorageService.SetItemAsync("_Culture", languageCode);
-        CurrentLanguage = languageCode;
         Navigation.NavigateTo(Navigation.BaseUri + "?culture=" + languageCode, true);
     }
 }

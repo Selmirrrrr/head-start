@@ -35,7 +35,7 @@ public static class UpdateDarkMode
                 return;
             }
 
-            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
+            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.IdpId == userId, ct);
             if (user == null)
             {
                 await Send.NotFoundAsync(ct);

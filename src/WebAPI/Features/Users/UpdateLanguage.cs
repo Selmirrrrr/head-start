@@ -35,19 +35,10 @@ public static class UpdateLanguage
                 return;
             }
 
-            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
+            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.IdpId == userId, ct);
             if (user == null)
             {
                 await Send.NotFoundAsync(ct);
-                return;
-            }
-
-            // Validate language code (basic validation for common codes)
-            var validLanguageCodes = new[] { "en", "fr", "de", "es", "it", "pt", "nl", "pl", "ru", "ja", "zh" };
-            if (!validLanguageCodes.Contains(req.LanguageCode.ToLower()))
-            {
-                AddError("Invalid language code");
-                await Send.ErrorsAsync(400, ct);
                 return;
             }
 

@@ -1,40 +1,23 @@
 ﻿@using HeadStart.Client.Components
-@using HeadStart.Client.Services.UserPreferences
+@using HeadStart.Client.Services.Users
 @inject IStringLocalizer<UserInfoCard> L
-@inject IUserProfileState UserProfileState
 
 <div class="pa-4">
     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-        @if (UserProfile is null || string.IsNullOrEmpty(UserProfile.UserId))
-        {
-            <MudProgressCircular Size="Size.Small" Color="Color.Default" Indeterminate="true" />
-            <MudStack Justify="Justify.Center" Spacing="0" Style="flex: 1;">
-                <MudSkeleton Width="100px" Height="16px" />
-                <MudSkeleton Width="120px" Height="14px" />
-            </MudStack>
-        }
-        else
-        {
-            <MudAvatar Style="width: 32px; height: 32px;">
-                @if (string.IsNullOrEmpty(UserProfile.ProfilePictureDataUrl))
-                {
-                    @(string.IsNullOrEmpty(UserProfile.UserName) ? "" : UserProfile.UserName.First())
-                }
-                else
-                {
-                    <MudImage Src="@UserProfile.ProfilePictureDataUrl"></MudImage>
-                }
-            </MudAvatar>
 
-            <MudStack Justify="Justify.SpaceBetween" Spacing="0" Style="flex: 1; min-width: 0;">
-                <MudText Typo="Typo.body2" Style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    @UserProfile.DisplayName
-                </MudText>
-                <MudText Typo="Typo.caption" Class="mud-secondary-text" Style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    @UserProfile.DefaultRole
-                </MudText>
-            </MudStack>
-        }
+        <MudAvatar Style="width: 32px; height: 32px;">
+                @_userState.Prenom @_userState.Nom
+                <MudImage Src="/img/avatar.png"></MudImage>
+        </MudAvatar>
+
+        <MudStack Justify="Justify.SpaceBetween" Spacing="0" Style="flex: 1; min-width: 0;">
+            <MudText Typo="Typo.body2" Style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                @_userState.Prenom @_userState.Nom
+            </MudText>
+            <MudText Typo="Typo.caption" Class="mud-secondary-text" Style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                @(_userState.Droits.Any() ? _userState.Droits[0].RoleCode : "")
+            </MudText>
+        </MudStack>
 
         <MudMenu AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.BottomRight" LockScroll="true">
             <ActivatorContent>
@@ -42,15 +25,12 @@
             </ActivatorContent>
             <ChildContent>
                 <div style="min-width: 200px;">
-                    @if (UserProfile is not null)
-                    {
                         <div class="mx-4 mt-2 mb-3">
-                            <MudText Typo="Typo.body2" Class="mud-secondary-text" Style="font-weight: 500;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                @UserProfile.Email
-                            </MudText>
-                        </div>
-                        <MudDivider Class="my-2" />
-                    }
+                        <MudText Typo="Typo.body2" Class="mud-secondary-text" Style="font-weight: 500;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            @_userState.Email
+                        </MudText>
+                    </div>
+                    <MudDivider Class="my-2" />
                     <MudMenuItem Href="/user/profile">
                         <div class="d-flex align-center">
                             <MudIcon Class="mx-2" Icon="@Icons.Material.Filled.Person" />
@@ -86,6 +66,7 @@
 
 @code
 {
-    private UserProfile? UserProfile => UserProfileState.Value;
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
+    private UserState _userState => UserState.CurrentState;
     [Parameter] public EventCallback<MouseEventArgs> OnSettingClick { get; set; }
 }

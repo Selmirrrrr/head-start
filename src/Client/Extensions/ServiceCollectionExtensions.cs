@@ -8,7 +8,7 @@ using HeadStart.Client.Generated;
 using HeadStart.Client.Services;
 using HeadStart.Client.Services.Navigation;
 using HeadStart.Client.Services.Notifications;
-using HeadStart.Client.Services.UserPreferences;
+using HeadStart.Client.Services.Users;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -43,8 +43,6 @@ public static class ServiceCollectionExtensions
         services.AddMudLocalization();
         services.AddBlazoredLocalStorage();
         services.AddScoped<IStorageService, LocalStorageService>();
-        services.AddScoped<IUserPreferencesService, UserPreferencesService>();
-        services.AddScoped<LayoutService>();
         services.AddScoped<DialogServiceHelper>();
     }
     /// <summary>
@@ -63,10 +61,10 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
         services.AddTransient<AuthorizedHandler>();
-        services.AddSingleton<LanguageService>();
         services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<InMemoryNotificationService>();
-        services.AddScoped<IUserProfileState, UserProfileState>();
+        services.AddSingleton<UserStateService>();
+        services.AddScoped<UserStateContainer>();
         services.AddScoped<INotificationService>(sp =>
         {
             var service = sp.GetRequiredService<InMemoryNotificationService>();

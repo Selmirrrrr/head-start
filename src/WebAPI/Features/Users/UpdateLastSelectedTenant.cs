@@ -38,7 +38,7 @@ public static class UpdateLastSelectedTenant
 
             var user = await DbContext.Users
                 .Include(u => u.Droits)
-                .FirstOrDefaultAsync(u => u.Id == userId, ct);
+                .FirstOrDefaultAsync(u => u.IdpId == userId, ct);
 
             if (user == null)
             {
@@ -49,16 +49,6 @@ public static class UpdateLastSelectedTenant
             // Validate that the user has access to this tenant
             if (!string.IsNullOrEmpty(req.LastSelectedTenantPath))
             {
-                var hasAccess = user.Droits.Any(utr =>
-                    utr.TenantPath.ToString() == req.LastSelectedTenantPath);
-
-                if (!hasAccess)
-                {
-                    AddError("User does not have access to this tenant");
-                    await Send.ErrorsAsync(403, ct);
-                    return;
-                }
-
                 user.DernierTenantSelectionneId = new LTree(req.LastSelectedTenantPath);
             }
             else
