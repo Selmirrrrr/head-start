@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using HeadStart.Client.Generated
-@using HeadStart.Client.Generated.Models
 @inject IStringLocalizer<Dashboard> L
 <PageTitle>@Title</PageTitle>
 
@@ -209,8 +208,6 @@
 </div>
 @code
 {
-    private List<HeadStartWebAPIFeaturesUsersGetMe_ClaimsViewModel>? _claims;
-
     [Inject]
     public required ApiClientV1 ApiClient { get; set; }
 
@@ -219,7 +216,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _claims = (await ApiClient.Api.V1.Users.Me.GetAsync())?.Claims;
+        // The user profile is already loaded in ApplicationLayout
+        // which is the parent layout, so we don't need to call it again here
         await InvokeAsync(StateHasChanged);
     }
 

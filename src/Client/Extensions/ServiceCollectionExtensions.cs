@@ -25,7 +25,6 @@ public static class ServiceCollectionExtensions
 {
     public static void TryAddMudBlazor(this IServiceCollection services, IConfiguration config)
     {
-        #region register MudBlazor.Services
         services.AddMudServices(config =>
         {
             MudGlobal.InputDefaults.ShrinkLabel = true;
@@ -47,7 +46,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserPreferencesService, UserPreferencesService>();
         services.AddScoped<LayoutService>();
         services.AddScoped<DialogServiceHelper>();
-        #endregion
     }
     /// <summary>
     /// Registers dependencies for the Blazor Client Application.

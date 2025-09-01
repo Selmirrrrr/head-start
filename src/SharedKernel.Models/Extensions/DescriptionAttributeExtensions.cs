@@ -10,30 +10,28 @@ public static class DescriptionAttributeExtensions
         var name = e.ToString();
         var memberInfo = e.GetType().GetMember(name)[0];
         var descriptionAttributes = memberInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        if (descriptionAttributes.Any()) return ((DescriptionAttribute)descriptionAttributes.First()).Description;
-        return name;
+        return descriptionAttributes.Any() ? ((DescriptionAttribute)descriptionAttributes.First()).Description : name;
     }
 
     public static string GetMemberDescription<T, TProperty>(this T t, Expression<Func<T, TProperty>> property)
         where T : class
     {
-        if (t is null) t = Activator.CreateInstance<T>();
+        Activator.CreateInstance<T>();
+
         var memberName = ((MemberExpression)property.Body).Member.Name;
         var memberInfo = typeof(T).GetMember(memberName).FirstOrDefault();
-        if (memberInfo != null)
+        if (memberInfo == null)
         {
-            var descriptionAttributes = memberInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            if (descriptionAttributes.Any()) return ((DescriptionAttribute)descriptionAttributes.First()).Description;
+            return memberName;
         }
 
-        return memberName;
+        var descriptionAttributes = memberInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+        return descriptionAttributes.Any() ? ((DescriptionAttribute)descriptionAttributes.First()).Description : memberName;
     }
 
     public static string GetClassDescription<T>(this T t) where T : class
     {
-        if (t is null) t = (T)Activator.CreateInstance(typeof(T))!;
         var descriptionAttributes = t.GetType().GetCustomAttributes(typeof(DescriptionAttribute), false);
-        if (descriptionAttributes.Any()) return (descriptionAttributes.First() as DescriptionAttribute)!.Description;
-        return nameof(t);
+        return descriptionAttributes.Any() ? (descriptionAttributes.First() as DescriptionAttribute)!.Description : nameof(t);
     }
 }

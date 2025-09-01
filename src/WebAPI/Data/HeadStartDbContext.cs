@@ -10,4 +10,17 @@ public class HeadStartDbContext : DbContext
     }
 
     public DbSet<Tenant> Tenants { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<UserTenantRole> UserTenantRoles { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfiguration(new TenantEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new RoleEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new UserTenantRoleEntityTypeConfiguration());
+    }
 }

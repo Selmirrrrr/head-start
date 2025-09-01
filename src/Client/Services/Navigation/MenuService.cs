@@ -29,6 +29,14 @@ public class MenuService : IMenuService
                 },
                 new()
                 {
+                    Title = "Tenants",
+                    Roles = [RoleName.Admin, RoleName.Users],
+                    Icon = Icons.Material.Filled.Compare,
+                    Href = "/tenants",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
                     Title = "Analytics",
                     Roles = [RoleName.Admin, RoleName.Users],
                     Icon = Icons.Material.Filled.Analytics,
