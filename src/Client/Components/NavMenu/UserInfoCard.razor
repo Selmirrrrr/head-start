@@ -18,7 +18,7 @@
 
         <MudStack Justify="Justify.SpaceBetween" Spacing="0" Style="flex: 1; min-width: 0;">
             <MudText Typo="Typo.body2" Style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                @_userState.Prenom @_userState.Nom
+                @(L["Bonjour {0}", _userState.Prenom])
             </MudText>
             <MudText Typo="Typo.caption" Class="mud-secondary-text" Style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                 @(_userState.Droits.Any() ? _userState.Droits[0].RoleCode : "")
@@ -40,13 +40,13 @@
                     <MudMenuItem Href="/user/profile">
                         <div class="d-flex align-center">
                             <MudIcon Class="mx-2" Icon="@Icons.Material.Filled.Person" />
-                            <MudText>@L["Profile"]</MudText>
+                            <MudText>@L["Profil"]</MudText>
                         </div>
                     </MudMenuItem>
                     <MudMenuItem OnClick="OnSettingClick">
                         <div class="d-flex align-center">
                             <MudIcon Class="mx-2" Icon="@Icons.Material.Filled.Settings" />
-                            <MudText>@L["Settings"]</MudText>
+                            <MudText>@L["Paramètres"]</MudText>
                         </div>
                     </MudMenuItem>
                     <MudDivider Class="my-2" />
@@ -60,7 +60,7 @@
                                        Variant="Variant.Outlined"
                                        Size="Size.Small"
                                        aria-label="Logout">
-                                @L["Logout"]
+                                @L["Se déconnecter"]
                             </MudButton>
                         </form>
                     </div>

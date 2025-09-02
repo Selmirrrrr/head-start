@@ -1,5 +1,4 @@
-﻿@using System.Globalization
-@using HeadStart.Client.Services
+﻿@using HeadStart.Client.Services
 @using HeadStart.Client.Services.Users
 @inject IStorageService StorageService
 @implements IDisposable
@@ -47,7 +46,7 @@
     public async Task ChangeLanguageAsync(string languageCode)
     {
         await UserState.SetLanguageAsync(languageCode);
-        StorageService.SetItemAsync("currentCulture", languageCode);
+        await StorageService.SetItemAsync("currentCulture", languageCode);
         NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
     }
 }
