@@ -39,45 +39,36 @@ public class UserStateService
 }
 
 // Scoped service that handles API calls
-public class UserStateContainer
+public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateService)
 {
-    private readonly ApiClientV1 _apiClient;
-    private readonly UserStateService _stateService;
-
     public event Action? OnStateChanged
     {
-        add => _stateService.OnStateChanged += value;
-        remove => _stateService.OnStateChanged -= value;
+        add => stateService.OnStateChanged += value;
+        remove => stateService.OnStateChanged -= value;
     }
 
-    public UserStateContainer(ApiClientV1 apiClient, UserStateService stateService)
-    {
-        _apiClient = apiClient;
-        _stateService = stateService;
-    }
-
-    public UserState CurrentState => _stateService.CurrentState;
-    public bool IsInitialized => _stateService.IsInitialized;
+    public UserState CurrentState => stateService.CurrentState;
+    public bool IsInitialized => stateService.IsInitialized;
 
     public async Task InitializeAsync()
     {
-        if (_stateService.IsInitialized)
+        if (stateService.IsInitialized)
         {
             return; // Already initialized
         }
 
         try
         {
-            var userProfile = await _apiClient.Api.V1.Users.Me.GetAsync();
+            var userProfile = await apiClient.Api.V1.Users.Me.GetAsync();
 
             if (userProfile == null)
             {
-                _stateService.CurrentState = UserState.Default;
-                _stateService.IsInitialized = true;
+                stateService.CurrentState = UserState.Default;
+                stateService.IsInitialized = true;
                 return;
             }
 
-            _stateService.CurrentState = new UserState
+            stateService.CurrentState = new UserState
             {
                 Id = Guid.TryParse(userProfile.Id, out var userId) ? userId : Guid.Empty,
                 Email = userProfile.Email ?? string.Empty,
@@ -91,13 +82,13 @@ public class UserStateContainer
                 DernierTenantSelectionne = userProfile.DernierTenantSelectionnePath
             };
 
-            _stateService.IsInitialized = true;
+            stateService.IsInitialized = true;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Failed to initialize user state: {ex.Message}");
-            _stateService.CurrentState = UserState.Default;
-            _stateService.IsInitialized = true;
+            stateService.CurrentState = UserState.Default;
+            stateService.IsInitialized = true;
         }
     }
 
@@ -115,9 +106,9 @@ public class UserStateContainer
                 IsDarkMode = isDarkMode
             };
 
-            await _apiClient.Api.V1.Users.Me.DarkMode.PatchAsync(request);
+            await apiClient.Api.V1.Users.Me.DarkMode.PatchAsync(request);
 
-            _stateService.CurrentState = _stateService.CurrentState with { DarkMode = isDarkMode };
+            stateService.CurrentState = stateService.CurrentState with { DarkMode = isDarkMode };
         }
         catch (Exception ex)
         {
@@ -139,9 +130,10 @@ public class UserStateContainer
                 LanguageCode = languageCode
             };
 
-            await _apiClient.Api.V1.Users.Me.Language.PatchAsync(request);
+            await apiClient.Api.V1.Users.Me.Language.PatchAsync(request);
 
-            _stateService.CurrentState = _stateService.CurrentState with { LangueCode = languageCode };
+
+            stateService.CurrentState = stateService.CurrentState with { LangueCode = languageCode };
         }
         catch (Exception ex)
         {
@@ -163,9 +155,9 @@ public class UserStateContainer
                 LastSelectedTenantPath = tenantPath
             };
 
-            await _apiClient.Api.V1.Users.Me.Tenant.PatchAsync(request);
+            await apiClient.Api.V1.Users.Me.Tenant.PatchAsync(request);
 
-            _stateService.CurrentState = _stateService.CurrentState with { DernierTenantSelectionne = tenantPath };
+            stateService.CurrentState = stateService.CurrentState with { DernierTenantSelectionne = tenantPath };
         }
         catch (Exception ex)
         {

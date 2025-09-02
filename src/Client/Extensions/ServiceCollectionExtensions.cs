@@ -57,6 +57,7 @@ public static class ServiceCollectionExtensions
 
         services.AddOptions();
         services.AddAuthorizationCore();
+        services.AddLocalization();
         services.AddScoped<DialogService>();
         services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());

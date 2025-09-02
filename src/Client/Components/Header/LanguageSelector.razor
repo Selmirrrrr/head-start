@@ -23,7 +23,8 @@
 @code
 {
     [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
-    
+    [Inject] public NavigationManager NavManager { get; set; } = null!;
+
     protected override void OnInitialized()
     {
         CurrentLanguage = UserState.CurrentState.LangueCode;
@@ -41,12 +42,12 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public string CurrentLanguage { get; set; } = "fr";
+    private string CurrentLanguage { get; set; } = "fr";
 
     public async Task ChangeLanguageAsync(string languageCode)
     {
         await UserState.SetLanguageAsync(languageCode);
-        await StorageService.SetItemAsync("_Culture", languageCode);
-        Navigation.NavigateTo(Navigation.BaseUri + "?culture=" + languageCode, true);
+        StorageService.SetItemAsync("currentCulture", languageCode);
+        NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
     }
 }

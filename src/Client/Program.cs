@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using HeadStart.Client.Extensions;
 using HeadStart.Client.Services;
 using HeadStart.Client.Services.Users;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using MudBlazor;
@@ -38,7 +39,9 @@ public static class Program
 
             builder.Services.TryAddMudBlazor(builder.Configuration);
 
-            await builder.Build().RunAsync();
+            var app = builder.Build();
+            await app.SetDefaultUICulture();
+            await app.RunAsync();
         }
         catch (Exception ex)
         {
@@ -59,4 +62,3 @@ public static class Program
         }
     }
 }
-

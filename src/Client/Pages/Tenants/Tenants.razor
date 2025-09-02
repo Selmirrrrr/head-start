@@ -2,18 +2,18 @@
 @using HeadStart.Client.Generated
 @using HeadStart.Client.Generated.Models
 @inject ApiClientV1 ApiClientV1
-@inject IStringLocalizer<Tenants> L
+@inject IStringLocalizer<Tenants> LC
 
 <PageTitle>@L["Tenants"]</PageTitle>
 
 @if (_tenants == null)
 {
     <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large" Class="my-6" />
-    <MudText Typo="Typo.body1" Align="Align.Center" Class="mt-2">@L["Loading tenants..."]</MudText>
+    <MudText Typo="Typo.body1" Align="Align.Center" Class="mt-2">@LC["Chargement des tenants..."]</MudText>
 }
 else if (_tenants.Count == 0)
 {
-    <MudText Typo="Typo.body1" Align="Align.Center" Class="my-6">@L["No tenants found."]</MudText>
+    <MudText Typo="Typo.body1" Align="Align.Center" Class="my-6">@LC["Aucun tenant trouvé."]</MudText>
 }
 else
 {
@@ -22,10 +22,10 @@ else
         <MudPaper>
             <MudCard>
                 <MudCardHeader>
-                    <MudText Typo="Typo.h6">@tenant.Id</MudText>
+                    <MudText Typo="Typo.h6">@LC["Id"]: @tenant.Id</MudText>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MudText Typo="Typo.body2">Name: @tenant.Name</MudText>
+                    <MudText Typo="Typo.body2">@LC["Nom"]: @tenant.Name</MudText>
                 </MudCardContent>
             </MudCard>
         </MudPaper>
