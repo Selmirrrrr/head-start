@@ -1,5 +1,5 @@
 ﻿@inject IStringLocalizer<ErrorPageComponent> L
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JSRuntime
 
 <div style="display: flex; justify-content: center; align-items: center; min-height: @MinHeight; padding: 2rem;">
     <MudPaper Class="pa-8" Elevation="1" Style="max-width: 500px; text-align: center;">
@@ -106,28 +106,8 @@
         }
     }
 
-    private string GetErrorIcon()
-    {
-        return Type switch
-        {
-            ErrorType.AccessDenied => Icons.Material.Filled.NoAccounts,
-            ErrorType.ServerError => Icons.Material.Filled.Error,
-            _ => Icons.Material.Filled.SearchOff
-        };
-    }
-
-    private Color GetErrorColor()
-    {
-        return Type switch
-        {
-            ErrorType.AccessDenied => Color.Warning,
-            ErrorType.ServerError => Color.Error,
-            _ => Color.Error
-        };
-    }
-
     private async Task GoBack()
     {
-        await JsRuntime.InvokeVoidAsync("history.back");
+        await JSRuntime.InvokeVoidAsync("history.back");
     }
 }

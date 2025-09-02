@@ -1,0 +1,36 @@
+@using HeadStart.Client.Services.Users
+@using HeadStart.Client.Layout
+
+@if (!IsLoaded)
+{
+    <div class="loading-container">
+        <div class="logo-wrapper">
+            <MudBlazorLogo Class="loading-logo" />
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="loading-progress" />
+        </div>
+    </div>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; } = null!;
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
+
+    private bool IsLoaded = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await UserState.InitializeAsync();
+        }
+        finally
+        {
+            IsLoaded = true;
+            StateHasChanged();
+        }
+    }
+}

@@ -1,4 +1,4 @@
-﻿namespace HeadStart.Client.Configurations;
+namespace HeadStart.Client.Configurations;
 
 public class ClientAppSettings
 {

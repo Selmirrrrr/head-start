@@ -17,56 +17,53 @@
     <MudNavMenu>
         @foreach (var section in MenuSections)
         {
-            @if (section is not null)
+            <div class="ml-6 my-3">
+                <MudText Typo="Typo.subtitle1">
+                    <b>
+                        @(L[section.Title])
+                    </b>
+                </MudText>
+            </div>
+
+
+            @if (section.SectionItems is not null)
             {
-                <div class="ml-6 my-3">
-                    <MudText Typo="Typo.subtitle1">
-                        <b>
-                            @(L[section.Title])
-                        </b>
-                    </MudText>
-                </div>
-
-
-                @if (section.SectionItems is not null)
+                @foreach (var sectionItem in section.SectionItems)
                 {
-                    @foreach (var sectionItem in section.SectionItems)
+                    @if (sectionItem is { IsParent: true, MenuItems: not null })
                     {
-                        @if (sectionItem is { IsParent: true, MenuItems: not null })
-                        {
-                            <MudNavGroup Icon="@sectionItem.Icon" Title="@L[sectionItem.Title]" Expanded="Expanded(sectionItem)">
-                                @foreach (var menuItem in sectionItem.MenuItems)
+                        <MudNavGroup Icon="@sectionItem.Icon" Title="@L[sectionItem.Title]" Expanded="Expanded(sectionItem)">
+                            @foreach (var menuItem in sectionItem.MenuItems)
+                            {
+                                <MudNavLink Disabled="@(menuItem.PageStatus != PageStatus.Completed)" Href="@(menuItem.Href)" Target="@(menuItem.Target)" Match="NavLinkMatch.Prefix">
+                                    <div class="d-flex">
+                                        @(L[menuItem.Title])
+                                        @if (menuItem.PageStatus != PageStatus.Completed)
+                                        {
+                                            <MudSpacer/>
+                                            <MudChip T="string" Class="mr-4" Color="@Color.Primary" Size="Size.Small" Variant="Variant.Text">
+                                                @(L[menuItem.PageStatus.GetDescription()])
+                                            </MudChip>
+                                        }
+                                    </div>
+                                </MudNavLink>
+                            }
+                        </MudNavGroup>
+                    }
+                    else
+                    {
+                        <MudNavLink Disabled="@(sectionItem.PageStatus != PageStatus.Completed)" Href="@(sectionItem.Href)" Icon="@(sectionItem.Icon)" Target="@(sectionItem.Target)" Match="NavLinkMatch.All">
+                            <div class="d-flex">
+                                @(L[sectionItem.Title])
+                                @if (sectionItem.PageStatus != PageStatus.Completed)
                                 {
-                                    <MudNavLink Disabled="@(menuItem.PageStatus != PageStatus.Completed)" Href="@(menuItem.Href)" Target="@(menuItem.Target)" Match="NavLinkMatch.Prefix">
-                                        <div class="d-flex">
-                                            @(L[menuItem.Title])
-                                            @if (menuItem.PageStatus != PageStatus.Completed)
-                                            {
-                                                <MudSpacer/>
-                                                <MudChip T="string" Class="mr-4" Color="@Color.Primary" Size="Size.Small" Variant="Variant.Text">
-                                                    @(L[menuItem.PageStatus.GetDescription()])
-                                                </MudChip>
-                                            }
-                                        </div>
-                                    </MudNavLink>
+                                    <MudSpacer/>
+                                    <MudChip T="string" Class="mr-4" Color="@Color.Primary" Size="Size.Small" Variant="Variant.Text">
+                                        @(L[sectionItem.PageStatus.GetDescription()])
+                                    </MudChip>
                                 }
-                            </MudNavGroup>
-                        }
-                        else
-                        {
-                            <MudNavLink Disabled="@(sectionItem.PageStatus != PageStatus.Completed)" Href="@(sectionItem.Href)" Icon="@(sectionItem.Icon)" Target="@(sectionItem.Target)" Match="NavLinkMatch.All">
-                                <div class="d-flex">
-                                    @(L[sectionItem.Title])
-                                    @if (sectionItem.PageStatus != PageStatus.Completed)
-                                    {
-                                        <MudSpacer/>
-                                        <MudChip T="string" Class="mr-4" Color="@Color.Primary" Size="Size.Small" Variant="Variant.Text">
-                                            @(L[sectionItem.PageStatus.GetDescription()])
-                                        </MudChip>
-                                    }
-                                </div>
-                            </MudNavLink>
-                        }
+                            </div>
+                        </MudNavLink>
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿using MudBlazor;
+using MudBlazor;
 
 namespace HeadStart.Client.Themes;
 
@@ -74,7 +74,7 @@ public static class Theme
                 TableLines = "rgba(255, 255, 255, 0.1)",
                 LinesDefault = "rgba(255, 255, 255, 0.1)",
                 LinesInputs = "rgba(161, 161, 170, 0.2)",
-                DarkContrastText= "#020817",
+                DarkContrastText = "#020817",
                 SecondaryContrastText = "#fafafa",
                 PrimaryContrastText = "#020817",
             },
@@ -83,7 +83,7 @@ public static class Theme
                 AppbarHeight = "64px", // More modern height
                 DefaultBorderRadius = "8px", // More modern border radius
                 DrawerWidthLeft = "280px", // Wider sidebar
-                DrawerMiniWidthRight= "260px"
+                DrawerMiniWidthRight = "260px"
             },
             Typography = new Typography
             {

@@ -76,7 +76,7 @@
     private string? StackTrace { get; set; }
     private string? StatusCode { get; set; } = nameof(HttpStatusCode.InternalServerError);
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         if (Exception.InnerException != null)
         {
@@ -90,7 +90,8 @@
 
         StackTrace = Exception.StackTrace;
         var sanitizedUri = Navigation.Uri.Replace("\n", "").Replace("\r", "");
-        Logger.LogError(Exception, "{Message}. request url: {@url}", Message, sanitizedUri);
+        Logger.LogError(Exception, "{Message}. request url: {@Url}", Message, sanitizedUri);
+        return Task.CompletedTask;
     }
 
     private void OnRefresh()

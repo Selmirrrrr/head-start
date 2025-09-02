@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Blazor.Server.UI.Models.NavigationMenu;
+using CleanArchitecture.Blazor.Server.UI.Models.NavigationMenu;
 using HeadStart.SharedKernel.Models.Constants;
 using MudBlazor;
 

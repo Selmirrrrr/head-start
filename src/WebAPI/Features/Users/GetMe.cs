@@ -30,9 +30,9 @@ public static class GetMe
                 {
                     Id = Guid.NewGuid(),
                     IdpId = userId,
-                    Email = User.FindFirst(ClaimTypes.Email)?.Value ?? throw new Exception("Email claim is missing"),
-                    Nom = User.FindFirst(ClaimTypes.Surname)?.Value ?? throw new Exception("Name claim is missing"),
-                    Prenom = User.FindFirst(ClaimTypes.GivenName)?.Value ?? throw new Exception("GivenName claim is missing"),
+                    Email = User.FindFirst(ClaimTypes.Email)?.Value ?? throw new InvalidOperationException("Email claim is missing"),
+                    Nom = User.FindFirst(ClaimTypes.Surname)?.Value ?? throw new InvalidOperationException("Name claim is missing"),
+                    Prenom = User.FindFirst(ClaimTypes.GivenName)?.Value ?? throw new InvalidOperationException("GivenName claim is missing"),
                     LanguageCode = LanguesCodes.Français,
                 };
                 DbContext.Users.Add(utilisateur);

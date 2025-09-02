@@ -6,8 +6,14 @@
     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
 
         <MudAvatar Style="width: 32px; height: 32px;">
-                @_userState.Prenom @_userState.Nom
-                <MudImage Src="/img/avatar.png"></MudImage>
+                @if (string.IsNullOrWhiteSpace(_userState.Nom))
+                {
+                    <MudImage Src="img/avatar.png"></MudImage>
+                }
+                else
+                {
+                    @_userState.Prenom[0] @_userState.Nom[0]
+                }
         </MudAvatar>
 
         <MudStack Justify="Justify.SpaceBetween" Spacing="0" Style="flex: 1; min-width: 0;">

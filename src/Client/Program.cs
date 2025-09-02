@@ -38,10 +38,7 @@ public static class Program
 
             builder.Services.TryAddMudBlazor(builder.Configuration);
 
-            var host = builder.Build();
-            var userStateContainer = host.Services.GetRequiredService<UserStateContainer>();
-            await userStateContainer.InitializeAsync();
-            await host.RunAsync();
+            await builder.Build().RunAsync();
         }
         catch (Exception ex)
         {

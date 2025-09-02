@@ -3,7 +3,9 @@
 @inject UserStateContainer StateContainer
 
 <CascadingValue Value="@StateContainer" IsFixed="false">
-    @ChildContent
+    <AppInitializer>
+        @ChildContent
+    </AppInitializer>
 </CascadingValue>
 
 @code {

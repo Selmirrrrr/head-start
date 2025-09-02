@@ -1,14 +1,13 @@
-﻿using System.Security.Cryptography;
+using System.Globalization;
+using System.Security.Cryptography;
 using Blazored.LocalStorage;
 
 namespace HeadStart.Client.Services.Notifications;
 
 public class InMemoryNotificationService(
-    ILocalStorageService localStorageService,
-    ILogger<InMemoryNotificationService> logger) : INotificationService
+    ILocalStorageService localStorageService) : INotificationService
 {
     private const string LocalStorageKey = "__notficationTimestamp";
-    private readonly ILogger<InMemoryNotificationService> _logger = logger;
 
     private readonly List<NotificationMessage> _messages = new();
 
@@ -73,7 +72,6 @@ public class InMemoryNotificationService(
         }
     }
 
-
     public void Preload()
     {
         _messages.Add(new NotificationMessage(
@@ -81,12 +79,11 @@ public class InMemoryNotificationService(
             "Blazor Application is ready",
             "We are paving the way for the future of Blazor",
             "Announcement",
-            new DateTime(2022, 01, 13),
-            "https://github.com/neozhu/CleanArchitectureWithBlazorServer/actions/workflows/dotnet.yml/badge.svg",
-            new[]
-            {
+            DateTime.UtcNow,
+            "img/avatar.png",
+            [
                 new NotificationAuthor("Hualin",
                     "https://avatars.githubusercontent.com/u/1549611?s=48&v=4")
-            }, typeof(NotificationMessage)));
+            ], typeof(NotificationMessage)));
     }
 }

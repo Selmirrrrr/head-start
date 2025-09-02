@@ -10,7 +10,7 @@ public static class DescriptionAttributeExtensions
         var name = e.ToString();
         var memberInfo = e.GetType().GetMember(name)[0];
         var descriptionAttributes = memberInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return descriptionAttributes.Any() ? ((DescriptionAttribute)descriptionAttributes.First()).Description : name;
+        return descriptionAttributes.Any() ? ((DescriptionAttribute)descriptionAttributes[0]).Description : name;
     }
 
     public static string GetMemberDescription<T, TProperty>(this T t, Expression<Func<T, TProperty>> property)
@@ -26,12 +26,12 @@ public static class DescriptionAttributeExtensions
         }
 
         var descriptionAttributes = memberInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return descriptionAttributes.Any() ? ((DescriptionAttribute)descriptionAttributes.First()).Description : memberName;
+        return descriptionAttributes.Any() ? ((DescriptionAttribute)descriptionAttributes[0]).Description : memberName;
     }
 
     public static string GetClassDescription<T>(this T t) where T : class
     {
         var descriptionAttributes = t.GetType().GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return descriptionAttributes.Any() ? (descriptionAttributes.First() as DescriptionAttribute)!.Description : nameof(t);
+        return descriptionAttributes.Any() ? (descriptionAttributes[0] as DescriptionAttribute)!.Description : nameof(t);
     }
 }

@@ -1,10 +1,10 @@
-using HeadStart.Client.Generated;
-using HeadStart.Client.Generated.Models;
-using HeadStart.SharedKernel.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HeadStart.Client.Generated;
+using HeadStart.Client.Generated.Models;
+using HeadStart.SharedKernel.Models.Constants;
 
 namespace HeadStart.Client.Services.Users;
 
@@ -13,7 +13,7 @@ public class UserStateService
 {
     private UserState _currentState = UserState.Default;
     private readonly object _lock = new();
-    
+
     public event Action? OnStateChanged;
 
     public UserState CurrentState
@@ -39,7 +39,7 @@ public class UserStateService
 }
 
 // Scoped service that handles API calls
-public class UserStateContainer  
+public class UserStateContainer
 {
     private readonly ApiClientV1 _apiClient;
     private readonly UserStateService _stateService;
@@ -69,7 +69,7 @@ public class UserStateContainer
         try
         {
             var userProfile = await _apiClient.Api.V1.Users.Me.GetAsync();
-            
+
             if (userProfile == null)
             {
                 _stateService.CurrentState = UserState.Default;
@@ -84,7 +84,7 @@ public class UserStateContainer
                 Prenom = userProfile.Prenom ?? string.Empty,
                 Nom = userProfile.Nom ?? string.Empty,
                 Droits = userProfile.Roles?.Select(r => new Droit(
-                    r.TenantPath ?? string.Empty, 
+                    r.TenantPath ?? string.Empty,
                     r.RoleCode ?? string.Empty)).ToList() ?? new List<Droit>(),
                 LangueCode = userProfile.LangueCode ?? LanguesCodes.Français,
                 DarkMode = userProfile.DarkMode ?? false,
@@ -116,7 +116,7 @@ public class UserStateContainer
             };
 
             await _apiClient.Api.V1.Users.Me.DarkMode.PatchAsync(request);
-            
+
             _stateService.CurrentState = _stateService.CurrentState with { DarkMode = isDarkMode };
         }
         catch (Exception ex)
@@ -140,7 +140,7 @@ public class UserStateContainer
             };
 
             await _apiClient.Api.V1.Users.Me.Language.PatchAsync(request);
-            
+
             _stateService.CurrentState = _stateService.CurrentState with { LangueCode = languageCode };
         }
         catch (Exception ex)
@@ -164,7 +164,7 @@ public class UserStateContainer
             };
 
             await _apiClient.Api.V1.Users.Me.Tenant.PatchAsync(request);
-            
+
             _stateService.CurrentState = _stateService.CurrentState with { DernierTenantSelectionne = tenantPath };
         }
         catch (Exception ex)
