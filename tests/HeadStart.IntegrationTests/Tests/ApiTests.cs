@@ -1,4 +1,7 @@
 using HeadStart.IntegrationTests.Data;
+using TUnit.Assertions;
+using TUnit.Assertions.Extensions;
+using TUnit.Core;
 
 namespace HeadStart.IntegrationTests.Tests;
 
@@ -10,13 +13,9 @@ public class ApiTests(AspireDataClass aspire)
     {
         // Arrange
         var httpClient = aspire.BffHttpClient;
+
         // Act
         var response = await httpClient.GetStringAsync("api/users/me");
-
-        await File.WriteAllTextAsync("response.json", response);
-        await File.WriteAllTextAsync("url.txt", httpClient.BaseAddress?.ToString());
-
-        Console.WriteLine($"Response: {response}");
 
         // Assert
         await Assert.That(response).IsNotNull();

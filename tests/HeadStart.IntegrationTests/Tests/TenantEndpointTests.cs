@@ -1,6 +1,7 @@
 using HeadStart.IntegrationTests.Data;
 using Microsoft.Kiota.Abstractions;
 using Shouldly;
+using TUnit.Core;
 
 namespace HeadStart.IntegrationTests.Tests;
 
