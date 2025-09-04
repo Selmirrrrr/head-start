@@ -43,48 +43,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata for BFF
-        id: meta-bff
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}
-          tags: |
-            type=ref,event=tag
-            type=raw,value=latest
-
-      - name: Extract metadata for WebAPI
-        id: meta-webapi
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}
-          tags: |
-            type=ref,event=tag
-            type=raw,value=latest
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Build and push BFF image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./src/BFF/Dockerfile
-          push: true
-          tags: ${{ steps.meta-bff.outputs.tags }}
-          labels: ${{ steps.meta-bff.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and push WebAPI image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./src/WebAPI/Dockerfile
-          push: true
-          tags: ${{ steps.meta-webapi.outputs.tags }}
-          labels: ${{ steps.meta-webapi.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Install Aspire CLI
         run: dotnet tool install -g aspire.cli --prerelease
@@ -93,10 +53,11 @@ jobs:
         run: |
           cd src/Aspire/AppHost
           
-          # Generate docker-compose using Aspire CLI
+          # Generate docker-compose and .env files using Aspire CLI
+          # This creates the full stack configuration with vendor services
           aspire publish --output-path ../../../deployment-output
             
-          # Copy generated files and update image references
+          # Copy generated files 
           cd ../../../
           cp deployment-output/docker-compose.yaml docker-compose.prod.yml
           cp deployment-output/.env .env.generated
@@ -105,8 +66,8 @@ jobs:
           sed -i "s|WEBAPI_IMAGE=webapi:latest|WEBAPI_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:${{ github.ref_name }}|g" .env.generated
           sed -i "s|BFF_IMAGE=bff:latest|BFF_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:${{ github.ref_name }}|g" .env.generated
           
-          # Update the volumes path in docker-compose for production deployment
-          sed -i 's|/Users/selmir/workspace/claimly/code/Claimly.BFF/src/Aspire/AppHost/Realms|./keycloak/realms|g' docker-compose.prod.yml
+          # Update the volumes path in docker-compose for production deployment  
+          sed -i 's|/Users/.*/src/Aspire/AppHost/Realms|./keycloak/realms|g' docker-compose.prod.yml
           
           # Add production optimizations
           # Update expose to ports for external access
@@ -114,6 +75,93 @@ jobs:
           
           # Add restart policies for production
           sed -i '/networks:/i\    restart: "unless-stopped"' docker-compose.prod.yml
+
+      - name: Generate Dockerfiles and build images
+        run: |
+          # Generate Dockerfile for WebAPI using .NET SDK
+          cat > src/WebAPI/Dockerfile << 'EOF'
+          FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+          USER $APP_UID
+          WORKDIR /app
+          EXPOSE 8080
+          EXPOSE 8081
+          
+          FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+          ARG BUILD_CONFIGURATION=Release
+          WORKDIR /src
+          COPY ["src/WebAPI/HeadStart.WebAPI.csproj", "src/WebAPI/"]
+          COPY ["src/Aspire/ServiceDefaults/HeadStart.Aspire.ServiceDefaults.csproj", "src/Aspire/ServiceDefaults/"]
+          COPY ["src/SharedKernel/HeadStart.SharedKernel.csproj", "src/SharedKernel/"]
+          COPY ["src/SharedKernel.Models/HeadStart.SharedKernel.Models.csproj", "src/SharedKernel.Models/"]
+          COPY ["Directory.Build.props", "."]
+          COPY ["Directory.Packages.props", "."]
+          RUN dotnet restore "src/WebAPI/HeadStart.WebAPI.csproj"
+          COPY . .
+          WORKDIR "/src/src/WebAPI"
+          RUN dotnet build "HeadStart.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+          
+          FROM build AS publish
+          ARG BUILD_CONFIGURATION=Release
+          RUN dotnet publish "HeadStart.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:SkipClientGeneration=true
+          
+          FROM base AS final
+          WORKDIR /app
+          COPY --from=publish /app/publish .
+          ENTRYPOINT ["dotnet", "HeadStart.WebAPI.dll"]
+          EOF
+          
+          # Generate Dockerfile for BFF using .NET SDK  
+          cat > src/BFF/Dockerfile << 'EOF'
+          FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+          USER $APP_UID
+          WORKDIR /app
+          EXPOSE 8080
+          EXPOSE 8081
+          
+          FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+          ARG BUILD_CONFIGURATION=Release
+          WORKDIR /src
+          COPY ["src/BFF/HeadStart.BFF.csproj", "src/BFF/"]
+          COPY ["src/Aspire/ServiceDefaults/HeadStart.Aspire.ServiceDefaults.csproj", "src/Aspire/ServiceDefaults/"]
+          COPY ["src/Client/HeadStart.Client.csproj", "src/Client/"]
+          COPY ["src/SharedKernel/HeadStart.SharedKernel.csproj", "src/SharedKernel/"]
+          COPY ["src/SharedKernel.Models/HeadStart.SharedKernel.Models.csproj", "src/SharedKernel.Models/"]
+          COPY ["Directory.Build.props", "."]
+          COPY ["Directory.Packages.props", "."]
+          RUN dotnet restore "src/BFF/HeadStart.BFF.csproj"
+          COPY . .
+          WORKDIR "/src/src/BFF"
+          RUN dotnet build "HeadStart.BFF.csproj" -c $BUILD_CONFIGURATION -o /app/build
+          
+          FROM build AS publish
+          ARG BUILD_CONFIGURATION=Release
+          RUN dotnet publish "HeadStart.BFF.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+          
+          FROM base AS final
+          WORKDIR /app
+          COPY --from=publish /app/publish .
+          ENTRYPOINT ["dotnet", "HeadStart.BFF.dll"]
+          EOF
+
+      - name: Build and push WebAPI image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./src/WebAPI/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:${{ github.ref_name }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push BFF image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./src/BFF/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:${{ github.ref_name }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Create production .env template
         run: |
