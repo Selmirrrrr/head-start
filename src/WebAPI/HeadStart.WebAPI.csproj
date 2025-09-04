@@ -22,7 +22,7 @@
       <Link>.dockerignore</Link>
     </Content>
   </ItemGroup>
-  <Target Name="ClientGen" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
+  <Target Name="ClientGen" AfterTargets="Build" Condition="'$(Configuration)'=='Release' AND '$(SkipClientGeneration)'!='true'">
     <Exec WorkingDirectory="$(RunWorkingDirectory)" Command="$(RunCommand) --generateclients true" />
   </Target>
 </Project>
