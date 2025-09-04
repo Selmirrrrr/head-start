@@ -7,8 +7,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME_BFF: ${{ github.repository }}/bff
-  IMAGE_NAME_WEBAPI: ${{ github.repository }}/webapi
 
 jobs:
   build-and-publish:
@@ -27,6 +25,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.x
+
+      - name: Set lowercase image names
+        id: image-names
+        run: |
+          echo "BFF_IMAGE=$(echo '${{ env.REGISTRY }}/${{ github.repository }}/bff' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          echo "WEBAPI_IMAGE=$(echo '${{ env.REGISTRY }}/${{ github.repository }}/webapi' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
@@ -63,8 +67,8 @@ jobs:
           cp deployment-output/.env .env.generated
           
           # Replace environment variable placeholders with actual registry images in the env file
-          sed -i "s|WEBAPI_IMAGE=webapi:latest|WEBAPI_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:${{ github.ref_name }}|g" .env.generated
-          sed -i "s|BFF_IMAGE=bff:latest|BFF_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:${{ github.ref_name }}|g" .env.generated
+          sed -i "s|WEBAPI_IMAGE=webapi:latest|WEBAPI_IMAGE=${{ steps.image-names.outputs.WEBAPI_IMAGE }}:${{ github.ref_name }}|g" .env.generated
+          sed -i "s|BFF_IMAGE=bff:latest|BFF_IMAGE=${{ steps.image-names.outputs.BFF_IMAGE }}:${{ github.ref_name }}|g" .env.generated
           
           # Update the volumes path in docker-compose for production deployment  
           sed -i 's|/Users/.*/src/Aspire/AppHost/Realms|./keycloak/realms|g' docker-compose.prod.yml
@@ -149,7 +153,7 @@ jobs:
           context: .
           file: ./src/WebAPI/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:${{ github.ref_name }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:latest
+          tags: ${{ steps.image-names.outputs.WEBAPI_IMAGE }}:${{ github.ref_name }},${{ steps.image-names.outputs.WEBAPI_IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -159,7 +163,7 @@ jobs:
           context: .
           file: ./src/BFF/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:${{ github.ref_name }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:latest
+          tags: ${{ steps.image-names.outputs.BFF_IMAGE }}:${{ github.ref_name }},${{ steps.image-names.outputs.BFF_IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -177,8 +181,8 @@ jobs:
           
           # Generated for tag: ${GITHUB_REF_NAME}
           # Images used:
-          # - BFF: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:${GITHUB_REF_NAME}
-          # - WebAPI: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:${GITHUB_REF_NAME}
+          # - BFF: ${{ steps.image-names.outputs.BFF_IMAGE }}:${GITHUB_REF_NAME}
+          # - WebAPI: ${{ steps.image-names.outputs.WEBAPI_IMAGE }}:${GITHUB_REF_NAME}
           EOF
 
       - name: Create deployment package
@@ -261,8 +265,8 @@ jobs:
             This release includes:
             
             ### Docker Images Published
-            - **BFF**: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BFF }}:${{ github.ref_name }}`
-            - **WebAPI**: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME_WEBAPI }}:${{ github.ref_name }}`
+            - **BFF**: `${{ steps.image-names.outputs.BFF_IMAGE }}:${{ github.ref_name }}`
+            - **WebAPI**: `${{ steps.image-names.outputs.WEBAPI_IMAGE }}:${{ github.ref_name }}`
             
             ### Deployment Package
             Download `deployment-${{ github.ref_name }}.zip` for a complete deployment package including:
