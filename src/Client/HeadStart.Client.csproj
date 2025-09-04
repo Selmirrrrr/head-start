@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageId>HeadStart.Client</PackageId>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
@@ -13,6 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.8" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
@@ -32,36 +34,4 @@
   <ItemGroup>
     <ProjectReference Include="..\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
   </ItemGroup>
-  <Target Name="Tailwind:Install" AfterTargets="BeforeBuild">
-    <Message Importance="high" Text="Installing Tailwind CLI" />
-    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.2/tailwindcss-windows-x64.exe" Condition="($([MSBuild]::IsOSPlatform('Windows')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64')">
-      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
-    </DownloadFile>
-  </Target>
-  <Target Name="Tailwind:InstallLinux" AfterTargets="BeforeBuild">
-    <Message Importance="high" Text="Installing Tailwind CLI" />
-    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.2/tailwindcss-linux-x64" Condition="($([MSBuild]::IsOSPlatform('Linux')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64')">
-      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
-    </DownloadFile>
-  </Target>
-  <Target Name="Tailwind:InstallMac" AfterTargets="BeforeBuild">
-    <Message Importance="high" Text="Installing Tailwind CLI" />
-    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.2/tailwindcss-macos-x64" Condition="($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64')">
-      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
-    </DownloadFile>
-  </Target>
-  <Target Name="Tailwind:InstallMacArm" AfterTargets="BeforeBuild">
-    <Message Importance="high" Text="Installing Tailwind CLI" />
-    <DownloadFile SkipUnchangedFiles="true" DestinationFolder="$(MSBuildProjectDirectory)" SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.2/tailwindcss-macos-arm64" Condition="($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'ARM64')">
-      <Output TaskParameter="DownloadedFile" PropertyName="TailwindExecutable" />
-    </DownloadFile>
-  </Target>
-  <Target Name="Tailwind:Permission" AfterTargets="BeforeBuild">
-    <Message Importance="high" Text="Making Tailwind CLI executable" />
-    <Exec Command="chmod +x $(TailwindExecutable)" Condition="($([MSBuild]::IsOSPlatform('Linux')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64') OR ($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64') OR ($([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'ARM64')" />
-  </Target>
-  <Target Name="Tailwind:Run" AfterTargets="AfterBuild" DependsOnTargets="Tailwind:Permission">
-    <Message Importance="high" Text="Building CSS with Tailwind" />
-    <Exec Command="$(TailwindExecutable) -i .\wwwroot\css\site.css -o .\wwwroot\css\site.min.css" />
-  </Target>
 </Project>

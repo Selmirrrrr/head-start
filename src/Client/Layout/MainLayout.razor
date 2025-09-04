@@ -1,148 +1,36 @@
-﻿@using HeadStart.Client.Components
-@using HeadStart.Client.Components.Shared
+﻿@using HeadStart.Client.Services.Users
+@using HeadStart.Client.Themes
 @inherits LayoutComponentBase
-@inject NavigationManager Navigation
+@implements IDisposable
 
-<MudThemeProvider @ref="@_mudThemeProvider"
-                  Theme="@_baseTheme"
-                  @bind-IsDarkMode="@_isDarkMode" />
+<PageTitle>Claimly</PageTitle>
+
+<MudThemeProvider Theme="@Theme.ApplicationTheme()" IsDarkMode="@UserState.CurrentState.DarkMode" IsDarkModeChanged="@OnDarkModeChanged" />
 <MudPopoverProvider />
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<MudSnackbarProvider />
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" />
+@Body
 
-<MudLayout Class="@(_isDarkMode ? "dark" : null)">
-    <MudAppBar Elevation="0"
-                Fixed="true"
-                Class="bg-[--mud-palette-appbar-background] bg-[--mud-palette-appbar-background90] backdrop-blur-sm">
-        <MudStack Row="true"
-                    Spacing="2">
-            <MudIconButton Class="rounded-lg"
-                            Icon="@Icons.Material.Filled.Menu"
-                            Edge="Edge.Start"
-                            OnClick="@((e) => DrawerToggle())"/>
-            <MudText Color="Color.Default"
-                        Typo="Typo.h6"
-                        Class="my-auto text-[#424242] dark:text-white">
-                HeadStart
-            </MudText>
-        </MudStack>
-        <MudSpacer/>
-        <MudStack Row="true"
-                    Spacing="1">
-            <MudToggleIconButton @bind-Toggled="@_isDarkMode"
-                                 Size="Size.Medium"
-                                 Color="Color.Default"
-                                 Icon="@Icons.Material.Rounded.LightMode"
-                                 ToggledIcon="@Icons.Material.Rounded.DarkMode"
-                                 Class="p-2 my-auto"/>
-            <MudBadge Content="3"
-                      Color="Color.Error"
-                      Overlap="true"
-                      Class="my-auto">
-                <MudIconButton
-                    Size="Size.Medium"
-                    Class="p-2"
-                    Color="Color.Default"
-                    Icon="@Icons.Material.Rounded.Notifications"/>
-            </MudBadge>
-            <AuthorizeView>
-                <Authorized>
-                    <form method="post" action="/api/account/logout" class="my-auto">
-                        <AntiForgeryTokenInput />
-                        <MudIconButton
-                            Size="Size.Medium"
-                            Class="p-2"
-                            Color="Color.Default"
-                            Icon="@Icons.Material.Rounded.Logout"
-                            ButtonType="ButtonType.Submit"
-                            aria-label="Logout" />
-                    </form>
-                </Authorized>
-                <NotAuthorized>
-                    <MudButton class="rz-mr-6" OnClick="@(() => Navigation.NavigateTo("/api/account/login", true))"> Sign in </MudButton>
-                </NotAuthorized>
-            </AuthorizeView>
+@code{
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
 
-            <MudMenu AnchorOrigin="Origin.BottomRight"
-                     TransformOrigin="Origin.TopRight">
-                <ActivatorContent>
-                    <MudChip T="string" Size="Size.Large"
-                             Color="Color.Inherit">
-                        <MudStack Spacing="0"
-                                  Row="true"
-                                  Class="flex flex-row">
-                            <MudAvatar>
-                                <MudImage Src="img/avatar.png"></MudImage>
-                            </MudAvatar>
-                            <MudText Typo="Typo.body2"
-                                     Class="my-auto">
-                                <AuthorizeView>
-                                    <Authorized>
-                                        @context.User.Identity?.Name
-                                    </Authorized>
-                                </AuthorizeView>
-                            </MudText>
-                        </MudStack>
-                    </MudChip>
-                </ActivatorContent>
-                <ChildContent>
-                    <MudMenuItem>Profile</MudMenuItem>
-                </ChildContent>
-            </MudMenu>
-        </MudStack>
-    </MudAppBar>
-    <MudDrawer Fixed="true"
-                Elevation="0"
-                Overlay="false"
-                ClipMode="DrawerClipMode.Always"
-                MiniWidth="72px"
-                Variant="DrawerVariant.Mini"
-                @bind-Open="@_drawerOpen">
-        <NavMenu/>
-    </MudDrawer>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-            @Body
-        </MudContainer>
-    </MudMainContent>
-</MudLayout>
-
-@code {
-    bool _drawerOpen = true;
-    private bool _isDarkMode;
-    private MudThemeProvider? _mudThemeProvider;
-
-    private readonly MudTheme _baseTheme = new()
+    protected override void OnInitialized()
     {
-        PaletteLight = new PaletteLight()
-        {
-            AppbarBackground = "#ffffff",
-            Background = "#f8f7fa"
-        },
-        LayoutProperties = new LayoutProperties()
-        {
-            DefaultBorderRadius = ".4rem"
-        }
-    };
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && _mudThemeProvider is not null)
-        {
-            await _mudThemeProvider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
-            StateHasChanged();
-        }
+        UserState.OnStateChanged += OnStateChanged;
     }
 
-    private void DrawerToggle()
+    private async Task OnDarkModeChanged(bool isDarkMode)
     {
-        _drawerOpen = !_drawerOpen;
+        await UserState.SetDarkModeAsync(isDarkMode);
     }
 
-    private Task OnSystemPreferenceChanged(bool isDarkMode)
+    private void OnStateChanged()
     {
-        _isDarkMode = isDarkMode;
-        return Task.CompletedTask;
+        InvokeAsync(StateHasChanged);
     }
 
+    public void Dispose()
+    {
+        UserState.OnStateChanged -= OnStateChanged;
+    }
 }

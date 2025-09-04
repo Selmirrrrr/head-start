@@ -1,0 +1,101 @@
+﻿@using System.Net
+@inject ILogger<CustomError> Logger
+@inject IStringLocalizer<CustomError> L
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 60vh; padding: 2rem;">
+    <MudPaper Class="pa-8" Elevation="1" Style="max-width: 600px; text-align: center;">
+
+        <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error" Style="font-size: 3.5rem;" Class="mb-4" />
+
+        <MudText Typo="Typo.h3" Class="mb-3" Style="font-weight: 300;">
+            @StatusCode
+        </MudText>
+
+
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-4">
+            <MudText Typo="Typo.body1" Class="mb-2">@Message</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary">@L["For more information, contact your system administrator"]</MudText>
+        </MudAlert>
+
+        <MudPaper Elevation="0" Class="mb-4 pa-2" Style="background-color: var(--mud-palette-background-grey);">
+            <MudText Typo="Typo.caption" Color="Color.Secondary">
+                @L["Time"]: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            </MudText>
+        </MudPaper>
+
+        @if (!string.IsNullOrEmpty(StackTrace))
+        {
+            <MudStack AlignItems="AlignItems.Center" Class="mb-4">
+                <MudButton
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    EndIcon="@(ShowStackTrace ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
+                    OnClick="@(() => ShowStackTrace = !ShowStackTrace)">
+                    @(ShowStackTrace ? L["Hide Details"] : L["Show Details"])
+                </MudButton>
+            </MudStack>
+
+            @if (ShowStackTrace)
+            {
+                <MudPaper Elevation="0" Class="mb-4 pa-4" Style="background-color: var(--mud-palette-background-grey); text-align: left;">
+                    <MudText Typo="Typo.subtitle2" Class="mb-2">@L["Stack Trace"]</MudText>
+                    <MudText Typo="Typo.body2" Style="white-space: pre-wrap; overflow-x: auto; max-height: 200px; font-family: monospace; font-size: 0.75rem;">
+                        @StackTrace
+                    </MudText>
+                </MudPaper>
+            }
+        }
+
+        <MudStack Row Justify="Justify.Center" Spacing="2">
+            <MudButton Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      StartIcon="@Icons.Material.Filled.Refresh"
+                      OnClick="OnRefresh">
+                @L["Refresh Page"]
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                      Color="Color.Primary"
+                      StartIcon="@Icons.Material.Filled.Home"
+                      Href="/">
+                @L["Return Home"]
+            </MudButton>
+        </MudStack>
+
+    </MudPaper>
+</div>
+
+@code
+{
+    [CascadingParameter] private Task<AuthenticationState> AuthState { get; set; } = default!;
+
+    [EditorRequired] [Parameter] public Exception Exception { get; set; } = default!;
+
+    private string? Message { get; set; }
+    private bool ShowStackTrace { get; set; }
+    private string? StackTrace { get; set; }
+    private string? StatusCode { get; set; } = nameof(HttpStatusCode.InternalServerError);
+
+    protected override Task OnInitializedAsync()
+    {
+        if (Exception.InnerException != null)
+        {
+            while (Exception.InnerException != null)
+            {
+                Exception = Exception.InnerException;
+            }
+        }
+        Message = Exception.Message;
+
+
+        StackTrace = Exception.StackTrace;
+        var sanitizedUri = Navigation.Uri.Replace("\n", "").Replace("\r", "");
+        Logger.LogError(Exception, "{Message}. request url: {@Url}", Message, sanitizedUri);
+        return Task.CompletedTask;
+    }
+
+    private void OnRefresh()
+    {
+        Navigation.NavigateTo(Navigation.Uri, true);
+    }
+}

@@ -1,0 +1,28 @@
+@using HeadStart.Client.Services.Users
+@implements IDisposable
+@inject UserStateContainer StateContainer
+
+<CascadingValue Value="@StateContainer" IsFixed="false">
+    <AppInitializer>
+        @ChildContent
+    </AppInitializer>
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        StateContainer.OnStateChanged += HandleStateChanged;
+    }
+
+    private void HandleStateChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        StateContainer.OnStateChanged -= HandleStateChanged;
+    }
+}

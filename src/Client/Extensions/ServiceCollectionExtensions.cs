@@ -3,7 +3,12 @@ using System.Net.Mime;
 using Ardalis.GuardClauses;
 using Blazored.LocalStorage;
 using HeadStart.Client.Authorization;
+using HeadStart.Client.Configurations;
 using HeadStart.Client.Generated;
+using HeadStart.Client.Services;
+using HeadStart.Client.Services.Navigation;
+using HeadStart.Client.Services.Notifications;
+using HeadStart.Client.Services.Users;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -12,17 +17,39 @@ using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Kiota.Serialization.Json;
 using MudBlazor;
+using MudBlazor.Services;
 
 namespace HeadStart.Client.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static void TryAddMudBlazor(this IServiceCollection services, IConfiguration config)
+    {
+        services.AddMudServices(config =>
+        {
+            MudGlobal.InputDefaults.ShrinkLabel = true;
+            config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+            config.SnackbarConfiguration.NewestOnTop = false;
+            config.SnackbarConfiguration.ShowCloseIcon = true;
+            config.SnackbarConfiguration.VisibleStateDuration = 3000;
+            config.SnackbarConfiguration.HideTransitionDuration = 500;
+            config.SnackbarConfiguration.ShowTransitionDuration = 500;
+            config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+        });
+        services.AddLocalization(options => options.ResourcesPath = "Resources");
+        services.AddMudPopoverService();
+        services.AddMudBlazorSnackbar();
+        services.AddMudBlazorDialog();
+        services.AddMudLocalization();
+        services.AddBlazoredLocalStorage();
+        services.AddScoped<IStorageService, LocalStorageService>();
+        services.AddScoped<DialogServiceHelper>();
+    }
     /// <summary>
     /// Registers dependencies for the Blazor Client Application.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="environment"></param>
-    /// <returns>An instance of <see cref="IServiceCollection"/>.</returns>
     public static void AddClientLayer(this IServiceCollection services, IWebAssemblyHostEnvironment environment)
     {
         Guard.Against.Null(services);
@@ -30,10 +57,24 @@ public static class ServiceCollectionExtensions
 
         services.AddOptions();
         services.AddAuthorizationCore();
+        services.AddLocalization();
         services.AddScoped<DialogService>();
         services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
         services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
         services.AddTransient<AuthorizedHandler>();
+        services.AddScoped<IMenuService, MenuService>();
+        services.AddScoped<InMemoryNotificationService>();
+        services.AddSingleton<UserStateService>();
+        services.AddScoped<UserStateContainer>();
+        services.AddScoped<INotificationService>(sp =>
+        {
+            var service = sp.GetRequiredService<InMemoryNotificationService>();
+            service.Preload();
+            return service;
+        });
+
+        // Configuration
+        services.AddSingleton(new ClientAppSettings()!);
 
         services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions = JsonSerializerConfigurations.LocalStorageSettings);
 

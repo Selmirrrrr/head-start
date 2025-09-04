@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using TUnit.Core;
 
 namespace HeadStart.IntegrationTests;
 

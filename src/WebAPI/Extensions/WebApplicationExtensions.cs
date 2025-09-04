@@ -126,7 +126,9 @@ internal static class WebApplicationExtensions
                     .AddPasswordFlow("OAuth2", flow =>
                     {
                         flow.ClientId = "HeadStart-Test";
-                        flow.Username = "user";
+                        flow.Username = "user1@example.com";
+                        flow.Password = "user1";
+                        flow.ClientSecret = "eaH1n5YflVUjTlCLQVPVyInPF4Z41VVb";
                     });
             });
         }

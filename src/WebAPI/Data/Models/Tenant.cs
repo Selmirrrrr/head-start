@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -6,10 +5,11 @@ namespace HeadStart.WebAPI.Data.Models;
 
 public class Tenant
 {
-    [Key]
     public required LTree Path { get; set; }
 
     public required string Name { get; set; }
+
+    public ICollection<Droit> Droits { get; set; } = new List<Droit>();
 }
 
 public class TenantEntityTypeConfiguration : IEntityTypeConfiguration<Tenant>
@@ -28,6 +28,5 @@ public class TenantEntityTypeConfiguration : IEntityTypeConfiguration<Tenant>
         builder.Property(t => t.Name)
             .HasMaxLength(250)
             .IsRequired();
-
     }
 }

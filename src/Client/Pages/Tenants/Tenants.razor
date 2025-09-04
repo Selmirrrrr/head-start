@@ -1,0 +1,43 @@
+﻿@page "/tenants"
+@using HeadStart.Client.Generated
+@using HeadStart.Client.Generated.Models
+@inject ApiClientV1 ApiClientV1
+@inject IStringLocalizer<Tenants> LC
+
+<PageTitle>@L["Tenants"]</PageTitle>
+
+@if (_tenants == null)
+{
+    <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large" Class="my-6" />
+    <MudText Typo="Typo.body1" Align="Align.Center" Class="mt-2">@LC["Chargement des tenants..."]</MudText>
+}
+else if (_tenants.Count == 0)
+{
+    <MudText Typo="Typo.body1" Align="Align.Center" Class="my-6">@LC["Aucun tenant trouvé."]</MudText>
+}
+else
+{
+    @foreach (var tenant in _tenants)
+    {
+        <MudPaper>
+            <MudCard>
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">@LC["Id"]: @tenant.Id</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.body2">@LC["Nom"]: @tenant.Name</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudPaper>
+    }
+}
+
+@code {
+    private List<HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel>? _tenants;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _tenants = (await ApiClientV1.Api.V1.Tenants.GetAsync())?.Tenants;
+    }
+
+}

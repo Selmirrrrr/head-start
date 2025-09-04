@@ -1,5 +1,11 @@
+using System.Globalization;
+using Blazored.LocalStorage;
 using HeadStart.Client.Extensions;
+using HeadStart.Client.Services;
+using HeadStart.Client.Services.Users;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
 using Serilog;
@@ -31,12 +37,11 @@ public static class Program
 
             builder.Services.AddClientLayer(builder.HostEnvironment);
 
-            builder.Services.AddMudServices(options =>
-            {
-                options.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
-            });
+            builder.Services.TryAddMudBlazor(builder.Configuration);
 
-            await builder.Build().RunAsync();
+            var app = builder.Build();
+            await app.SetDefaultUICulture();
+            await app.RunAsync();
         }
         catch (Exception ex)
         {
@@ -57,4 +62,3 @@ public static class Program
         }
     }
 }
-

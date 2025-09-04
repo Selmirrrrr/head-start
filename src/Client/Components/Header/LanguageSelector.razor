@@ -1,0 +1,52 @@
+﻿@using HeadStart.Client.Services
+@using HeadStart.Client.Services.Users
+@inject IStorageService StorageService
+@implements IDisposable
+
+<MudTooltip Text="@CurrentLanguage">
+    <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Class="mx-1" Icon="@Icons.Material.Outlined.Translate" Color="Color.Default" Dense="true">
+        @foreach (var language in SupportedLocalization.SupportedLanguages)
+        {
+            if (language.Code == CurrentLanguage)
+            {
+                <MudMenuItem Style="font-weight: bold;background:var(--mud-palette-primary); color:var(--mud-palette-primary-text)">@language.DisplayName</MudMenuItem>
+            }
+            else
+            {
+                <MudMenuItem OnClick="() => ChangeLanguageAsync(language.Code)">@language.DisplayName</MudMenuItem>
+            }
+        }
+    </MudMenu>
+</MudTooltip>
+
+@code
+{
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
+    [Inject] public NavigationManager NavManager { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        CurrentLanguage = UserState.CurrentState.LangueCode;
+        UserState.OnStateChanged += UpdateLanguage;
+    }
+
+    public void Dispose()
+    {
+        UserState.OnStateChanged -= UpdateLanguage;
+    }
+
+    private void UpdateLanguage()
+    {
+        CurrentLanguage = UserState.CurrentState.LangueCode;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private string CurrentLanguage { get; set; } = "fr";
+
+    public async Task ChangeLanguageAsync(string languageCode)
+    {
+        await UserState.SetLanguageAsync(languageCode);
+        await StorageService.SetItemAsync("currentCulture", languageCode);
+        NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
+    }
+}

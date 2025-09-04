@@ -32,4 +32,6 @@ builder.AddProject<Projects.HeadStart_BFF>("bff")
     .WithReference(webapi)
     .WaitFor(webapi);
 
+builder.AddDockerComposeEnvironment("Claimly");
+
 await builder.Build().RunAsync();

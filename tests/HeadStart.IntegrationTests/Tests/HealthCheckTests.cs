@@ -1,5 +1,6 @@
 using HeadStart.IntegrationTests.Data;
 using Shouldly;
+using TUnit.Core;
 
 namespace HeadStart.IntegrationTests.Tests;
 

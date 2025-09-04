@@ -8,6 +8,10 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.JSInterop
 @using Ardalis.GuardClauses;
+@using HeadStart.Client.Configurations
 @using HeadStart.Client.Layout
-@using HeadStart.Client.Components.Blaze
 @using MudBlazor
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<App> L
+@inject ClientAppSettings AppSettings
+@inject NavigationManager Navigation

@@ -1,0 +1,26 @@
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Bonjour {0}" xml:space="preserve">
+    <value>[DE] Bonjour {0}</value>
+  </data>
+  <data name="Profil" xml:space="preserve">
+    <value>[DE] Profil</value>
+  </data>
+  <data name="Paramètres" xml:space="preserve">
+    <value>[DE] Paramètres</value>
+  </data>
+  <data name="Se déconnecter" xml:space="preserve">
+    <value>[DE] Se déconnecter</value>
+  </data>
+</root>
