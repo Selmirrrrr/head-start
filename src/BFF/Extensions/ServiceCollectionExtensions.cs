@@ -179,10 +179,10 @@ public static class ServiceCollectionExtensions
             .AddTransforms(builder => builder.AddRequestTransform(async context =>
             {
                 // Use Duende's IUserTokenManagementService for automatic token refresh
-                var tokenManagementService = context.HttpContext.RequestServices.GetRequiredService<IUserTokenManagementService>();
+                var tokenManagementService = context.HttpContext.RequestServices.GetRequiredService<IUserTokenManager>();
                 var tokenResult = await tokenManagementService.GetAccessTokenAsync(context.HttpContext.User);
 
-                if (tokenResult.IsError)
+                if (!tokenResult.Succeeded)
                 {
                     // Token retrieval failed, user needs to authenticate
                     context.HttpContext.Response.StatusCode = 401;
@@ -191,7 +191,7 @@ public static class ServiceCollectionExtensions
                 }
 
                 // Token is valid (Duende handles refresh automatically), attach it to the proxy request
-                context.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokenResult.AccessToken);
+                context.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokenResult.Token.AccessToken);
             }));
     }
 }

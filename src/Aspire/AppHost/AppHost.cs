@@ -4,7 +4,6 @@ var postgres = builder.AddPostgres("postgres")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithPgWeb();
 
-
 var mailpit = builder.AddMailPit("mailpit", 8025, 1025)
     .WithLifetime(ContainerLifetime.Persistent);
 
@@ -16,7 +15,6 @@ var keycloak = builder.AddKeycloak("keycloak", 8080)
     .WithReference(mailpit);
 
 var webapi = builder.AddProject<Projects.HeadStart_WebAPI>("webapi")
-    .WithExternalHttpEndpoints()
     .WithHttpHealthCheck("/health")
     .WithReference(keycloak)
     .WaitFor(keycloak)
