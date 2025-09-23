@@ -53,15 +53,10 @@
                     <div class="mx-4 mb-2">
                         <form method="post" action="/api/account/logout">
                             <AntiForgeryTokenInput />
-                            <MudButton Color="Color.Primary"
-                                       ButtonType="ButtonType.Submit"
-                                       FullWidth="true"
-                                       StartIcon="@Icons.Material.Filled.Logout"
-                                       Variant="Variant.Outlined"
-                                       Size="Size.Small"
-                                       aria-label="Logout">
+                            <button aria-label="Logout"
+                                    type="submit">
                                 @L["Se déconnecter"]
-                            </MudButton>
+                            </button>
                         </form>
                     </div>
                 </div>
