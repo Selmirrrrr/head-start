@@ -1,0 +1,77 @@
+﻿@inject IStringLocalizer<NotFound> L
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 70vh; padding: 2rem;">
+    <MudPaper Class="pa-8" Elevation="1" Style="max-width: 700px; text-align: center;">
+
+        <MudIcon Icon="@Icons.Material.Filled.SearchOff" Color="Color.Secondary" Style="font-size: 4rem;" Class="mb-4" />
+
+        <MudText Typo="Typo.h2" Class="mb-3" Style="font-weight: 300; color: var(--mud-palette-text-primary);">
+            404
+        </MudText>
+
+        <MudText Typo="Typo.h5" Class="mb-4" Style="font-weight: 400; color: var(--mud-palette-text-secondary);">
+            @L["Page non trouvée"]
+        </MudText>
+
+        <MudText Typo="Typo.body1" Class="mb-6" Color="Color.Secondary" Style="max-width: 500px; margin: 0 auto; line-height: 1.6;">
+            @L["La page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL ou retourner à un endroit sûr."]
+        </MudText>
+
+        <MudDivider Class="mb-6" />
+
+        <MudStack Row Justify="Justify.Center" Spacing="3" Class="mb-4">
+            <MudButton Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      StartIcon="@Icons.Material.Filled.Home"
+                      Href="/"
+                      Size="Size.Large">
+                @L["Accueil"]
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                      Color="Color.Primary"
+                      StartIcon="@Icons.Material.Filled.ArrowBack"
+                      OnClick="GoBack"
+                      Size="Size.Large">
+                @L["Retour"]
+            </MudButton>
+        </MudStack>
+
+        <MudStack Row Justify="Justify.Center" Spacing="2" Class="mt-6">
+            <MudButton Variant="Variant.Text"
+                      Color="Color.Secondary"
+                      StartIcon="@Icons.Material.Filled.Search"
+                      Href="/search"
+                      Size="Size.Small">
+                @L["Rechercher"]
+            </MudButton>
+
+            <MudButton Variant="Variant.Text"
+                      Color="Color.Secondary"
+                      StartIcon="@Icons.Material.Filled.ContactSupport"
+                      Href="/support"
+                      Size="Size.Small">
+                @L["Support"]
+            </MudButton>
+        </MudStack>
+
+        <MudPaper Elevation="0" Class="mt-6 pa-3" Style="background-color: var(--mud-palette-background-grey);">
+            <MudText Typo="Typo.caption" Color="Color.Secondary">
+                @L["Si vous pensez qu'il s'agit d'une erreur, veuillez contacter le support avec les informations suivantes :"]
+            </MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary" Style="font-family: monospace; margin-top: 0.5rem;">
+                @L["URL"]: @CurrentUrl | @L["Heure"]: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            </MudText>
+        </MudPaper>
+
+    </MudPaper>
+</div>
+
+@code {
+    private string CurrentUrl => Navigation.Uri;
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/", true);
+    }
+}

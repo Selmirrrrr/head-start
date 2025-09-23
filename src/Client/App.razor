@@ -1,4 +1,5 @@
 ﻿@using HeadStart.Client.Components
+@using HeadStart.Client.Components.Error
 
 <CascadingAuthenticationState>
     <UserStateProvider>
@@ -9,7 +10,7 @@
             </Found>
             <NotFound>
                 <LayoutView Layout="@typeof(MainLayout)">
-                    <p>Sorry, there's nothing at this address.</p>
+                    <NotFound />
                 </LayoutView>
             </NotFound>
         </Router>
