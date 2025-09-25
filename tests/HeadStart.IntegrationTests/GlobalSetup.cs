@@ -12,7 +12,7 @@ public static class GlobalSetup
 
     [Before(TestSession)]
     [Timeout(3000)] // 5 minutes in milliseconds
-    public static async Task SetUpAsync()
+    public static async Task SetUpAsync(CancellationToken ct)
     {
         // Arrange
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.HeadStart_Aspire_AppHost>(
@@ -22,7 +22,7 @@ public static class GlobalSetup
             configureBuilder: static (options, _) =>
             {
                 options.DisableDashboard = true; // Disable dashboard to speed up startup
-            });
+            }, ct);
 
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
@@ -39,9 +39,9 @@ public static class GlobalSetup
             });
         });
 
-        App = await appHost.BuildAsync();
+        App = await appHost.BuildAsync(ct);
         NotificationService = App.Services.GetRequiredService<ResourceNotificationService>();
-        await App.StartAsync();
+        await App.StartAsync(ct);
     }
 
     [After(TestSession)]
