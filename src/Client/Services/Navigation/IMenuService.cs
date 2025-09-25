@@ -1,4 +1,4 @@
-using CleanArchitecture.Blazor.Server.UI.Models.NavigationMenu;
+using HeadStart.SharedKernel.Models.NavigationMenu;
 
 namespace HeadStart.Client.Services.Navigation;
 

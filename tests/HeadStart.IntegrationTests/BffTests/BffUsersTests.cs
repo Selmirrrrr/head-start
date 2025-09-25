@@ -1,15 +1,12 @@
 using HeadStart.IntegrationTests.Data;
-using TUnit.Assertions;
-using TUnit.Assertions.Extensions;
-using TUnit.Core;
 
-namespace HeadStart.IntegrationTests.Tests;
+namespace HeadStart.IntegrationTests.BffTests;
 
 [ClassDataSource<AspireDataClass>]
-public class ApiTests(AspireDataClass aspire)
+public class BffUsersTests(AspireDataClass aspire)
 {
     [Test]
-    public async Task GetWeatherForecastReturnsOkStatusCodeAsync()
+    public async Task UsersMe_IsNotNullAsync()
     {
         // Arrange
         var httpClient = aspire.BffHttpClient;

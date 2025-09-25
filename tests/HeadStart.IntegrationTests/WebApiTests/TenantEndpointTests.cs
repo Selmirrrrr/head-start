@@ -1,9 +1,9 @@
+using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
 using Microsoft.Kiota.Abstractions;
 using Shouldly;
-using TUnit.Core;
 
-namespace HeadStart.IntegrationTests.Tests;
+namespace HeadStart.IntegrationTests.WebApiTests;
 
 [ClassDataSource<ApiTestDataClass>]
 [Category(TestConfiguration.Categories.Integration)]

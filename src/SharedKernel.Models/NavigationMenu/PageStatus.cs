@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace CleanArchitecture.Blazor.Server.UI.Models.NavigationMenu;
+namespace HeadStart.SharedKernel.Models.NavigationMenu;
 
 public enum PageStatus
 {

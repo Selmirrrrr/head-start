@@ -1,8 +1,7 @@
-using HeadStart.IntegrationTests.Data;
 using Microsoft.Kiota.Abstractions;
 using Shouldly;
 
-namespace HeadStart.IntegrationTests.Tests;
+namespace HeadStart.IntegrationTests.Core;
 
 /// <summary>
 /// Base class for API integration tests providing common functionality

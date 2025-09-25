@@ -1,5 +1,5 @@
-using CleanArchitecture.Blazor.Server.UI.Models.NavigationMenu;
 using HeadStart.SharedKernel.Models.Constants;
+using HeadStart.SharedKernel.Models.NavigationMenu;
 using MudBlazor;
 
 namespace HeadStart.Client.Services.Navigation;
