@@ -15,8 +15,8 @@
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.19.1" />
     <PackageReference Include="Microsoft.Playwright" Version="1.55.0" />
     <PackageReference Include="Shouldly" Version="4.3.0"/>
-    <PackageReference Include="TUnit" Version="0.60.1" />
-    <PackageReference Include="TUnit.Playwright" Version="0.60.1" />
+    <PackageReference Include="TUnit" Version="0.61.31" />
+    <PackageReference Include="TUnit.Playwright" Version="0.61.31" />
   </ItemGroup>
 
 

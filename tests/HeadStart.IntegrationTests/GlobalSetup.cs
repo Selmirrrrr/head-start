@@ -1,5 +1,4 @@
 using Aspire.Hosting;
-using TUnit.Core;
 
 [assembly: Retry(3)]
 [assembly: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
@@ -13,7 +12,7 @@ public static class GlobalSetup
 
     [Before(TestSession)]
     [Timeout(3000)] // 5 minutes in milliseconds
-    public static async Task SetUpAsync(CancellationToken cancellationToken)
+    public static async Task SetUpAsync()
     {
         // Arrange
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.HeadStart_Aspire_AppHost>(
@@ -23,7 +22,7 @@ public static class GlobalSetup
             configureBuilder: static (options, _) =>
             {
                 options.DisableDashboard = true; // Disable dashboard to speed up startup
-            }, cancellationToken);
+            });
 
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
@@ -40,9 +39,9 @@ public static class GlobalSetup
             });
         });
 
-        App = await appHost.BuildAsync(cancellationToken);
+        App = await appHost.BuildAsync();
         NotificationService = App.Services.GetRequiredService<ResourceNotificationService>();
-        await App.StartAsync(cancellationToken);
+        await App.StartAsync();
     }
 
     [After(TestSession)]

@@ -3,7 +3,6 @@ using System.Text.Json;
 using Ardalis.GuardClauses;
 using HeadStart.Client.Generated;
 using Microsoft.Kiota.Abstractions.Authentication;
-using Microsoft.Kiota.Bundle;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using TUnit.Core.Interfaces;
 
@@ -13,7 +12,7 @@ namespace HeadStart.IntegrationTests.Data;
 /// Test fixture that provides authenticated and unauthenticated API clients
 /// for testing directly against the WebAPI using a test user token.
 /// </summary>
-public class ApiTestDataClass() : IAsyncInitializer, IAsyncDisposable
+public class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
 {
     private HttpClient? _authenticatedHttpClient;
 

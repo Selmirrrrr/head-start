@@ -1,4 +1,3 @@
-using Ardalis.GuardClauses;
 using TUnit.Core.Interfaces;
 
 namespace HeadStart.IntegrationTests.Data
@@ -11,11 +10,10 @@ namespace HeadStart.IntegrationTests.Data
 
         public async Task InitializeAsync()
         {
-            Guard.Against.Null(GlobalSetup.App);
-
-            BffHttpClient = GlobalSetup.App.CreateHttpClient("bff");
-            BaseUrl = (GlobalSetup.App ?? throw new InvalidOperationException()).GetEndpoint("bff");
-            KeycloakUrl = GlobalSetup.App.GetEndpoint("keycloak");
+            var app = GlobalSetup.App ?? throw new InvalidOperationException(nameof(GlobalSetup.App));
+            BffHttpClient = app.CreateHttpClient("bff");
+            BaseUrl = app.GetEndpoint("bff");
+            KeycloakUrl = app.GetEndpoint("keycloak");
 
             if (GlobalSetup.NotificationService != null)
             {
