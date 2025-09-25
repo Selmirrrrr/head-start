@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="KubernetesClient" Version="17.0.14" />
     <ProjectReference Include="..\..\BFF\HeadStart.BFF.csproj" />
     <ProjectReference Include="..\..\WebAPI\HeadStart.WebAPI.csproj" />
   </ItemGroup>
