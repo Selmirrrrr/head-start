@@ -6,13 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>6e92a59c-8a74-476d-9df9-920581baaa15</UserSecretsId>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.0" />
-    <PackageReference Include="Aspire.Hosting.Docker" Version="9.4.2-preview.1.25428.12" />
-    <PackageReference Include="Aspire.Hosting.Keycloak" Version="9.5.0-preview.1.25474.7" />
-    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.5.0" />
-    <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="9.7.2" />
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.Hosting.Docker" />
+    <PackageReference Include="Aspire.Hosting.Keycloak" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BFF\HeadStart.BFF.csproj" />
