@@ -1,4 +1,5 @@
 using CorrelationId;
+using HeadStart.SharedKernel.Tenants;
 using Serilog;
 
 namespace HeadStart.BFF.Extensions;
@@ -41,6 +42,7 @@ public static class WebApplicationExtensions
         app.UseStaticFiles();
         app.UseCorrelationId();
         app.UseSerilogRequestLogging();
+        app.UseTenantResolution();
         app.UseRouting();
         app.UseRateLimiter();
     }

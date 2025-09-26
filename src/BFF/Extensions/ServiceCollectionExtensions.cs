@@ -4,6 +4,7 @@ using System.Threading.RateLimiting;
 using Ardalis.GuardClauses;
 using Duende.AccessTokenManagement.OpenIdConnect;
 using HeadStart.BFF.Utilities;
+using HeadStart.SharedKernel.Tenants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -44,6 +45,7 @@ public static class ServiceCollectionExtensions
         services.AddAuthentication(configuration, isDevelopment);
         services.AddAuthorization();
         services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
+        services.AddMultiTenancySupport();
     }
 
     private static void AddWebServices(this IServiceCollection services)
@@ -192,6 +194,14 @@ public static class ServiceCollectionExtensions
 
                 // Token is valid (Duende handles refresh automatically), attach it to the proxy request
                 context.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokenResult.Token.AccessToken);
+
+                // Forward tenant information if available
+                var tenantContextAccessor = context.HttpContext.RequestServices.GetRequiredService<ITenantContextAccessor>();
+                var currentTenant = tenantContextAccessor.CurrentTenant;
+                if (currentTenant != null)
+                {
+                    context.ProxyRequest.Headers.TryAddWithoutValidation(TenantConstants.TenantCodeHeader, currentTenant.TenantCode);
+                }
             }));
     }
 }

@@ -2,6 +2,7 @@ using CorrelationId;
 using FastEndpoints;
 using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
+using HeadStart.SharedKernel.Tenants;
 using HeadStart.WebAPI.Data;
 using Kiota.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -94,6 +95,7 @@ internal static class WebApplicationExtensions
         app.UseHttpsRedirection();
         app.UseCorrelationId();
         app.UseSerilogRequestLogging();
+        app.UseTenantResolution();
         app.UseRouting();
     }
 

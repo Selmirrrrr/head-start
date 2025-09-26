@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using HeadStart.SharedKernel.Tenants;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -64,8 +65,19 @@ internal static class ServiceCollectionExtensions
         Guard.Against.Null(services);
         Guard.Against.Null(configuration);
 
-        services.AddDbContext<HeadStartDbContext>(options =>
+        // Add tenant support services
+        services.AddMultiTenancySupport();
+        // Override the default resolver with API-specific one
+        services.AddScoped<ITenantResolver, HeadStart.WebAPI.Services.ApiTenantResolver>();
+        services.AddScoped<TenantDbContextInterceptor>();
+        services.AddScoped<TenantSaveChangesInterceptor>();
+
+        services.AddDbContext<HeadStartDbContext>((serviceProvider, options) =>
+        {
             options.UseNpgsql(configuration.GetConnectionString("postgresdb") ?? throw new InvalidOperationException("Connection string 'postgresdb' not found."))
+                .AddInterceptors(
+                    serviceProvider.GetRequiredService<TenantDbContextInterceptor>(),
+                    serviceProvider.GetRequiredService<TenantSaveChangesInterceptor>())
                 .UseAsyncSeeding(async (context, _, cancellationToken) =>
                 {
                     var testBlog = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
@@ -84,7 +96,8 @@ internal static class ServiceCollectionExtensions
                         context.Set<Role>().Add(new Role { Id = roleUserId, Code = "User", CodeTrads = new Dictionary<string, string> { { "fr", "Utilisteur" }, { "de", "Benutzer" }, { "it", "Utilizatore" }, { "en", "User" } }, TenantPath = "HeadStart" });
                         await context.SaveChangesAsync(cancellationToken);
                     }
-                }));
+                });
+        });
     }
 
     internal static void AddSecurityServices(this IServiceCollection services)

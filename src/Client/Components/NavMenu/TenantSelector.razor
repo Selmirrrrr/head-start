@@ -2,6 +2,8 @@
 @using HeadStart.Client.Generated.Models
 @using HeadStart.Client.Services.Users
 @inject IStringLocalizer<TenantSelector> L
+@inject NavigationManager Navigation
+@inject IConfiguration Configuration
 
 <MudStack Class="flex-grow-1" Row="true" AlignItems="AlignItems.Center" Spacing="2" Justify="Justify.SpaceBetween">
     <MudIcon Class="ml-4 mr-2"
@@ -98,10 +100,22 @@
     {
         _isSwitching = true;
         StateHasChanged();
-        
+
         await UserState.SetLastSelectedTenantAsync(tenantId);
-        
-        _isSwitching = false;
-        StateHasChanged();
+
+        // Redirect to subdomain if configured
+        var useSubdomains = Configuration["Tenancy:UseSubdomains"] == "true";
+        if (useSubdomains && !string.IsNullOrEmpty(tenantId))
+        {
+            var currentUri = new Uri(Navigation.Uri);
+            var baseDomain = Configuration["Tenancy:BaseDomain"] ?? currentUri.Host;
+            var newUrl = $"{currentUri.Scheme}://{tenantId.ToLowerInvariant()}.{baseDomain}{currentUri.PathAndQuery}";
+            Navigation.NavigateTo(newUrl, true);
+        }
+        else
+        {
+            _isSwitching = false;
+            StateHasChanged();
+        }
     }
 }
