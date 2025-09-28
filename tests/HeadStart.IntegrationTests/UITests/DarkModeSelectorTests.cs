@@ -24,10 +24,11 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
     [Test]
     [Category(TestConfiguration.Categories.UserInterface)]
-    public async Task DarkModeToggle_ShouldChangeUIState_AndPersistAcrossSessionsAsync()
+    [Timeout(TestConfiguration.Timeouts.UITest)]
+    public async Task DarkModeToggle_ShouldChangeUIState_AndPersistAcrossSessionsAsync(CancellationToken ct)
     {
         // Réinitialiser le paramètre de mode sombre avant le test
-        await ResetDarkModeAsync();
+        await ResetDarkModeAsync(ct);
 
         // Naviguer vers l'application
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
@@ -51,7 +52,7 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await darkModeToggle.ClickAsync();
 
         // Attendre un court instant pour que les styles soient appliqués
-        await Task.Delay(100);
+        await Task.Delay(100, ct);
 
         // Vérifier le changement d'état dans la base de données
         var darkModeSetting = await GetDarkModeSettingFromDbAsync(UserEmail);
@@ -82,7 +83,7 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await darkModeToggle.ClickAsync();
 
         // Attendre un court instant pour que les styles soient appliqués
-        await Task.Delay(100);
+        await Task.Delay(100, ct);
 
         // Vérifier le changement d'état dans la base de données
         darkModeSetting = await GetDarkModeSettingFromDbAsync(UserEmail);
@@ -112,9 +113,9 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         updatedBackgroundColor.ShouldBe(LightModeBackground);
     }
 
-    private static async Task ResetDarkModeAsync()
+    private static async Task ResetDarkModeAsync(CancellationToken ct)
     {
-        var connectionString = await GlobalSetup.App!.GetConnectionStringAsync("postgresdb");
+        var connectionString = await GlobalSetup.App!.GetConnectionStringAsync("postgresdb", cancellationToken: ct);
 
         // Créer DbContextOptions correctement
         var optionsBuilder = new DbContextOptionsBuilder<HeadStartDbContext>();
@@ -124,11 +125,11 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await using var dbContext = new HeadStartDbContext(optionsBuilder.Options);
 
         // Réinitialiser le paramètre DarkMode
-        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "user1@example.com");
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "user1@example.com", cancellationToken: ct);
         if (user != null)
         {
             user.DarkMode = false;
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(ct);
         }
     }
 

@@ -10,15 +10,11 @@ public static class TestConfiguration
     /// </summary>
     public static class Categories
     {
-        public const string Smoke = "Smoke"; // Quick, basic functionality tests
+        public const string Standard = "Standard"; // Quick, basic functionality tests
         public const string Security = "Security"; // Authentication/authorization tests
         public const string Performance = "Performance"; // Performance-related tests
-        public const string Integration = "Integration"; // Full integration tests
-        public const string Validation = "Validation"; // Input validation tests
-        public const string ErrorHandling = "ErrorHandling"; // Error scenario tests
-        public const string Concurrency = "Concurrency"; // Concurrent execution tests
-        public const string StateManagement = "StateManagement"; // CRUD and state tests
         public const string UserInterface = "UserInterface"; // UI-related tests
+        public const string HealthCheck = "HealthCheck"; // Health check tests
     }
 
     /// <summary>
@@ -27,8 +23,6 @@ public static class TestConfiguration
     public static class Timeouts
     {
         public const int QuickTest = 2000;      // 2 seconds for quick tests
-        public const int StandardTest = 5000;    // 5 seconds for standard tests
-        public const int IntegrationTest = 10000; // 10 seconds for complex integration tests
-        public const int LongRunningTest = 30000; // 30 seconds for long-running tests
+        public const int UITest = 10000; // 10 seconds for UI tests
     }
 }

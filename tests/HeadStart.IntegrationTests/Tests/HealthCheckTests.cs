@@ -1,6 +1,5 @@
 using HeadStart.IntegrationTests.Data;
 using Shouldly;
-using TUnit.Core;
 
 namespace HeadStart.IntegrationTests.Tests;
 
@@ -11,6 +10,8 @@ namespace HeadStart.IntegrationTests.Tests;
 public class HealthCheckTests(ApiTestDataClass api)
 {
     [Test]
+    [Category(TestConfiguration.Categories.HealthCheck)]
+    [Timeout(TestConfiguration.Timeouts.QuickTest)]
     public async Task WebApi_HealthCheck_ReturnsHealthyAsync(CancellationToken cancellationToken)
     {
         // Arrange
@@ -29,6 +30,8 @@ public class HealthCheckTests(ApiTestDataClass api)
     }
 
     [Test]
+    [Category(TestConfiguration.Categories.HealthCheck)]
+    [Timeout(TestConfiguration.Timeouts.QuickTest)]
     public async Task Bff_HealthCheck_ReturnsHealthyAsync(CancellationToken cancellationToken)
     {
         // Arrange

@@ -8,7 +8,9 @@ namespace HeadStart.IntegrationTests.UITests;
 public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightTestBase
 {
     [Test]
-    public async Task WebAppHomePageTestAsync()
+    [Category(TestConfiguration.Categories.UserInterface)]
+    [Timeout(TestConfiguration.Timeouts.UITest)]
+    public async Task WebAppHomePageTestAsync(CancellationToken ct)
     {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
@@ -17,7 +19,9 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
     }
 
     [Test]
-    public async Task LoginTestAsync()
+    [Category(TestConfiguration.Categories.UserInterface)]
+    [Timeout(TestConfiguration.Timeouts.UITest)]
+    public async Task LoginTestAsync(CancellationToken ct)
     {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
@@ -40,7 +44,9 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
     }
 
     [Test]
-    public async Task LogoutTestsAsync()
+    [Category(TestConfiguration.Categories.UserInterface)]
+    [Timeout(TestConfiguration.Timeouts.UITest)]
+    public async Task LogoutTestsAsync(CancellationToken ct)
     {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
