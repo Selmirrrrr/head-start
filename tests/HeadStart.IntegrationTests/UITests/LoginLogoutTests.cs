@@ -25,9 +25,9 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
     {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
-        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**", new() { Timeout = 10000 });
+        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**");
 
-        await Page.WaitForSelectorAsync("input[name='username']", new() { Timeout = 10000 });
+        await Page.WaitForSelectorAsync("input[name='username']");
 
         // Fill in the login credentials
         await Page.FillAsync("input[name='username']", "user1@example.com");
@@ -50,9 +50,9 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
     {
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
-        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**", new() { Timeout = 10000 });
+        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**");
 
-        await Page.WaitForSelectorAsync("input[name='username']", new() { Timeout = 10000 });
+        await Page.WaitForSelectorAsync("input[name='username']");
 
         // Fill in the login credentials
         await Page.FillAsync("input[name='username']", "user1@example.com");
@@ -69,7 +69,7 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
         await Page.GetByRole(AriaRole.Button, new() { Name = "Logout" }).ClickAsync();
 
         // Wait for redirect back to Keycloak login page after logout
-        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**", new() { Timeout = 10000 });
+        await Page.WaitForURLAsync($"{playwrightDataClass.KeycloakUrl}**");
 
         // Verify we're back at the login page
         var title = await Page.TitleAsync();

@@ -9,7 +9,7 @@
              Color="Color.Default" Dense="true">
         @foreach (var language in SupportedLocalization.SupportedLanguages)
         {
-            <MudMenuItem OnClick="() => ChangeLanguageAsync(language.Code)"
+            <MudMenuItem id="@($"language-selector-{language.Code}")" OnClick="() => ChangeLanguageAsync(language.Code)"
                          Class="@(language.Code == CurrentLanguage ? "mud-selected-item" : "")"
                          Style="@(language.Code == CurrentLanguage ? "font-weight: bold; background: var(--mud-palette-primary); color: var(--mud-palette-primary-text);" : "")">
                 @language.DisplayName

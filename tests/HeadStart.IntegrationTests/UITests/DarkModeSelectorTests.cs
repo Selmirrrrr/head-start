@@ -1,6 +1,5 @@
 using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
-using HeadStart.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using Shouldly;
@@ -95,11 +94,9 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
     private async Task AssertDarkModeAsync()
     {
-        // Obtenir la couleur d'arrière-plan calculée mise à jour
         var updatedBackgroundColor = await Page.Locator("body").EvaluateAsync<string>(BackgroundSelectorExpression);
         var updatedColor = await Page.Locator("body").EvaluateAsync<string>(ColorSelectorExpression);
 
-        // Vérifier les couleurs mises à jour
         updatedColor.ShouldBe(DarkModeColor);
         updatedBackgroundColor.ShouldBe(DarkModeBackground);
     }
@@ -115,16 +112,8 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
     private static async Task ResetDarkModeAsync(CancellationToken ct)
     {
-        var connectionString = await GlobalSetup.App!.GetConnectionStringAsync("postgresdb", cancellationToken: ct);
+        await using var dbContext = await GetDbContextAsync();
 
-        // Créer DbContextOptions correctement
-        var optionsBuilder = new DbContextOptionsBuilder<HeadStartDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
-
-        // Créer une instance de contexte de base de données avec la chaîne de connexion
-        await using var dbContext = new HeadStartDbContext(optionsBuilder.Options);
-
-        // Réinitialiser le paramètre DarkMode
         var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "user1@example.com", cancellationToken: ct);
         if (user != null)
         {
@@ -135,19 +124,10 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
     private static async Task<bool> GetDarkModeSettingFromDbAsync(string userEmail)
     {
-        var connectionString = await GlobalSetup.App!.GetConnectionStringAsync("postgresdb");
+        await using var dbContext = await GetDbContextAsync();
 
-        // Créer DbContextOptions correctement
-        var optionsBuilder = new DbContextOptionsBuilder<HeadStartDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
-
-        // Créer une instance de contexte de base de données avec la chaîne de connexion
-        await using var dbContext = new HeadStartDbContext(optionsBuilder.Options);
-
-        // Récupérer l'utilisateur et vérifier le paramètre DarkMode
         var user = await dbContext.Users.SingleAsync(u => u.Email == userEmail);
 
-        // Retourner le paramètre DarkMode
         return user.DarkMode;
     }
 }

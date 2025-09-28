@@ -1,3 +1,5 @@
+using HeadStart.WebAPI.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using TUnit.Playwright;
 
@@ -12,14 +14,15 @@ public abstract class PlaywrightTestBase : PageTest
             IgnoreHTTPSErrors = true,
             AcceptDownloads = true,
             Locale = "fr-CH",
-            ColorScheme = ColorScheme.Light,
+            ColorScheme = ColorScheme.Light
+
         };
     }
 
     protected async Task LoginAsync(Uri keycloakUrl, string username, string password)
     {
-        await Page.WaitForURLAsync($"{keycloakUrl}**", new() { Timeout = 10000 });
-        await Page.WaitForSelectorAsync("input[name='username']", new() { Timeout = 10000 });
+        await Page.WaitForURLAsync($"{keycloakUrl}**");
+        await Page.WaitForSelectorAsync("input[name='username']");
 
         // Fill in the login credentials
         await Page.FillAsync("input[name='username']", username);
@@ -27,5 +30,13 @@ public abstract class PlaywrightTestBase : PageTest
 
         // Submit the login form
         await Page.Locator("#kc-login").ClickAsync();
+    }
+
+    protected static async Task<HeadStartDbContext> GetDbContextAsync()
+    {
+        var connectionString = await GlobalSetup.App!.GetConnectionStringAsync("postgresdb");
+        var optionsBuilder = new DbContextOptionsBuilder<HeadStartDbContext>();
+        optionsBuilder.UseNpgsql(connectionString!);
+        return new HeadStartDbContext(optionsBuilder.Options);
     }
 }
