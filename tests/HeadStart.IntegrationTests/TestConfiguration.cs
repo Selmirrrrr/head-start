@@ -18,6 +18,7 @@ public static class TestConfiguration
         public const string ErrorHandling = "ErrorHandling"; // Error scenario tests
         public const string Concurrency = "Concurrency"; // Concurrent execution tests
         public const string StateManagement = "StateManagement"; // CRUD and state tests
+        public const string UserInterface = "UserInterface"; // UI-related tests
     }
 
     /// <summary>

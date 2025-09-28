@@ -1,15 +1,20 @@
 ﻿@using HeadStart.Client.Services.Users
 
 <MudTooltip Delay="1000" Text="@(UserState.CurrentState.DarkMode ? L["Light mode"]: L["Dark mode"])">
-    <MudToggleIconButton Toggled="@UserState.CurrentState.DarkMode" Icon="@Icons.Material.TwoTone.WbSunny"
-                         Color="@Color.Warning" Class="d-flex ml-auto" ToggledIcon="@Icons.Material.TwoTone.DarkMode"
+    <MudToggleIconButton
+        id="darkmode-switcher-button"
+        Toggled="@UserState.CurrentState.DarkMode"
+                         Icon="@Icons.Material.TwoTone.WbSunny"
+                         Color="@Color.Warning"
+                         Class="d-flex ml-auto"
+                         ToggledIcon="@Icons.Material.TwoTone.DarkMode"
                          ToggledColor="@Color.Surface" @onclick="ToggleDarkMode" />
 </MudTooltip>
 
 @code
 {
     [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
-    
+
     private async Task ToggleDarkMode()
     {
         await UserState.SetDarkModeAsync(!UserState.CurrentState.DarkMode);

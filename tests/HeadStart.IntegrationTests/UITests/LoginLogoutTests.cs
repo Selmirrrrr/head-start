@@ -1,13 +1,11 @@
+using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
 using Microsoft.Playwright;
-using TUnit.Assertions;
-using TUnit.Assertions.Extensions;
-using TUnit.Core;
 
 namespace HeadStart.IntegrationTests.UITests;
 
 [ClassDataSource<AspireDataClass>]
-public class FrontEndTests(AspireDataClass playwrightDataClass) : PlaywrightTestBase
+public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightTestBase
 {
     [Test]
     public async Task WebAppHomePageTestAsync()

@@ -4,7 +4,9 @@
 @inject ApiClientV1 ApiClientV1
 @inject IStringLocalizer<Tenants> LC
 
-<PageTitle>@L["Tenants"]</PageTitle>
+<PageTitle>@LC["Tenants"]</PageTitle>
+
+<MudText Typo="Typo.h4" Class="my-4">@LC["Tenants"]</MudText>
 
 @if (_tenants == null)
 {

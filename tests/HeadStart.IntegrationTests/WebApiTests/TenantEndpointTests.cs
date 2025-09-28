@@ -7,7 +7,7 @@ namespace HeadStart.IntegrationTests.WebApiTests;
 
 [ClassDataSource<ApiTestDataClass>]
 [Category(TestConfiguration.Categories.Integration)]
-public class TenantEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTest()
+public class TenantEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTest
 {
     [Test]
     [Category(TestConfiguration.Categories.Smoke)]
