@@ -66,8 +66,6 @@ internal static class ServiceCollectionExtensions
 
         services.AddDbContext<HeadStartDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("postgresdb") ?? throw new InvalidOperationException("Connection string 'postgresdb' not found."))
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors()
                 .UseAsyncSeeding(async (context, _, cancellationToken) =>
                 {
                     var tenant = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);

@@ -18,6 +18,9 @@ public class HeadStartDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Ensure ltree extension is available for hierarchical data
+        modelBuilder.HasPostgresExtension("ltree");
+
         modelBuilder.ApplyConfiguration(new TenantEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new RoleEntityTypeConfiguration());

@@ -1,5 +1,6 @@
+using Ardalis.GuardClauses;
+using HeadStart.IntegrationTests.Helpers;
 using HeadStart.WebAPI.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using TUnit.Playwright;
 
@@ -35,8 +36,10 @@ public abstract class PlaywrightTestBase : PageTest
     protected static async Task<HeadStartDbContext> GetDbContextAsync()
     {
         var connectionString = await GlobalSetup.App!.GetConnectionStringAsync("postgresdb");
-        var optionsBuilder = new DbContextOptionsBuilder<HeadStartDbContext>();
-        optionsBuilder.UseNpgsql(connectionString!);
-        return new HeadStartDbContext(optionsBuilder.Options);
+
+        Guard.Against.NullOrWhiteSpace(connectionString);
+
+        var dbContext = await DbContextHelper.CreateDbContextAsync(connectionString);
+        return dbContext;
     }
 }

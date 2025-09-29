@@ -25,7 +25,7 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
     public async Task DarkModeToggle_ShouldChangeUIState_AndPersistAcrossSessionsAsync(CancellationToken ct)
     {
         // Réinitialiser le paramètre de mode sombre avant le test
-        await ResetDarkModeAsync(ct);
+        await ResetDarkModeAsync(Users.UserUiTest1.UserEmail, ct);
 
         // Naviguer vers l'application
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
@@ -37,7 +37,9 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync();
 
         // Vérifier les couleurs initiales
-        await AssertLightModeAsync();
+        var (updatedBackgroundColor, updatedColor) = await GetColorsAsync();
+        updatedColor.ShouldBe(LightModeColor);
+        updatedBackgroundColor.ShouldBe(LightModeBackground);
 
         // Attendre que le sélecteur de mode sombre soit visible
         await Page.WaitForSelectorAsync(DarkModeToggleSelector, new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
@@ -56,7 +58,9 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         darkModeSetting.ShouldBe(true);
 
         // Vérifier les couleurs mises à jour
-        await AssertDarkModeAsync();
+        var (darkBackgroundColor, darkColor) = await GetColorsAsync();
+        darkColor.ShouldBe(DarkModeColor);
+        darkBackgroundColor.ShouldBe(DarkModeBackground);
 
         // Actualiser la page pour vérifier la persistance
         await Page.ReloadAsync();
@@ -65,7 +69,9 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync();
 
         // Vérifier les couleurs mises à jour
-        await AssertDarkModeAsync();
+        var (persistedBackgroundColor, persistedColor) = await GetColorsAsync();
+        persistedColor.ShouldBe(DarkModeColor);
+        persistedBackgroundColor.ShouldBe(DarkModeBackground);
 
         // Naviguer vers une autre page
         await Page.GetByRole(AriaRole.Link, new() { Name = "Tenants" }).ClickAsync();
@@ -74,7 +80,9 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync();
 
         // Vérifier les couleurs mises à jour
-        await AssertDarkModeAsync();
+        var (tenantsBackgroundColor, tenantsColor) = await GetColorsAsync();
+        tenantsColor.ShouldBe(DarkModeColor);
+        tenantsBackgroundColor.ShouldBe(DarkModeBackground);
 
         // Basculer de nouveau vers le mode clair
         await darkModeToggle.ClickAsync();
@@ -87,32 +95,23 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         darkModeSetting.ShouldBe(false);
 
         // Vérifier les couleurs mises à jour
-        await AssertLightModeAsync();
+        var (lightBackgroundColor, lightColor) = await GetColorsAsync();
+        lightColor.ShouldBe(LightModeColor);
+        lightBackgroundColor.ShouldBe(LightModeBackground);
     }
 
-    private async Task AssertDarkModeAsync()
+    private async Task<(string backgroundColor, string color)> GetColorsAsync()
     {
         var updatedBackgroundColor = await Page.Locator("body").EvaluateAsync<string>(BackgroundSelectorExpression);
         var updatedColor = await Page.Locator("body").EvaluateAsync<string>(ColorSelectorExpression);
-
-        updatedColor.ShouldBe(DarkModeColor);
-        updatedBackgroundColor.ShouldBe(DarkModeBackground);
+        return (updatedBackgroundColor, updatedColor);
     }
 
-    private async Task AssertLightModeAsync()
-    {
-        var updatedBackgroundColor = await Page.Locator("body").EvaluateAsync<string>(BackgroundSelectorExpression);
-        var updatedColor = await Page.Locator("body").EvaluateAsync<string>(ColorSelectorExpression);
-
-        updatedColor.ShouldBe(LightModeColor);
-        updatedBackgroundColor.ShouldBe(LightModeBackground);
-    }
-
-    private static async Task ResetDarkModeAsync(CancellationToken ct)
+    private static async Task ResetDarkModeAsync(string userEmail, CancellationToken ct)
     {
         await using var dbContext = await GetDbContextAsync();
 
-        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "user1@example.com", cancellationToken: ct);
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userEmail, cancellationToken: ct);
         if (user != null)
         {
             user.DarkMode = false;
