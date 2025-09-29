@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Ardalis.GuardClauses;
 using HeadStart.Client.Generated;
+using HeadStart.IntegrationTests.Helpers;
 using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using TUnit.Core.Interfaces;
@@ -12,11 +13,12 @@ namespace HeadStart.IntegrationTests.Data;
 /// Test fixture that provides authenticated and unauthenticated API clients
 /// for testing directly against the WebAPI using a test user token.
 /// </summary>
-public class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
+public sealed class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
 {
     private HttpClient? _authenticatedHttpClient;
 
-    public ApiClientV1 AuthApiClient { get; private set; } = null!;
+    public ApiClientV1 AdminApiClient { get; private set; } = null!;
+    public ApiClientV1 UserApiClient { get; private set; } = null!;
     public ApiClientV1 AnonymousApiClient { get; private set; } = null!;
     public Uri BffUrl { get; private set; } = null!;
     public Uri WebApiUrl { get; private set; } = null!;
@@ -46,7 +48,8 @@ public class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
         }
 
         // Create authenticated API client that goes directly to WebAPI
-        AuthApiClient = await SetupApiClientAsync("user1@example.com", "user1");
+        AdminApiClient = await SetupApiClientAsync(Users.AdminApiTest1.UserEmail, Users.AdminApiTest1.UserPassword);
+        UserApiClient = await SetupApiClientAsync(Users.UserApiTest1.UserEmail, Users.UserApiTest1.UserPassword);
         AnonymousApiClient = await SetupApiClientAsync(null, null);
     }
 
@@ -101,7 +104,7 @@ public class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
         return tokenData;
     }
 
-    public virtual async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         GC.SuppressFinalize(this);
         _authenticatedHttpClient?.Dispose();

@@ -3,7 +3,7 @@ using HeadStart.IntegrationTests.Data;
 using Microsoft.Kiota.Abstractions;
 using Shouldly;
 
-namespace HeadStart.IntegrationTests.WebApiTests;
+namespace HeadStart.IntegrationTests.WebApiTests.Tenants;
 
 [ClassDataSource<ApiTestDataClass>]
 public class TenantEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTest
@@ -14,7 +14,7 @@ public class TenantEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTes
     public async Task GetTenants_WithValidAuth_ReturnsListOfTenantsAsync(CancellationToken cancellationToken)
     {
         // Act
-        var response = await apiTestDataClass.AuthApiClient.Api.V1.Tenants.GetAsync(cancellationToken: cancellationToken);
+        var response = await apiTestDataClass.AdminApiClient.Api.V1.Tenants.GetAsync(cancellationToken: cancellationToken);
 
         // Assert
         response.ShouldNotBeNull();
