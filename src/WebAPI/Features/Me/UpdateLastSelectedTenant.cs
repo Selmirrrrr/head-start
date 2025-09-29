@@ -46,7 +46,7 @@ public static class UpdateLastSelectedTenant
             }
 
             // Validate that the user has access to this tenant
-            if (!string.IsNullOrEmpty(req.LastSelectedTenantPath))
+            if (!string.IsNullOrWhiteSpace(req.LastSelectedTenantPath))
             {
                 user.DernierTenantSelectionneId = new LTree(req.LastSelectedTenantPath);
             }

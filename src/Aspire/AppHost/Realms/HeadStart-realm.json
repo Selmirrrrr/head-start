@@ -537,6 +537,48 @@
       "attributes": {}
     },
     {
+      "id": "950ED1AF-A46B-4E59-9C37-C58E3AB50CCE",
+      "username": "user.api.2@test.com",
+      "firstName": "UserApiTest2P",
+      "lastName": "UserApiTest2N",
+      "email": "user.api.2@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user.api.2",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
+      "id": "68A6EB54-7EF3-4355-9F5D-60617C5DB25D",
+      "username": "user.api.3@test.com",
+      "firstName": "UserApiTest3P",
+      "lastName": "UserApiTest3N",
+      "email": "user.api.3@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user.api.3",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
       "id": "51DC8821-CED1-434B-9D35-22A1B6BD6080",
       "username": "user.ui.1@test.com",
       "firstName": "UserUiTest1P",
@@ -569,6 +611,48 @@
         {
           "type": "password",
           "value": "admin.api.1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
+      "id": "BEF49FA1-E260-4F14-9DA8-4B3E8B1AEED9",
+      "username": "admin.api.2@test.com",
+      "firstName": "AdminApiTest2P",
+      "lastName": "AdminApiTest2N",
+      "email": "admin.api.2@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin.api.2",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
+      "id": "62C43E2A-BA99-442A-8FB0-74F78EA29D3E",
+      "username": "admin.api.3@test.com",
+      "firstName": "AdminApiTest3P",
+      "lastName": "AdminApiTest3N",
+      "email": "admin.api.3@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin.api.3",
           "temporary": false
         }
       ],

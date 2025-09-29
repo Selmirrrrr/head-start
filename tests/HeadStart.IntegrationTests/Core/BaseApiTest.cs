@@ -1,3 +1,6 @@
+using Ardalis.GuardClauses;
+using HeadStart.IntegrationTests.Helpers;
+using HeadStart.WebAPI.Data;
 using Microsoft.Kiota.Abstractions;
 using Shouldly;
 
@@ -9,6 +12,16 @@ namespace HeadStart.IntegrationTests.Core;
 /// </summary>
 public abstract class BaseApiTest()
 {
+    protected static async Task<HeadStartDbContext> GetDbContextAsync()
+    {
+        var connectionString = await GlobalSetup.App!.GetConnectionStringAsync("postgresdb");
+
+        Guard.Against.NullOrWhiteSpace(connectionString);
+
+        var dbContext = await DbContextHelper.CreateDbContextAsync(connectionString);
+        return dbContext;
+    }
+
     /// <summary>
     /// Asserts that an API call throws an unauthorized exception
     /// </summary>

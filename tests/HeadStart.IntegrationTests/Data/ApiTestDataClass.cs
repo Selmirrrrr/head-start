@@ -17,9 +17,16 @@ public sealed class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
 {
     private HttpClient? _authenticatedHttpClient;
 
-    public ApiClientV1 AdminApiClient { get; private set; } = null!;
-    public ApiClientV1 UserApiClient { get; private set; } = null!;
+    public ApiClientV1 Admin1ApiClient { get; private set; } = null!;
+    public ApiClientV1 Admin2ApiClient { get; private set; } = null!;
+    public ApiClientV1 Admin3ApiClient { get; private set; } = null!;
+
+    public ApiClientV1 User1ApiClient { get; private set; } = null!;
+    public ApiClientV1 User2ApiClient { get; private set; } = null!;
+    public ApiClientV1 User3ApiClient { get; private set; } = null!;
+
     public ApiClientV1 AnonymousApiClient { get; private set; } = null!;
+
     public Uri BffUrl { get; private set; } = null!;
     public Uri WebApiUrl { get; private set; } = null!;
     public Uri KeycloakUrl { get; private set; } = null!;
@@ -48,8 +55,12 @@ public sealed class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
         }
 
         // Create authenticated API client that goes directly to WebAPI
-        AdminApiClient = await SetupApiClientAsync(Users.AdminApiTest1.UserEmail, Users.AdminApiTest1.UserPassword);
-        UserApiClient = await SetupApiClientAsync(Users.UserApiTest1.UserEmail, Users.UserApiTest1.UserPassword);
+        Admin1ApiClient = await SetupApiClientAsync(Users.AdminApiTest1.UserEmail, Users.AdminApiTest1.UserPassword);
+        Admin2ApiClient = await SetupApiClientAsync(Users.AdminApiTest2.UserEmail, Users.AdminApiTest2.UserPassword);
+        Admin3ApiClient = await SetupApiClientAsync(Users.AdminApiTest3.UserEmail, Users.AdminApiTest3.UserPassword);
+        User1ApiClient = await SetupApiClientAsync(Users.UserApiTest1.UserEmail, Users.UserApiTest1.UserPassword);
+        User2ApiClient = await SetupApiClientAsync(Users.UserApiTest2.UserEmail, Users.UserApiTest2.UserPassword);
+        User3ApiClient = await SetupApiClientAsync(Users.UserApiTest3.UserEmail, Users.UserApiTest3.UserPassword);
         AnonymousApiClient = await SetupApiClientAsync(null, null);
     }
 

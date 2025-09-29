@@ -14,7 +14,7 @@ public class TenantEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTes
     public async Task GetTenants_WithValidAuth_ReturnsListOfTenantsAsync(CancellationToken cancellationToken)
     {
         // Act
-        var response = await apiTestDataClass.AdminApiClient.Api.V1.Tenants.GetAsync(cancellationToken: cancellationToken);
+        var response = await apiTestDataClass.Admin1ApiClient.Api.V1.Tenants.GetAsync(cancellationToken: cancellationToken);
 
         // Assert
         response.ShouldNotBeNull();
