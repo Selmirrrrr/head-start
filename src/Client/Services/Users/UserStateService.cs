@@ -8,7 +8,7 @@ namespace HeadStart.Client.Services.Users;
 public class UserStateService
 {
     private UserState _currentState = UserState.Default;
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     public event Action? OnStateChanged;
 
@@ -55,7 +55,7 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
 
         try
         {
-            var userProfile = await apiClient.Api.V1.Users.Me.GetAsync();
+            var userProfile = await apiClient.Api.V1.Me.GetAsync();
 
             if (userProfile == null)
             {
@@ -82,7 +82,7 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to initialize user state: {ex.Message}");
+            Console.WriteLine("Failed to initialize user state: {Message}", ex.Message);
             stateService.CurrentState = UserState.Default;
             stateService.IsInitialized = true;
         }
@@ -97,18 +97,18 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
 
         try
         {
-            var request = new HeadStartWebAPIFeaturesUsersUpdateDarkMode_Request
+            var request = new HeadStartWebAPIFeaturesMeUpdateDarkMode_Request
             {
                 IsDarkMode = isDarkMode
             };
 
-            await apiClient.Api.V1.Users.Me.DarkMode.PatchAsync(request);
+            await apiClient.Api.V1.Me.DarkMode.PatchAsync(request);
 
             stateService.CurrentState = stateService.CurrentState with { DarkMode = isDarkMode };
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to update dark mode: {ex.Message}");
+            Console.WriteLine($@"Failed to update dark mode: {ex.Message}");
         }
     }
 
@@ -121,19 +121,19 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
 
         try
         {
-            var request = new HeadStartWebAPIFeaturesUsersUpdateLanguage_Request
+            var request = new HeadStartWebAPIFeaturesMeUpdateLanguage_Request()
             {
                 LanguageCode = languageCode
             };
 
-            await apiClient.Api.V1.Users.Me.Language.PatchAsync(request);
+            await apiClient.Api.V1.Me.Language.PatchAsync(request);
 
 
             stateService.CurrentState = stateService.CurrentState with { LangueCode = languageCode };
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to update language: {ex.Message}");
+            Console.WriteLine($@"Failed to update language: {ex.Message}");
         }
     }
 
@@ -146,18 +146,18 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
 
         try
         {
-            var request = new HeadStartWebAPIFeaturesUsersUpdateLastSelectedTenant_Request
+            var request = new HeadStartWebAPIFeaturesMeUpdateLastSelectedTenant_Request
             {
                 LastSelectedTenantPath = tenantPath
             };
 
-            await apiClient.Api.V1.Users.Me.Tenant.PatchAsync(request);
+            await apiClient.Api.V1.Me.Tenant.PatchAsync(request);
 
             stateService.CurrentState = stateService.CurrentState with { DernierTenantSelectionne = tenantPath };
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to update selected tenant: {ex.Message}");
+            Console.WriteLine($@"Failed to update selected tenant: {ex.Message}");
         }
     }
 }

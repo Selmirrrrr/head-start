@@ -3,18 +3,18 @@ using FastEndpoints;
 using HeadStart.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace HeadStart.WebAPI.Features.Users;
+namespace HeadStart.WebAPI.Features.Me;
 
-public static class UpdateLanguage
+public static class UpdateLastSelectedTenant
 {
     public class Request
     {
-        public required string LanguageCode { get; set; }
+        public string? LastSelectedTenantPath { get; set; }
     }
 
     public class Response
     {
-        public string LanguageCode { get; set; } = string.Empty;
+        public string? LastSelectedTenantPath { get; set; }
     }
 
     public class Endpoint : Endpoint<Request, Response>
@@ -23,7 +23,7 @@ public static class UpdateLanguage
 
         public override void Configure()
         {
-            Patch("/users/me/language");
+            Patch("/me/tenant");
             Version(1);
         }
 
@@ -35,17 +35,29 @@ public static class UpdateLanguage
                 return;
             }
 
-            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.IdpId == userId, ct);
+            var user = await DbContext.Users
+                .Include(u => u.Droits)
+                .FirstOrDefaultAsync(u => u.IdpId == userId, ct);
+
             if (user == null)
             {
                 await Send.NotFoundAsync(ct);
                 return;
             }
 
-            user.LanguageCode = req.LanguageCode;
+            // Validate that the user has access to this tenant
+            if (!string.IsNullOrEmpty(req.LastSelectedTenantPath))
+            {
+                user.DernierTenantSelectionneId = new LTree(req.LastSelectedTenantPath);
+            }
+            else
+            {
+                user.DernierTenantSelectionneId = null;
+            }
+
             await DbContext.SaveChangesAsync(ct);
 
-            await Send.OkAsync(new Response { LanguageCode = user.LanguageCode }, ct);
+            await Send.OkAsync(new Response { LastSelectedTenantPath = user.DernierTenantSelectionneId?.ToString() }, ct);
         }
     }
 }

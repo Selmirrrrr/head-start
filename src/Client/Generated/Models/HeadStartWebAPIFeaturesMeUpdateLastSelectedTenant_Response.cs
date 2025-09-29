@@ -9,7 +9,7 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesUsersUpdateLastSelectedTenant_Request : IParsable
+    public partial class HeadStartWebAPIFeaturesMeUpdateLastSelectedTenant_Response : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The lastSelectedTenantPath property</summary>
@@ -23,12 +23,12 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersUpdateLastSelectedTenant_Request"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeUpdateLastSelectedTenant_Response"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersUpdateLastSelectedTenant_Request CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeUpdateLastSelectedTenant_Response CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersUpdateLastSelectedTenant_Request();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeUpdateLastSelectedTenant_Response();
         }
         /// <summary>
         /// The deserialization information for the current model

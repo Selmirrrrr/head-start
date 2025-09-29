@@ -3,18 +3,18 @@ using FastEndpoints;
 using HeadStart.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace HeadStart.WebAPI.Features.Users;
+namespace HeadStart.WebAPI.Features.Me;
 
-public static class UpdateLastSelectedTenant
+public static class UpdateDarkMode
 {
     public class Request
     {
-        public string? LastSelectedTenantPath { get; set; }
+        public bool IsDarkMode { get; set; }
     }
 
     public class Response
     {
-        public string? LastSelectedTenantPath { get; set; }
+        public bool IsDarkMode { get; set; }
     }
 
     public class Endpoint : Endpoint<Request, Response>
@@ -23,7 +23,7 @@ public static class UpdateLastSelectedTenant
 
         public override void Configure()
         {
-            Patch("/users/me/tenant");
+            Patch("/me/dark-mode");
             Version(1);
         }
 
@@ -35,29 +35,17 @@ public static class UpdateLastSelectedTenant
                 return;
             }
 
-            var user = await DbContext.Users
-                .Include(u => u.Droits)
-                .FirstOrDefaultAsync(u => u.IdpId == userId, ct);
-
+            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.IdpId == userId, ct);
             if (user == null)
             {
                 await Send.NotFoundAsync(ct);
                 return;
             }
 
-            // Validate that the user has access to this tenant
-            if (!string.IsNullOrEmpty(req.LastSelectedTenantPath))
-            {
-                user.DernierTenantSelectionneId = new LTree(req.LastSelectedTenantPath);
-            }
-            else
-            {
-                user.DernierTenantSelectionneId = null;
-            }
-
+            user.DarkMode = req.IsDarkMode;
             await DbContext.SaveChangesAsync(ct);
 
-            await Send.OkAsync(new Response { LastSelectedTenantPath = user.DernierTenantSelectionneId?.ToString() }, ct);
+            await Send.OkAsync(new Response { IsDarkMode = user.DarkMode }, ct);
         }
     }
 }

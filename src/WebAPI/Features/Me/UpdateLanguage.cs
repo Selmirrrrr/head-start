@@ -3,18 +3,18 @@ using FastEndpoints;
 using HeadStart.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace HeadStart.WebAPI.Features.Users;
+namespace HeadStart.WebAPI.Features.Me;
 
-public static class UpdateDarkMode
+public static class UpdateLanguage
 {
     public class Request
     {
-        public bool IsDarkMode { get; set; }
+        public required string LanguageCode { get; set; }
     }
 
     public class Response
     {
-        public bool IsDarkMode { get; set; }
+        public string LanguageCode { get; set; } = string.Empty;
     }
 
     public class Endpoint : Endpoint<Request, Response>
@@ -23,7 +23,7 @@ public static class UpdateDarkMode
 
         public override void Configure()
         {
-            Patch("/users/me/dark-mode");
+            Patch("/me/language");
             Version(1);
         }
 
@@ -42,10 +42,10 @@ public static class UpdateDarkMode
                 return;
             }
 
-            user.DarkMode = req.IsDarkMode;
+            user.LanguageCode = req.LanguageCode;
             await DbContext.SaveChangesAsync(ct);
 
-            await Send.OkAsync(new Response { IsDarkMode = user.DarkMode }, ct);
+            await Send.OkAsync(new Response { LanguageCode = user.LanguageCode }, ct);
         }
     }
 }

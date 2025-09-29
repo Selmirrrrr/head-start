@@ -1,7 +1,7 @@
 using FastEndpoints;
 using HeadStart.WebAPI.Data;
 
-namespace HeadStart.WebAPI.Features.Users;
+namespace HeadStart.WebAPI.Features.Me;
 
 public static class GetMeClaims
 {
@@ -11,7 +11,7 @@ public static class GetMeClaims
 
         public override void Configure()
         {
-            Get("/users/me/claims");
+            Get("/me/claims");
             Version(1);
         }
 

@@ -5,7 +5,7 @@ using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HeadStart.WebAPI.Features.Users;
+namespace HeadStart.WebAPI.Features.Me;
 
 public static class GetMe
 {
@@ -15,7 +15,7 @@ public static class GetMe
 
         public override void Configure()
         {
-            Get("/users/me");
+            Get("/me");
             Version(1);
         }
 

@@ -9,7 +9,7 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesUsersGetMe_ProfilUtilisateur : IParsable
+    public partial class HeadStartWebAPIFeaturesMeGetMe_ProfilUtilisateur : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The darkMode property</summary>
@@ -65,20 +65,20 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>The roles property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_DroitUtilisateur>? Roles { get; set; }
+        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur>? Roles { get; set; }
 #nullable restore
 #else
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_DroitUtilisateur> Roles { get; set; }
+        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur> Roles { get; set; }
 #endif
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_ProfilUtilisateur"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_ProfilUtilisateur"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_ProfilUtilisateur CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_ProfilUtilisateur CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_ProfilUtilisateur();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_ProfilUtilisateur();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -95,7 +95,7 @@ namespace HeadStart.Client.Generated.Models
                 { "langueCode", n => { LangueCode = n.GetStringValue(); } },
                 { "nom", n => { Nom = n.GetStringValue(); } },
                 { "prenom", n => { Prenom = n.GetStringValue(); } },
-                { "roles", n => { Roles = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_DroitUtilisateur>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_DroitUtilisateur.CreateFromDiscriminatorValue)?.AsList(); } },
+                { "roles", n => { Roles = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur.CreateFromDiscriminatorValue)?.AsList(); } },
             };
         }
         /// <summary>
@@ -112,7 +112,7 @@ namespace HeadStart.Client.Generated.Models
             writer.WriteStringValue("langueCode", LangueCode);
             writer.WriteStringValue("nom", Nom);
             writer.WriteStringValue("prenom", Prenom);
-            writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesUsersGetMe_DroitUtilisateur>("roles", Roles);
+            writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur>("roles", Roles);
         }
     }
 }
