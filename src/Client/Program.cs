@@ -1,13 +1,5 @@
-using System.Globalization;
-using Blazored.LocalStorage;
 using HeadStart.Client.Extensions;
-using HeadStart.Client.Services;
-using HeadStart.Client.Services.Users;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.JSInterop;
-using MudBlazor;
-using MudBlazor.Services;
 using Serilog;
 using Serilog.Exceptions;
 

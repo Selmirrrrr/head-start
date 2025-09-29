@@ -1,11 +1,9 @@
 using System.Net.Mime;
-using System.Security.Claims;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;

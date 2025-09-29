@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using FastEndpoints;
 using HeadStart.WebAPI.Data;
-using HeadStart.WebAPI.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadStart.WebAPI.Features.Users;
