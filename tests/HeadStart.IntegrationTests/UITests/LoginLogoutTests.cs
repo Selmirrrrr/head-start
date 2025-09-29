@@ -1,5 +1,6 @@
 using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
+using HeadStart.IntegrationTests.Helpers;
 using Microsoft.Playwright;
 
 namespace HeadStart.IntegrationTests.UITests;
@@ -30,8 +31,8 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
         await Page.WaitForSelectorAsync("input[name='username']");
 
         // Fill in the login credentials
-        await Page.FillAsync("input[name='username']", "user1@example.com");
-        await Page.FillAsync("input[name='password']", "user1");
+        await Page.FillAsync("input[name='username']", Users.UserUiTest1.UserName);
+        await Page.FillAsync("input[name='password']", Users.UserUiTest1.UserPassword);
 
         // Submit the login form
         await Page.Locator("#kc-login").ClickAsync();
@@ -40,7 +41,7 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
 
         // Verifiy that we see the users name in the user card button
         await Expect(Page.Locator(".mud-typography.mud-typography-body2"))
-            .ToContainTextAsync("FirstName1");
+            .ToContainTextAsync(Users.UserUiTest1.UserFirstName);
     }
 
     [Test]
@@ -55,8 +56,8 @@ public class LoginLogoutTests(AspireDataClass playwrightDataClass) : PlaywrightT
         await Page.WaitForSelectorAsync("input[name='username']");
 
         // Fill in the login credentials
-        await Page.FillAsync("input[name='username']", "user1@example.com");
-        await Page.FillAsync("input[name='password']", "user1");
+        await Page.FillAsync("input[name='username']", Users.UserUiTest1.UserName);
+        await Page.FillAsync("input[name='password']", Users.UserUiTest1.UserPassword);
 
         // Submit the login form
         await Page.Locator("#kc-login").ClickAsync();

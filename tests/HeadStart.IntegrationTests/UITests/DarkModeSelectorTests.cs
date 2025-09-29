@@ -1,5 +1,6 @@
 using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
+using HeadStart.IntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using Shouldly;
@@ -18,9 +19,6 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
     private const string ColorSelectorExpression = "el => getComputedStyle(el).color";
     private const string BackgroundSelectorExpression = "el => getComputedStyle(el).backgroundColor";
 
-    private const string UserEmail = "user1@example.com";
-    private const string UserPassword = "user1";
-
     [Test]
     [Category(TestConfiguration.Categories.UserInterface)]
     [Timeout(TestConfiguration.Timeouts.UITest)]
@@ -33,7 +31,7 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
         // Se connecter d'abord
-        await LoginAsync(playwrightDataClass.KeycloakUrl, UserEmail, UserPassword);
+        await LoginAsync(playwrightDataClass.KeycloakUrl, Users.UserUiTest1.UserName, Users.UserUiTest1.UserPassword);
 
         // Attendre que la page se charge complètement après la connexion
         await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync();
@@ -54,7 +52,7 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Task.Delay(100, ct);
 
         // Vérifier le changement d'état dans la base de données
-        var darkModeSetting = await GetDarkModeSettingFromDbAsync(UserEmail);
+        var darkModeSetting = await GetDarkModeSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         darkModeSetting.ShouldBe(true);
 
         // Vérifier les couleurs mises à jour
@@ -85,7 +83,7 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Task.Delay(100, ct);
 
         // Vérifier le changement d'état dans la base de données
-        darkModeSetting = await GetDarkModeSettingFromDbAsync(UserEmail);
+        darkModeSetting = await GetDarkModeSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         darkModeSetting.ShouldBe(false);
 
         // Vérifier les couleurs mises à jour

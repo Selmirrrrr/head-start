@@ -66,10 +66,12 @@ internal static class ServiceCollectionExtensions
 
         services.AddDbContext<HeadStartDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("postgresdb") ?? throw new InvalidOperationException("Connection string 'postgresdb' not found."))
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors()
                 .UseAsyncSeeding(async (context, _, cancellationToken) =>
                 {
-                    var testBlog = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
-                    if (testBlog == null)
+                    var tenant = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
+                    if (tenant == null)
                     {
                         var roleAdminId = Guid.CreateVersion7();
                         var roleUserId = Guid.CreateVersion7();
@@ -82,6 +84,17 @@ internal static class ServiceCollectionExtensions
                         context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich.Enge", Name = "HeadStart Zürich - Enge" });
                         context.Set<Role>().Add(new Role { Id = roleAdminId, Code = "Admin", CodeTrads = new Dictionary<string, string> { { "fr", "Administrateur" }, { "de", "Administrator" }, { "it", "Amministratore" }, { "en", "Administrator" } }, TenantPath = "HeadStart" });
                         context.Set<Role>().Add(new Role { Id = roleUserId, Code = "User", CodeTrads = new Dictionary<string, string> { { "fr", "Utilisteur" }, { "de", "Benutzer" }, { "it", "Utilizatore" }, { "en", "User" } }, TenantPath = "HeadStart" });
+
+                        var userApiTest1 = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.CreateVersion7(), IdpId = Guid.Parse("A599B326-C0BF-4F29-91CF-463ADA378253"), Email = "user.api.1@test.com", Nom = "UserApiTest1N", Prenom = "UserApiTest1P", LanguageCode = "fr", DarkMode = false, DernierTenantSelectionneId = "HeadStart" });
+                        var userUiTest1 = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.CreateVersion7(), IdpId = Guid.Parse("51DC8821-CED1-434B-9D35-22A1B6BD6080"), Email = "user.ui.1@test.com", Nom = "UserUiTest1N", Prenom = "UserUiTest1P", LanguageCode = "fr", DarkMode = false, DernierTenantSelectionneId = "HeadStart" });
+                        var adminApiTest1 = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.CreateVersion7(), IdpId = Guid.Parse("1CD0057D-F96B-4D6F-A2FF-393C1CFEF71C"), Email = "admin.api.1@test.com", Nom = "AdminApiTest1N", Prenom = "AdminApiTest1P", LanguageCode = "fr", DarkMode = false, DernierTenantSelectionneId = "HeadStart" });
+                        var adminUiTest1 = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.CreateVersion7(), IdpId = Guid.Parse("AD9B256F-6541-485E-B17B-6451449AD980"), Email = "admin.ui.1@test.com", Nom = "AdminUiTest1N", Prenom = "AdminUiTest1P", LanguageCode = "fr", DarkMode = false, DernierTenantSelectionneId = "HeadStart" });
+
+                        context.Set<Droit>().Add(new Droit { Utilisateur = userApiTest1.Entity, TenantPath = "HeadStart", RoleId = roleUserId });
+                        context.Set<Droit>().Add(new Droit { Utilisateur = userUiTest1.Entity, TenantPath = "HeadStart", RoleId = roleUserId });
+                        context.Set<Droit>().Add(new Droit { Utilisateur = adminApiTest1.Entity, TenantPath = "HeadStart", RoleId = roleAdminId });
+                        context.Set<Droit>().Add(new Droit { Utilisateur = adminUiTest1.Entity, TenantPath = "HeadStart", RoleId = roleAdminId });
+
                         await context.SaveChangesAsync(cancellationToken);
                     }
                 }));

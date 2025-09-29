@@ -1,5 +1,6 @@
 using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
+using HeadStart.IntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using Shouldly;
@@ -11,16 +12,13 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 {
     private const string UserInfoCardSelector = "#user-info-card";
 
-    private const string UserEmail = "user1@example.com";
-    private const string UserPassword = "user1";
-
     // Expected greetings in different languages
     private readonly Dictionary<string, string> _expectedGreetings = new()
     {
-        { "fr", "Bonjour FirstName1" },
-        { "en", "Hello FirstName1" },
-        { "de", "Hallo FirstName1" },
-        { "it", "Ciao FirstName1" }
+        { "fr", $"Bonjour {Users.UserUiTest1.UserFirstName}" },
+        { "en", $"Hello {Users.UserUiTest1.UserFirstName}" },
+        { "de", $"Hallo {Users.UserUiTest1.UserFirstName}" },
+        { "it", $"Ciao {Users.UserUiTest1.UserFirstName}" }
     };
 
     [Test]
@@ -35,7 +33,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.GotoAsync(playwrightDataClass.BaseUrl.ToString());
 
         // Login first
-        await LoginAsync(playwrightDataClass.KeycloakUrl, UserEmail, UserPassword);
+        await LoginAsync(playwrightDataClass.KeycloakUrl, Users.UserUiTest1.UserName, Users.UserUiTest1.UserPassword);
 
         // Wait for the page to fully load after login
         await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync();
@@ -44,7 +42,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await AssertGreetingAsync("fr");
 
         // Verify the language setting in the database
-        var languageSetting = await GetLanguageSettingFromDbAsync(UserEmail);
+        var languageSetting = await GetLanguageSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         languageSetting.ShouldBe("fr");
 
         // Wait for the language selector to be visible
@@ -73,7 +71,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await AssertGreetingAsync("en");
 
         // Verify the change in the database
-        languageSetting = await GetLanguageSettingFromDbAsync(UserEmail);
+        languageSetting = await GetLanguageSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         languageSetting.ShouldBe("en");
 
         // Open the menu again to verify English is now highlighted
@@ -125,7 +123,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await AssertGreetingAsync("de");
 
         // Verify the change in the database
-        languageSetting = await GetLanguageSettingFromDbAsync(UserEmail);
+        languageSetting = await GetLanguageSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         languageSetting.ShouldBe("de");
 
         // Test switching to Italian
@@ -141,7 +139,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await AssertGreetingAsync("it");
 
         // Verify the change in the database
-        languageSetting = await GetLanguageSettingFromDbAsync(UserEmail);
+        languageSetting = await GetLanguageSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         languageSetting.ShouldBe("it");
 
         // Switch back to French
@@ -157,7 +155,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await AssertGreetingAsync("fr");
 
         // Verify the change in the database
-        languageSetting = await GetLanguageSettingFromDbAsync(UserEmail);
+        languageSetting = await GetLanguageSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         languageSetting.ShouldBe("fr");
     }
 
@@ -175,7 +173,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
     {
         await using var dbContext = await GetDbContextAsync();
 
-        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == UserEmail, cancellationToken: ct);
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == Users.UserUiTest1.UserEmail, cancellationToken: ct);
         if (user != null)
         {
             user.LanguageCode = "fr";

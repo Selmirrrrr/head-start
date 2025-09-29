@@ -514,6 +514,90 @@
       },
       "realmRoles": ["default-roles-headstart"],
       "attributes": {}
+    },
+    {
+      "id": "A599B326-C0BF-4F29-91CF-463ADA378253",
+      "username": "user.api.1@test.com",
+      "firstName": "UserApiTest1P",
+      "lastName": "UserApiTest1N",
+      "email": "user.api.1@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user.api.1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
+      "id": "51DC8821-CED1-434B-9D35-22A1B6BD6080",
+      "username": "user.ui.1@test.com",
+      "firstName": "UserUiTest1P",
+      "lastName": "UserUiTest1N",
+      "email": "user.ui.1@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user.ui.1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
+      "id": "1CD0057D-F96B-4D6F-A2FF-393C1CFEF71C",
+      "username": "admin.api.1@test.com",
+      "firstName": "AdminApiTest1P",
+      "lastName": "AdminApiTest1N",
+      "email": "admin.api.1@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin.api.1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
+      "id": "AD9B256F-6541-485E-B17B-6451449AD980",
+      "username": "admin.ui.1@test.com",
+      "firstName": "AdminUiTest1P",
+      "lastName": "AdminUiTest1N",
+      "email": "admin.ui.1@test.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin.ui.1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
     }
   ],
   "scopeMappings": [
