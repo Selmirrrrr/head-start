@@ -6,13 +6,7 @@ A .NET 9 solution using Backend-for-Frontend pattern with Blazor WebAssembly, Fa
 
 ```bash
 # Run entire application stack (recommended)
-dotnet run --project src/Aspire/AppHost
-
-# Or run individual components
-dotnet run --project src/BFF        # BFF only
-dotnet run --project src/WebAPI      # API only
-dotnet run --project src/Client      # Client only
-```
+dotnet run --project src/Aspire/AppHost/HeadStart.Aspire.AppHost.csproj
 
 ## Tech Stack
 
