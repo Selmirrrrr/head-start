@@ -15,9 +15,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Build solution**: `dotnet build`
 - **Restore packages**: `dotnet restore`
 - **Clean solution**: `dotnet clean`
+- **Run all tests**: `dotnet test`
+- **Run tests with coverage**: `dotnet test --collect:"XPlat Code Coverage"`
+- **Run specific test project**: `dotnet test tests/HeadStart.IntegrationTests`
 
 ### API Client Generation
 The WebAPI project automatically generates Kiota-based API clients for the Blazor client during build. Generated files are placed in `src/Client/Generated/`.
+
+To manually regenerate clients:
+```bash
+dotnet run --generateclients true --project src/WebAPI/HeadStart.WebAPI.csproj
+```
+
+### E2E Testing with Playwright
+Integration tests use Playwright for browser automation:
+
+**First-time setup:**
+```bash
+# Install Playwright CLI globally
+dotnet tool install --global Microsoft.Playwright.CLI
+
+# Install browsers
+playwright install
+```
+
+**Running E2E tests:**
+- Tests are in `tests/HeadStart.IntegrationTests/UITests/`
+- Use `BaseApiTest` for API integration tests
+- Use `PlaywrightTestBase` for UI tests
 
 ## Architecture Overview
 
@@ -29,7 +54,9 @@ This is a .NET 9 solution using a Backend-for-Frontend (BFF) pattern with the fo
 3. **HeadStart.WebAPI** - FastEndpoints-based API with PostgreSQL integration
 4. **HeadStart.Client** - Blazor WebAssembly frontend using MudBlazor and Tailwind CSS
 5. **HeadStart.SharedKernel** - Shared utilities, models, and extensions
-6. **HeadStart.Aspire.ServiceDefaults** - Common Aspire service configurations
+6. **HeadStart.SharedKernel.Models** - Shared domain models and DTOs
+7. **HeadStart.Aspire.ServiceDefaults** - Common Aspire service configurations
+8. **HeadStart.IntegrationTests** - TUnit-based integration tests with Playwright for E2E testing
 
 ### Authentication & Authorization
 - **Authentication**: OpenID Connect with Keycloak (BFF) and OpenIddict validation (WebAPI)
@@ -43,7 +70,6 @@ This is a .NET 9 solution using a Backend-for-Frontend (BFF) pattern with the fo
 
 ### Frontend Architecture
 - **Framework**: Blazor WebAssembly with MudBlazor components
-- **Styling**: Tailwind CSS with automatic CLI integration
 - **State Management**: Built-in Blazor state management
 - **API Communication**: Kiota-generated clients from OpenAPI specs
 
@@ -63,3 +89,5 @@ This is a .NET 9 solution using a Backend-for-Frontend (BFF) pattern with the fo
 - **Hot Reload**: Enabled for Blazor development
 - **Code Quality**: Roslynator and SonarAnalyzer integration
 - **Editor Config**: Standardized formatting and style rules
+- **Package Management**: Central package version management via `Directory.Packages.props`
+- **Testing Framework**: TUnit with Playwright for E2E and Shouldly for assertions

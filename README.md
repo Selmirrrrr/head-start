@@ -2,6 +2,10 @@
 
 A .NET 9 solution using Backend-for-Frontend pattern with Blazor WebAssembly, FastEndpoints API, and PostgreSQL.
 
+## Architecture
+
+
+
 ## Quick Start
 
 ```bash
