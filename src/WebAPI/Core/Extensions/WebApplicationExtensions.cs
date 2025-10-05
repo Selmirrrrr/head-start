@@ -2,13 +2,14 @@ using CorrelationId;
 using FastEndpoints;
 using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
+using HeadStart.WebAPI.Core.Filters;
 using HeadStart.WebAPI.Data;
 using Kiota.Builder;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
 
-namespace HeadStart.WebAPI.Extensions;
+namespace HeadStart.WebAPI.Core.Extensions;
 
 internal static class WebApplicationExtensions
 {
@@ -112,7 +113,12 @@ internal static class WebApplicationExtensions
                 c.Versioning.Prefix = "v";
                 c.Versioning.DefaultVersion = 1;
                 c.Versioning.PrependToRoute = true;
+                c.Endpoints.Configurator = ep =>
+                {
+                    ep.Options(b => b.AddEndpointFilter<OperationCancelledFilter>());
+                };
             })
+
            .UseSwaggerGen();
 
         if (app.Environment.IsDevelopment())

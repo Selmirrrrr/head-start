@@ -1,7 +1,7 @@
 using FastEndpoints.ClientGen.Kiota;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
-using HeadStart.WebAPI.Extensions;
+using HeadStart.WebAPI.Core.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

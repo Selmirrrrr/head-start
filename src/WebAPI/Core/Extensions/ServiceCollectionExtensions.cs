@@ -4,12 +4,13 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
+using HeadStart.WebAPI.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using NSwag;
 
-namespace HeadStart.WebAPI.Extensions;
+namespace HeadStart.WebAPI.Core.Extensions;
 
 /// <summary>
 /// Contains extension methods for registering application services.
@@ -55,6 +56,7 @@ internal static class ServiceCollectionExtensions
         );
         services.AddSignalR();
         services.AddHttpContextAccessor();
+        services.AddScoped<CurrentUserService>();
     }
 
     internal static void AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
