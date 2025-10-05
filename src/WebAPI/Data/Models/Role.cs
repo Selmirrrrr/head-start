@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadStart.WebAPI.Data.Models;
 
-public class Role : IMayHaveTenant
+public class Role : IHaveTenant
 {
     public Guid Id { get; set; }
 
@@ -12,8 +12,9 @@ public class Role : IMayHaveTenant
     public required Dictionary<string, string> CodeTrads { get; set; }
 
     public string? Description { get; set; }
+    public Dictionary<string, string>? DescriptionTrads { get; set; }
 
-    public LTree? TenantPath { get; set; }
+    public LTree TenantPath { get; set; }
     public Tenant Tenant { get; set; } = null!;
 
     public ICollection<Droit> Droits { get; set; } = new List<Droit>();
@@ -34,6 +35,10 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
             .HasMaxLength(100)
             .IsRequired();
 
+        builder.Property(r => r.TenantPath)
+            .HasColumnType("ltree")
+            .IsRequired();
+
         builder.HasIndex(r => r.Code);
 
         builder.Property(r => r.CodeTrads)
@@ -45,6 +50,13 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
 
         builder.Property(r => r.Description)
             .HasMaxLength(500);
+
+        builder.Property(r => r.DescriptionTrads)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, new JsonSerializerOptions(JsonSerializerDefaults.General)),
+                v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, new JsonSerializerOptions(JsonSerializerDefaults.General))!)
+            .HasColumnType("jsonb")
+            .IsRequired(false);
 
         builder.HasOne(utr => utr.Tenant)
             .WithMany()

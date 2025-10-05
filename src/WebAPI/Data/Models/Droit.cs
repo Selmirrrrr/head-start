@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -5,17 +6,49 @@ namespace HeadStart.WebAPI.Data.Models;
 
 public class Droit
 {
-    public Guid UserId { get; set; }
-    public Utilisateur Utilisateur { get; set; } = null!;
+    private Droit() { }
 
-    public LTree TenantPath { get; set; }
-    public Tenant Tenant { get; set; } = null!;
+    public Guid UserId { get; init; }
+    public Utilisateur Utilisateur { get; init; } = null!;
 
-    public Guid RoleId { get; set; }
-    public Role Role { get; set; } = null!;
+    public LTree TenantPath { get; init; }
+    public Tenant Tenant { get; init; } = null!;
 
-    public DateTime AssignedAt { get; set; }
-    public DateTime? ExpiresAt { get; set; }
+    public Guid RoleId { get; init; }
+    public Role Role { get; init; } = null!;
+
+    public DateTime DateDebutValidite { get; init; }
+    public DateTime DateFinValidite { get; private set; }
+
+    public static Droit New(Guid userId, LTree tenantPath, Guid roleId, DateTime dateDebutValidite, DateTime dateFinValidite)
+    {
+        Guard.Against.Expression(x => dateDebutValidite > x, dateFinValidite, "La date de fin de validité doit être après la date de début de validité");
+        return new Droit
+        {
+            UserId = userId,
+            TenantPath = tenantPath,
+            RoleId = roleId,
+            DateDebutValidite = dateDebutValidite,
+            DateFinValidite = dateFinValidite
+        };
+    }
+
+    public static Droit New(Guid userId, LTree tenantPath, Guid roleId)
+    {
+        return New(userId, tenantPath, roleId, DateTime.UtcNow, DateTime.UtcNow.AddYears(1));
+
+    }
+
+    public static Droit New(Guid userId, LTree tenantPath, Guid roleId, DateTime dateDebutValidite)
+    {
+        return New(userId, tenantPath, roleId, dateDebutValidite, dateDebutValidite.AddYears(1));
+    }
+
+    public void Update(DateTime dateFinValidite)
+    {
+        Guard.Against.Expression(x => DateDebutValidite > x, dateFinValidite, "La date de fin de validité doit être après la date de début de validité");
+        DateFinValidite = dateFinValidite;
+    }
 }
 
 public class UserTenantRoleEntityTypeConfiguration : IEntityTypeConfiguration<Droit>
@@ -44,10 +77,15 @@ public class UserTenantRoleEntityTypeConfiguration : IEntityTypeConfiguration<Dr
         builder.Property(utr => utr.TenantPath)
             .HasColumnType("ltree");
 
-        builder.Property(utr => utr.AssignedAt)
+        builder.Property(utr => utr.DateDebutValidite)
+            .IsRequired()
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+        builder.Property(utr => utr.DateFinValidite)
+            .IsRequired();
+
         builder.HasIndex(utr => new { utr.UserId, utr.TenantPath });
+        builder.HasIndex(utr => utr.UserId);
         builder.HasIndex(utr => utr.TenantPath);
         builder.HasIndex(utr => utr.RoleId);
     }
