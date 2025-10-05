@@ -474,6 +474,27 @@
   "webAuthnPolicyPasswordlessExtraOrigins": [],
   "users": [
     {
+      "id": "05623570-9015-4149-A52E-B01975772D32",
+      "username": "superadmin@headstart.com",
+      "firstName": "Super",
+      "lastName": "Admin",
+      "email": "superadmin@headstart.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "superadmin",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart"],
+      "attributes": {}
+    },
+    {
       "id": "580B8928-84DF-465C-9A02-33E9422841A1",
       "username": "user1@example.com",
       "firstName": "FirstName1",
