@@ -1,8 +1,8 @@
-using System.Security.Claims;
 using FastEndpoints;
 using HeadStart.SharedKernel.Models.Constants;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
+using HeadStart.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadStart.WebAPI.Features.Me;
@@ -12,6 +12,7 @@ public static class GetMe
     public class Endpoint : EndpointWithoutRequest<ProfilUtilisateur>
     {
         public required HeadStartDbContext DbContext { get; set; }
+        public required CurrentUserService CurrentUser { get; set; }
 
         public override void Configure()
         {
@@ -21,8 +22,7 @@ public static class GetMe
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                                    ?? throw new InvalidOperationException());
+            var userId = CurrentUser.UserId;
 
             if (!await DbContext.Users.AnyAsync(u => u.IdpId == userId, cancellationToken: ct))
             {
@@ -30,9 +30,9 @@ public static class GetMe
                 {
                     Id = Guid.NewGuid(),
                     IdpId = userId,
-                    Email = User.FindFirst(ClaimTypes.Email)?.Value ?? throw new InvalidOperationException("Email claim is missing"),
-                    Nom = User.FindFirst(ClaimTypes.Surname)?.Value ?? throw new InvalidOperationException("Name claim is missing"),
-                    Prenom = User.FindFirst(ClaimTypes.GivenName)?.Value ?? throw new InvalidOperationException("GivenName claim is missing"),
+                    Email = CurrentUser.Email,
+                    Nom = CurrentUser.Surname,
+                    Prenom = CurrentUser.GivenName,
                     LanguageCode = LanguesCodes.Français,
                 };
                 DbContext.Users.Add(utilisateur);

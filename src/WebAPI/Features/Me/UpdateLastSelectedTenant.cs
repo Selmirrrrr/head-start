@@ -1,6 +1,6 @@
-using System.Security.Claims;
 using FastEndpoints;
 using HeadStart.WebAPI.Data;
+using HeadStart.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadStart.WebAPI.Features.Me;
@@ -20,6 +20,7 @@ public static class UpdateLastSelectedTenant
     public class Endpoint : Endpoint<Request, Response>
     {
         public required HeadStartDbContext DbContext { get; set; }
+        public required CurrentUserService CurrentUser { get; set; }
 
         public override void Configure()
         {
@@ -29,11 +30,7 @@ public static class UpdateLastSelectedTenant
 
         public override async Task HandleAsync(Request req, CancellationToken ct)
         {
-            if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var userId))
-            {
-                await Send.UnauthorizedAsync(ct);
-                return;
-            }
+            var userId = CurrentUser.UserId;
 
             var user = await DbContext.Users
                 .Include(u => u.Droits)
