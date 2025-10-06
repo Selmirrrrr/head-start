@@ -73,13 +73,13 @@ internal static class ServiceCollectionExtensions
                     {
                         var roleAdminId = Guid.CreateVersion7();
                         var roleUserId = Guid.CreateVersion7();
-                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart", Name = "HeadStart" });
-                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne", Name = "HeadStart Lausanne" });
-                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich", Name = "HeadStart Zürich" });
-                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne.Palud", Name = "HeadStart Lausanne - Palud" });
-                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Lausanne.Ouchy", Name = "HeadStart Lausanne - Ouchy" });
-                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich.Paradeplatz", Name = "HeadStart Zürich - Paradeplatz" });
-                        context.Set<Tenant>().Add(new Tenant { Path = "HeadStart.Zürich.Enge", Name = "HeadStart Zürich - Enge" });
+                        context.Set<Tenant>().Add(new Tenant { Code = "HeadStart", Name = "HeadStart" });
+                        context.Set<Tenant>().Add(new Tenant { Code = "HeadStart.Lausanne", Name = "HeadStart Lausanne" });
+                        context.Set<Tenant>().Add(new Tenant { Code = "HeadStart.Zürich", Name = "HeadStart Zürich" });
+                        context.Set<Tenant>().Add(new Tenant { Code = "HeadStart.Lausanne.Palud", Name = "HeadStart Lausanne - Palud" });
+                        context.Set<Tenant>().Add(new Tenant { Code = "HeadStart.Lausanne.Ouchy", Name = "HeadStart Lausanne - Ouchy" });
+                        context.Set<Tenant>().Add(new Tenant { Code = "HeadStart.Zürich.Paradeplatz", Name = "HeadStart Zürich - Paradeplatz" });
+                        context.Set<Tenant>().Add(new Tenant { Code = "HeadStart.Zürich.Enge", Name = "HeadStart Zürich - Enge" });
                         context.Set<Role>().Add(new Role { Id = roleAdminId, Code = "Admin", CodeTrads = new Dictionary<string, string> { { "fr", "Administrateur" }, { "de", "Administrator" }, { "it", "Amministratore" }, { "en", "Administrator" } }, TenantPath = "HeadStart" });
                         context.Set<Role>().Add(new Role { Id = roleUserId, Code = "User", CodeTrads = new Dictionary<string, string> { { "fr", "Utilisteur" }, { "de", "Benutzer" }, { "it", "Utilizatore" }, { "en", "User" } }, TenantPath = "HeadStart" });
 

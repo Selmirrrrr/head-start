@@ -17,7 +17,7 @@ public static class TenantsGetList
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var tenants = DbContext.Tenants.Select(t => new TenantViewModel(t.Path.ToString(), t.Name));
+            var tenants = DbContext.Tenants.Select(t => new TenantViewModel(t.Code.ToString(), t.Name));
             await Send.OkAsync(new Response([.. tenants]), ct);
         }
     }

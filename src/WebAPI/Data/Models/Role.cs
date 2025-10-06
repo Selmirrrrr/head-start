@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadStart.WebAPI.Data.Models;
 
-public class Role : IHaveTenant, IAuditable
+public class Role : IMayHaveTenant, IAuditable
 {
     public Guid Id { get; set; }
 
@@ -15,11 +15,15 @@ public class Role : IHaveTenant, IAuditable
     public string? Description { get; set; }
     public Dictionary<string, string>? DescriptionTrads { get; set; }
 
-    public LTree TenantPath { get; set; }
-    public Tenant Tenant { get; set; } = null!;
-
     public ICollection<Droit> Droits { get; set; } = new List<Droit>();
 
+    public ICollection<RoleFonctionalite> RoleFonctionnalites { get; set; } = new List<RoleFonctionalite>();
+
+    // IMayHaveTenant
+    public LTree? TenantPath { get; set; }
+    public Tenant Tenant { get; set; } = null!;
+
+    // IAuditable
     public Audit Audit { get; set; } = new Audit();
 }
 
@@ -40,7 +44,7 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
 
         builder.Property(r => r.TenantPath)
             .HasColumnType("ltree")
-            .IsRequired();
+            .IsRequired(false);
 
         builder.HasIndex(r => r.Code);
 
@@ -65,6 +69,16 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
             .WithMany()
             .HasForeignKey(utr => utr.TenantPath)
             .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(r => r.RoleFonctionnalites)
+            .WithOne(rf => rf.Role)
+            .HasForeignKey(rf => rf.RoleId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(r => r.Droits)
+            .WithOne(d => d.Role)
+            .HasForeignKey(d => d.RoleId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

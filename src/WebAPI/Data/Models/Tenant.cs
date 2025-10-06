@@ -6,7 +6,7 @@ namespace HeadStart.WebAPI.Data.Models;
 
 public class Tenant : IAuditable
 {
-    public required LTree Path { get; set; }
+    public required LTree Code { get; set; }
 
     public required string Name { get; set; }
 
@@ -21,10 +21,10 @@ public class TenantEntityTypeConfiguration : IEntityTypeConfiguration<Tenant>
     {
         builder.ToTable("Tenants");
 
-        builder.HasIndex(t => t.Path).IsUnique();
-        builder.HasKey(t => t.Path);
+        builder.HasIndex(t => t.Code).IsUnique();
+        builder.HasKey(t => t.Code);
 
-        builder.Property(t => t.Path)
+        builder.Property(t => t.Code)
             .HasColumnType("ltree")
             .IsRequired();
 

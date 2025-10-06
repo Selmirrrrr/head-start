@@ -13,6 +13,8 @@ public class HeadStartDbContext(
     public DbSet<Role> Roles { get; set; }
     public DbSet<Droit> UserTenantRoles { get; set; }
     public DbSet<AuditTrail> AuditTrails { get; set; }
+    public DbSet<Fonctionalite> Fonctionalites { get; set; }
+    public DbSet<RoleFonctionalite> RoleFonctionalites { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +28,8 @@ public class HeadStartDbContext(
         modelBuilder.ApplyConfiguration(new RoleEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserTenantRoleEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new AuditTrailEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new FonctionaliteEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new RoleFonctionaliteEntityTypeConfiguration());
 
         // Configure audit records for all auditable entities
         ConfigureAuditRecords(modelBuilder);
@@ -121,21 +125,21 @@ public class HeadStartDbContext(
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        auditTrail.NewValues[propertyName] = property.CurrentValue;
+                        auditTrail.NewValues[propertyName] = ConvertValueForAudit(property.CurrentValue);
                         break;
                     case EntityState.Modified:
                     {
                         if (property.IsModified)
                         {
-                            auditTrail.OldValues[propertyName] = property.OriginalValue;
-                            auditTrail.NewValues[propertyName] = property.CurrentValue;
+                            auditTrail.OldValues[propertyName] = ConvertValueForAudit(property.OriginalValue);
+                            auditTrail.NewValues[propertyName] = ConvertValueForAudit(property.CurrentValue);
                             auditTrail.ChangedColumns.Add(propertyName);
                         }
 
                         break;
                     }
                     case EntityState.Deleted:
-                        auditTrail.OldValues[propertyName] = property.OriginalValue;
+                        auditTrail.OldValues[propertyName] = ConvertValueForAudit(property.OriginalValue);
                         break;
                 }
             }
@@ -144,5 +148,16 @@ public class HeadStartDbContext(
         }
 
         return Task.FromResult(auditTrails);
+    }
+
+    private static object? ConvertValueForAudit(object? value)
+    {
+        // Convert LTree to string for JSON serialization
+        if (value is LTree ltree)
+        {
+            return ltree.ToString();
+        }
+
+        return value;
     }
 }
