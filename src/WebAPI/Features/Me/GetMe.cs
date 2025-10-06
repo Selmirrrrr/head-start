@@ -12,7 +12,7 @@ public static class GetMe
     public class Endpoint : EndpointWithoutRequest<ProfilUtilisateur>
     {
         public required HeadStartDbContext DbContext { get; set; }
-        public required CurrentUserService CurrentUser { get; set; }
+        public required ICurrentUserService CurrentUser { get; set; }
 
         public override void Configure()
         {
@@ -24,12 +24,11 @@ public static class GetMe
         {
             var userId = CurrentUser.UserId;
 
-            if (!await DbContext.Users.AnyAsync(u => u.IdpId == userId, cancellationToken: ct))
+            if (!await DbContext.Users.AnyAsync(u => u.Id == userId, cancellationToken: ct))
             {
                 var utilisateur = new Utilisateur
                 {
-                    Id = Guid.NewGuid(),
-                    IdpId = userId,
+                    Id = userId,
                     Email = CurrentUser.Email,
                     Nom = CurrentUser.Surname,
                     Prenom = CurrentUser.GivenName,
@@ -42,7 +41,7 @@ public static class GetMe
             var user = await DbContext.Users
                 .Include(u => u.Droits)
                     .ThenInclude(d => d.Role)
-                .SingleAsync(u => u.IdpId == userId, ct);
+                .SingleAsync(u => u.Id == userId, ct);
 
             var profile = new ProfilUtilisateur(
                 user.Id,

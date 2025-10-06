@@ -2,11 +2,20 @@ using System.Security.Claims;
 
 namespace HeadStart.WebAPI.Services;
 
+public interface ICurrentUserService
+{
+    Guid UserId { get; }
+    bool IsAuthenticated { get; }
+    string Email { get; }
+    string GivenName { get; }
+    string Surname { get; }
+}
+
 /// <summary>
 /// Service that provides access to the current authenticated user's information from JWT claims.
 /// Values are lazily loaded and cached per request scope.
 /// </summary>
-public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
+public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
     private Guid? _userId;
     private string? _email;

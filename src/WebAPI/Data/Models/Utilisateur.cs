@@ -7,7 +7,6 @@ namespace HeadStart.WebAPI.Data.Models;
 public class Utilisateur : IAuditable
 {
     public Guid Id { get; set; }
-    public Guid IdpId { get; set; }
 
     public required string Email { get; set; }
 
@@ -37,12 +36,6 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<Utilisateur>
 
         builder.Property(u => u.Id)
             .ValueGeneratedOnAdd();
-
-        builder.Property(u => u.IdpId)
-            .IsRequired();
-
-        builder.HasIndex(u => u.IdpId)
-            .IsUnique();
 
         builder.Property(u => u.Email)
             .HasMaxLength(255)

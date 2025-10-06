@@ -6,7 +6,7 @@ namespace HeadStart.WebAPI.Data;
 
 public class HeadStartDbContext(
     DbContextOptions<HeadStartDbContext> options,
-    CurrentUserService? currentUserService = null) : DbContext(options)
+    ICurrentUserService? currentUserService) : DbContext(options)
 {
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<Utilisateur> Users { get; set; }
@@ -53,7 +53,6 @@ public class HeadStartDbContext(
         var auditableEntries = ChangeTracker.Entries<IAuditable>();
         var now = DateTime.UtcNow;
         var userId = currentUserService?.IsAuthenticated == true ? currentUserService.UserId : (Guid?)null;
-
         // Update audit fields
         foreach (var entry in auditableEntries)
         {
@@ -91,10 +90,7 @@ public class HeadStartDbContext(
         var auditTrails = new List<AuditTrail>();
 
         var entries = ChangeTracker.Entries()
-            .Where(e => e.Entity is not AuditTrail
-                && (e.State == EntityState.Added
-                    || e.State == EntityState.Modified
-                    || e.State == EntityState.Deleted))
+            .Where(e => e.Entity is not AuditTrail && e.Entity is not Audit && e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
 
         foreach (var entry in entries)

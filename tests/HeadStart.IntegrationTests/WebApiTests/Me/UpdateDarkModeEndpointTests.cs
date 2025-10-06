@@ -34,7 +34,7 @@ public class UpdateDarkModeEndpointTests(ApiTestDataClass apiTestDataClass) : Ba
 
         // Verify in database
         var user = await dbContext.Users.FirstAsync(
-            u => u.IdpId == Users.UserApiTest1.IdpId,
+            u => u.Id == Users.UserApiTest1.Id,
             cancellationToken: cancellationToken);
         user.DarkMode.ShouldBeTrue();
     }
@@ -68,7 +68,7 @@ public class UpdateDarkModeEndpointTests(ApiTestDataClass apiTestDataClass) : Ba
 
         // Verify in database
         var user = await dbContext.Users.FirstAsync(
-            u => u.IdpId == Users.UserApiTest2.IdpId,
+            u => u.Id == Users.UserApiTest2.Id,
             cancellationToken: cancellationToken);
         user.DarkMode.ShouldBeFalse();
     }

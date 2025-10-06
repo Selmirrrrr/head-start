@@ -34,7 +34,7 @@ public class UpdateLastSelectedTenantEndpointTests(ApiTestDataClass apiTestDataC
 
         // Verify in database
         var user = await dbContext.Users.FirstAsync(
-            u => u.IdpId == Users.AdminApiTest1.IdpId,
+            u => u.Id == Users.AdminApiTest1.Id,
             cancellationToken: cancellationToken);
         user.DernierTenantSelectionneId.ShouldNotBeNull();
         user.DernierTenantSelectionneId.ToString().ShouldBe(testTenantPath);
@@ -71,7 +71,7 @@ public class UpdateLastSelectedTenantEndpointTests(ApiTestDataClass apiTestDataC
 
         // Verify in database
         var user = await dbContext.Users.FirstAsync(
-            u => u.IdpId == Users.AdminApiTest2.IdpId,
+            u => u.Id == Users.AdminApiTest2.Id,
             cancellationToken: cancellationToken);
         user.DernierTenantSelectionneId.ShouldBeNull();
     }

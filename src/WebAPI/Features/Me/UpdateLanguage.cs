@@ -20,7 +20,7 @@ public static class UpdateLanguage
     public class Endpoint : Endpoint<Request, Response>
     {
         public required HeadStartDbContext DbContext { get; set; }
-        public required CurrentUserService CurrentUser { get; set; }
+        public required ICurrentUserService CurrentUser { get; set; }
 
         public override void Configure()
         {
@@ -32,7 +32,7 @@ public static class UpdateLanguage
         {
             var userId = CurrentUser.UserId;
 
-            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.IdpId == userId, ct);
+            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
             if (user == null)
             {
                 await Send.NotFoundAsync(ct);

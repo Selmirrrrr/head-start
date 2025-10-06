@@ -1,4 +1,5 @@
 using HeadStart.WebAPI.Data;
+using HeadStart.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -23,7 +24,7 @@ public static class DbContextHelper
         optionsBuilder.UseNpgsql(dataSource);
 
         // Create a db context instance with the connection string
-        var dbContext = new HeadStartDbContext(optionsBuilder.Options);
+        var dbContext = new HeadStartDbContext(optionsBuilder.Options, new CurrentUserServiceMock());
 
         // Ensure the ltree extension is installed
         try
@@ -37,4 +38,13 @@ public static class DbContextHelper
         await dbContext.Database.EnsureCreatedAsync();
         return dbContext;
     }
+}
+
+public class CurrentUserServiceMock : ICurrentUserService
+{
+    public Guid UserId { get; } = Users.AdminApiTest1.Id;
+    public bool IsAuthenticated { get; } = true;
+    public string Email { get; } = Users.AdminApiTest1.UserEmail;
+    public string GivenName { get; } = Users.AdminApiTest1.UserFirstName;
+    public string Surname { get; } = Users.AdminApiTest1.UserLastName;
 }

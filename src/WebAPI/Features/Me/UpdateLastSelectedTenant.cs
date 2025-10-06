@@ -20,7 +20,7 @@ public static class UpdateLastSelectedTenant
     public class Endpoint : Endpoint<Request, Response>
     {
         public required HeadStartDbContext DbContext { get; set; }
-        public required CurrentUserService CurrentUser { get; set; }
+        public required ICurrentUserService CurrentUser { get; set; }
 
         public override void Configure()
         {
@@ -34,7 +34,7 @@ public static class UpdateLastSelectedTenant
 
             var user = await DbContext.Users
                 .Include(u => u.Droits)
-                .FirstOrDefaultAsync(u => u.IdpId == userId, ct);
+                .FirstOrDefaultAsync(u => u.Id == userId, ct);
 
             if (user == null)
             {

@@ -10,7 +10,7 @@ public static class GetMeTenants
     public class Endpoint : EndpointWithoutRequest<Response>
     {
         public required HeadStartDbContext DbContext { get; set; }
-        public required CurrentUserService CurrentUser { get; set; }
+        public required ICurrentUserService CurrentUser { get; set; }
 
         public override void Configure()
         {
@@ -22,7 +22,7 @@ public static class GetMeTenants
         {
             var userId = CurrentUser.UserId;
 
-            var user = await DbContext.Users.AnyAsync(u => u.IdpId == userId, ct);
+            var user = await DbContext.Users.AnyAsync(u => u.Id == userId, ct);
 
             if (!user)
             {
