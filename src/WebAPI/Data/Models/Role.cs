@@ -1,10 +1,11 @@
 using System.Text.Json;
+using HeadStart.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadStart.WebAPI.Data.Models;
 
-public class Role : IHaveTenant
+public class Role : IHaveTenant, IAuditable
 {
     public Guid Id { get; set; }
 
@@ -18,6 +19,8 @@ public class Role : IHaveTenant
     public Tenant Tenant { get; set; } = null!;
 
     public ICollection<Droit> Droits { get; set; } = new List<Droit>();
+
+    public Audit Audit { get; set; } = new Audit();
 }
 
 public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>

@@ -1,9 +1,10 @@
+using HeadStart.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadStart.WebAPI.Data.Models;
 
-public class Utilisateur
+public class Utilisateur : IAuditable
 {
     public Guid Id { get; set; }
     public Guid IdpId { get; set; }
@@ -22,6 +23,8 @@ public class Utilisateur
     public LTree? DernierTenantSelectionneId { get; set; }
 
     public ICollection<Droit> Droits { get; set; } = new List<Droit>();
+
+    public Audit Audit { get; set; } = new Audit();
 }
 
 public class UserEntityTypeConfiguration : IEntityTypeConfiguration<Utilisateur>

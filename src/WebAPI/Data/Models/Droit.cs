@@ -1,24 +1,29 @@
 using Ardalis.GuardClauses;
+using HeadStart.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadStart.WebAPI.Data.Models;
 
-public class Droit
+public class Droit : IHaveTenant, IAuditable
 {
     private Droit() { }
 
     public Guid UserId { get; init; }
     public Utilisateur Utilisateur { get; init; } = null!;
 
-    public LTree TenantPath { get; init; }
-    public Tenant Tenant { get; init; } = null!;
-
     public Guid RoleId { get; init; }
     public Role Role { get; init; } = null!;
 
     public DateTime DateDebutValidite { get; init; }
     public DateTime DateFinValidite { get; private set; }
+
+    // IHaveTenant
+    public LTree TenantPath { get; init; }
+    public Tenant Tenant { get; init; } = null!;
+
+    // IAuditable
+    public Audit Audit { get; set; } = new Audit();
 
     public static Droit New(Guid userId, LTree tenantPath, Guid roleId, DateTime dateDebutValidite, DateTime dateFinValidite)
     {

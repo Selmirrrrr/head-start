@@ -35,7 +35,7 @@ public class UserStateService
 }
 
 // Scoped service that handles API calls
-public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateService)
+public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateService, ILogger<UserStateContainer> logger)
 {
     public event Action? OnStateChanged
     {
@@ -82,9 +82,7 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Failed to initialize user state: {Message}", ex.Message);
-            stateService.CurrentState = UserState.Default;
-            stateService.IsInitialized = true;
+            logger.LogError(ex, "Failed to initialize user state");
         }
     }
 
@@ -108,7 +106,7 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
         }
         catch (Exception ex)
         {
-            Console.WriteLine($@"Failed to update dark mode: {ex.Message}");
+            logger.LogError(ex, "Failed to update dark mode");
         }
     }
 
@@ -133,7 +131,7 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
         }
         catch (Exception ex)
         {
-            Console.WriteLine($@"Failed to update language: {ex.Message}");
+            logger.LogError(ex, "Failed to update language");
         }
     }
 
@@ -157,7 +155,7 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
         }
         catch (Exception ex)
         {
-            Console.WriteLine($@"Failed to update selected tenant: {ex.Message}");
+            logger.LogError(ex, "Failed to update selected tenant");
         }
     }
 }

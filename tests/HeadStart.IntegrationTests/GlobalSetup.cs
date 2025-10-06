@@ -11,7 +11,7 @@ public static class GlobalSetup
     public static ResourceNotificationService? NotificationService { get; private set; }
 
     [Before(TestSession)]
-    [Timeout(300000)]
+    [Timeout(300_000)]
     public static async Task SetUpAsync(CancellationToken ct)
     {
         // Arrange

@@ -109,6 +109,7 @@ internal static class WebApplicationExtensions
     {
         app.UseFastEndpoints(c =>
             {
+                c.Errors.UseProblemDetails();
                 c.Endpoints.RoutePrefix = "api";
                 c.Versioning.Prefix = "v";
                 c.Versioning.DefaultVersion = 1;

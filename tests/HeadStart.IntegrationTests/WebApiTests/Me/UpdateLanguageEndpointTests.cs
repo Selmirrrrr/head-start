@@ -77,11 +77,6 @@ public class UpdateLanguageEndpointTests(ApiTestDataClass apiTestDataClass) : Ba
             // Verify in database
             await dbContext.Entry(user).ReloadAsync(cancellationToken);
             user.LanguageCode.ShouldBe(languageCode);
-            // var result = await dbContext.Users
-            //     .Where(u => u.IdpId == Users.UserApiTest2.IdpId && u.LanguageCode == languageCode)
-            //     .AnyAsync(cancellationToken);
-            //
-            // result.ShouldBeTrue();
         }
     }
 
