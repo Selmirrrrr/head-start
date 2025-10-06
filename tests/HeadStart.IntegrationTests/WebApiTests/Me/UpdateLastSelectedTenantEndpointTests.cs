@@ -46,7 +46,7 @@ public class UpdateLastSelectedTenantEndpointTests(ApiTestDataClass apiTestDataC
     [Arguments("")]
     [Arguments("   ")]
     [Arguments(null)]
-    public async Task UpdateLastSelectedTenant_WithNullOrWhiteSpaceValue_ClearsSelectionAsync(string tenant, CancellationToken cancellationToken)
+    public async Task UpdateLastSelectedTenant_WithNullOrWhiteSpaceValue_ClearsSelectionAsync(string? tenant, CancellationToken cancellationToken)
     {
         // Arrange
         await using var dbContext = await GetDbContextAsync();
