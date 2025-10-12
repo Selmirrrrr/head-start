@@ -14,7 +14,7 @@
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.2" />
     <PackageVersion Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
-    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="9.7.2" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="9.8.0" />
     <PackageVersion Include="CorrelationId" Version="3.0.1" />
     <PackageVersion Include="Duende.AccessTokenManagement.OpenIdConnect" Version="4.0.0" />
     <PackageVersion Include="FastEndpoints" Version="7.0.1" />
