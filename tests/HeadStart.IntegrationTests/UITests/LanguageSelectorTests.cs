@@ -36,7 +36,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await LoginAsync(playwrightDataClass.KeycloakUrl, Users.UserUiTest1.UserName, Users.UserUiTest1.UserPassword);
 
         // Wait for the page to fully load after login
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync();
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync(new() { Timeout = 30000 });
 
         // Verify initial language is French
         await AssertGreetingAsync("fr");
@@ -45,12 +45,13 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         var languageSetting = await GetLanguageSettingFromDbAsync(Users.UserUiTest1.UserEmail);
         languageSetting.ShouldBe("fr");
 
-        // Wait for the language selector to be visible
-        var languageIcon = Page.GetByRole(AriaRole.Toolbar).GetByRole(AriaRole.Button).Nth(3);
+        // Wait for the language selector to be visible - use a more robust selector with an ID or aria-label
+        var languageIcon = Page.GetByRole(AriaRole.Button, new() { Name = "Change language" }).Or(Page.GetByRole(AriaRole.Toolbar).GetByRole(AriaRole.Button).Nth(3));
+        await languageIcon.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
         await languageIcon.ClickAsync();
 
         // Wait for menu to open - the language dropdown doesn't have role='menu', just wait for the language options
-        await Page.Locator("p:has-text('English')").WaitForAsync(new() { State = WaitForSelectorState.Visible });
+        await Page.Locator("p:has-text('English')").WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
 
         // Verify that French is highlighted (has the special styling)
         var frenchMenuItem = Page.Locator("#language-selector-fr");
@@ -62,10 +63,11 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.Locator("p:has-text('English')").ClickAsync();
 
         // Wait for the page to reload (language change triggers a reload)
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        // Use DOMContentLoaded instead of NetworkIdle for more reliable CI execution
+        await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded, new() { Timeout = 30000 });
 
         // Wait for the page to fully load after reload
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync();
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting changed to English
         await AssertGreetingAsync("en");
@@ -76,7 +78,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
         // Open the menu again to verify English is now highlighted
         await languageIcon.ClickAsync();
-        await Page.Locator("p:has-text('Français')").WaitForAsync(new() { State = WaitForSelectorState.Visible });
+        await Page.Locator("p:has-text('Français')").WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
 
         // Verify that English is now highlighted
         var englishMenuItem = Page.Locator("#language-selector-en");
@@ -93,10 +95,10 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.Keyboard.PressAsync("Escape");
 
         // Refresh the page to verify persistence
-        await Page.ReloadAsync();
+        await Page.ReloadAsync(new() { WaitUntil = WaitUntilState.DOMContentLoaded, Timeout = 30000 });
 
         // Wait for the page to reload
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync();
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting is still in English
         await AssertGreetingAsync("en");
@@ -105,19 +107,19 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         await Page.GetByRole(AriaRole.Link, new() { Name = "Tenants" }).ClickAsync();
 
         // Wait for the page to load
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync();
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting is still in English
         await AssertGreetingAsync("en");
 
         // Test switching to German
         await languageIcon.ClickAsync();
-        await Page.Locator("p:has-text('Deutsch')").WaitForAsync(new() { State = WaitForSelectorState.Visible });
+        await Page.Locator("p:has-text('Deutsch')").WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
         await Page.Locator("p:has-text('Deutsch')").ClickAsync();
 
         // Wait for the page to reload
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync();
+        await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded, new() { Timeout = 30000 });
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting changed to German
         await AssertGreetingAsync("de");
@@ -128,12 +130,12 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
         // Test switching to Italian
         await languageIcon.ClickAsync();
-        await Page.Locator("#language-selector-it").WaitForAsync(new() { State = WaitForSelectorState.Visible });
+        await Page.Locator("#language-selector-it").WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
         await Page.Locator("#language-selector-it").ClickAsync();
 
         // Wait for the page to reload
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync();
+        await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded, new() { Timeout = 30000 });
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting changed to Italian
         await AssertGreetingAsync("it");
@@ -144,12 +146,12 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
         // Switch back to French
         await languageIcon.ClickAsync();
-        await Page.Locator("#language-selector-fr").WaitForAsync(new() { State = WaitForSelectorState.Visible });
+        await Page.Locator("#language-selector-fr").WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
         await Page.Locator("#language-selector-fr").ClickAsync();
 
         // Wait for the page to reload
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync();
+        await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded, new() { Timeout = 30000 });
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting is back to French
         await AssertGreetingAsync("fr");
