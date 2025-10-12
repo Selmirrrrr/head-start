@@ -67,8 +67,8 @@
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.15.0.120848" />
     <PackageVersion Include="System.Net.Http.Json" Version="9.0.9" />
     <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.9" />
-    <PackageVersion Include="TUnit" Version="0.57.65" />
-    <PackageVersion Include="TUnit.Playwright" Version="0.57.65" />
+    <PackageVersion Include="TUnit" Version="0.67.19" />
+    <PackageVersion Include="TUnit.Playwright" Version="0.67.19" />
     <PackageVersion Include="Yarp.ReverseProxy" Version="2.3.0" />
   </ItemGroup>
 </Project>
