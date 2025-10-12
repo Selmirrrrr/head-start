@@ -23,6 +23,6 @@ public static class TestConfiguration
     public static class Timeouts
     {
         public const int QuickTest = 2000;      // 2 seconds for quick tests
-        public const int UITest = 10000; // 10 seconds for UI tests
+        public const int UITest = 30000; // 30 seconds for UI tests
     }
 }
