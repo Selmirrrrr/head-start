@@ -15,7 +15,7 @@ public class AccountController(ILogger<AccountController> logger) : ControllerBa
     public ActionResult Login(string returnUrl)
     {
         logger.LogInformation("Login attempt from IP: {IpAddress}", HttpContext.Connection.RemoteIpAddress);
-        logger.LogInformation("Return URL: {ReturnUrl}", returnUrl);
+        logger.LogInformation("Return URL: {ReturnUrl}", Uri.IsWellFormedUriString(returnUrl, UriKind.RelativeOrAbsolute) ? returnUrl : "[INVALID_URL]");
         return Challenge(new AuthenticationProperties
         {
             RedirectUri = !string.IsNullOrEmpty(returnUrl) ? returnUrl : "/"
