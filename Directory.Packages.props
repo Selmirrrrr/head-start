@@ -38,9 +38,9 @@
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.9.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="9.4.2" />
-    <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.19.1" />
+    <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.20.1" />
     <PackageVersion Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.19.1" />
-    <PackageVersion Include="Microsoft.Kiota.Serialization.Json" Version="1.19.1" />
+    <PackageVersion Include="Microsoft.Kiota.Serialization.Json" Version="1.20.1" />
     <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="9.0.9" />
     <PackageVersion Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Playwright" Version="1.55.0" />
