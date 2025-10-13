@@ -73,8 +73,7 @@ internal static class ServiceCollectionExtensions
 
             options.UseAsyncSeeding(async (context, _, cancellationToken) =>
             {
-                var tenant = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
-                if (tenant == null)
+                if (!await context.Set<Tenant>().AnyAsync(cancellationToken))
                 {
                     var roleAdminId = Guid.CreateVersion7();
                     var roleUserId = Guid.CreateVersion7();

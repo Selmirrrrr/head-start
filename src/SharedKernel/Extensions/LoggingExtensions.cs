@@ -17,49 +17,6 @@ public static class LoggingExtensions
     private const string DefaultLoggerCfgSectionName = "Serilog";
 
     /// <summary>
-    /// Adds Serilog with configuration that is read from appsettings.json.
-    /// </summary>
-    /// <param name="builder">The logger builder.</param>
-    /// <param name="configuration">Application configuration.</param>
-    /// <param name="configurationSection">The name of the configuration section.</param>
-    /// <returns>An instance of <see cref="ILoggingBuilder"/>.</returns>
-    public static ILoggingBuilder AddSerilog(
-        this ILoggingBuilder builder, IConfiguration configuration, string configurationSection = DefaultLoggerCfgSectionName)
-    {
-        Guard.Against.Null(builder);
-
-        var loggerConfiguration = new LoggerConfiguration()
-            .ConfigureFromSettings(configuration, configurationSection);
-
-#if DEBUG
-        loggerConfiguration.Enrich.WithProperty("DebuggerAttached", Debugger.IsAttached);
-#endif
-        return builder.AddSerilog(loggerConfiguration.CreateLogger());
-    }
-
-    /// <summary>
-    /// Appies logger configuration from appsettings.json.
-    /// </summary>
-    /// <param name="loggerConfiguration">The logger configuration.</param>
-    /// <param name="configuration">Application configuration.</param>
-    /// <param name="configurationSection">The name of the configuration section.</param>
-    /// <returns>An instance of <see cref="LoggerConfiguration"/>.</returns>
-    public static LoggerConfiguration ConfigureFromSettings(
-        this LoggerConfiguration loggerConfiguration, IConfiguration configuration, string configurationSection = DefaultLoggerCfgSectionName)
-    {
-        Guard.Against.Null(loggerConfiguration);
-        Guard.Against.Null(configuration);
-        Guard.Against.NullOrWhiteSpace(configurationSection);
-
-        var configurationReaderOptions = new ConfigurationReaderOptions
-        {
-            SectionName = configurationSection
-        };
-
-        return loggerConfiguration.ReadFrom.Configuration(configuration, configurationReaderOptions);
-    }
-
-    /// <summary>
     /// Adds the Correlatio ID enricher to the logger configuraion.
     /// </summary>
     /// <param name="enrichmentConfiguration">The logger enrichment configuration.</param>
@@ -111,9 +68,10 @@ public static class LoggingExtensions
             .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.Hosting.Lifetime", Serilog.Events.LogEventLevel.Information)
-            .MinimumLevel.Override("CorrelationId", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Override("CorrelationId", Serilog.Events.LogEventLevel.Information)
             .MinimumLevel.Override("HeadStart", isDevelopment ? Serilog.Events.LogEventLevel.Debug : Serilog.Events.LogEventLevel.Information)
             .Enrich.FromLogContext()
+            .Enrich.WithInstanceId()
             .Enrich.WithExceptionDetails()
             .Enrich.WithProperty("Application", applicationName)
             .Enrich.WithProperty("Environment", environment.EnvironmentName);
@@ -126,6 +84,21 @@ public static class LoggingExtensions
         // Always add console sink wrapped in async
         loggerConfiguration.WriteTo.Async(a => a.Console(
             outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Application}] {Message:lj} | Correlation ID: {CorrelationId}{NewLine}{Exception}"));
+
+        // Add OpenTelemetry sink for Aspire structured logging
+        var otlpEndpoint = configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
+        if (!string.IsNullOrWhiteSpace(otlpEndpoint))
+        {
+            loggerConfiguration.WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = otlpEndpoint;
+                options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
+                options.ResourceAttributes = new Dictionary<string, object>
+                {
+                    ["service.name"] = applicationName
+                };
+            });
+        }
 
         return loggerConfiguration;
     }

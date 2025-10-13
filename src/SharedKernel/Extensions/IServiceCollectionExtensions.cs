@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
         Guard.Against.Null(services);
 
         services.AddScoped<CorrelationIdEnricher>();
+        services.AddScoped<InstanceEnricher>();
         services.AddDefaultCorrelationId(cfg =>
         {
             cfg.IncludeInResponse = true;
