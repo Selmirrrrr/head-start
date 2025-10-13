@@ -1,5 +1,4 @@
 using Ardalis.GuardClauses;
-using CorrelationId.DependencyInjection;
 using HeadStart.SharedKernel.Enrichers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,15 +10,7 @@ public static class ServiceCollectionExtensions
     {
         Guard.Against.Null(services);
 
-        services.AddScoped<CorrelationIdEnricher>();
         services.AddScoped<InstanceEnricher>();
-        services.AddDefaultCorrelationId(cfg =>
-        {
-            cfg.IncludeInResponse = true;
-            cfg.UpdateTraceIdentifier = true;
-            cfg.AddToLoggingScope = true;
-            cfg.CorrelationIdGenerator = () => Guid.NewGuid().ToString();
-        });
 
         return services;
     }

@@ -1,34 +1,15 @@
-using System.Diagnostics;
 using Ardalis.GuardClauses;
 using HeadStart.SharedKernel.Enrichers;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Exceptions;
-using Serilog.Settings.Configuration;
 
 namespace HeadStart.SharedKernel.Extensions;
 
 public static class LoggingExtensions
 {
-    private const string DefaultLoggerCfgSectionName = "Serilog";
-
-    /// <summary>
-    /// Adds the Correlatio ID enricher to the logger configuraion.
-    /// </summary>
-    /// <param name="enrichmentConfiguration">The logger enrichment configuration.</param>
-    /// <param name="serviceProvider">The service provider used to resolve the enricher.</param>
-    /// <returns>An instance of <see cref="LoggerConfiguration"/>.</returns>
-    public static LoggerConfiguration WithCorrelationId(this LoggerEnrichmentConfiguration enrichmentConfiguration, IServiceProvider serviceProvider)
-    {
-        Guard.Against.Null(enrichmentConfiguration);
-
-        return enrichmentConfiguration.With(serviceProvider.GetService<CorrelationIdEnricher>());
-    }
-
     /// <summary>
     /// Adds the Instace ID enricher to the logger configuration.
     /// </summary>
@@ -83,7 +64,7 @@ public static class LoggingExtensions
 
         // Always add console sink wrapped in async
         loggerConfiguration.WriteTo.Async(a => a.Console(
-            outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Application}] {Message:lj} | Correlation ID: {CorrelationId}{NewLine}{Exception}"));
+            outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Application}] {Message:lj} | TraceId ID: {TraceId}{NewLine}{Exception}"));
 
         // Add OpenTelemetry sink for Aspire structured logging
         var otlpEndpoint = configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];

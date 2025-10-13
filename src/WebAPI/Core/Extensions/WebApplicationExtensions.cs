@@ -1,4 +1,3 @@
-using CorrelationId;
 using EvolveDb;
 using FastEndpoints;
 using FastEndpoints.ClientGen.Kiota;
@@ -108,7 +107,6 @@ internal static class WebApplicationExtensions
     internal static void ConfigureRequestProcessing(this WebApplication app)
     {
         app.UseHttpsRedirection();
-        app.UseCorrelationId();
         app.UseSerilogRequestLogging();
         app.UseRouting();
     }
