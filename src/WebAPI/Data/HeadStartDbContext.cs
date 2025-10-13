@@ -1,13 +1,16 @@
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadStart.WebAPI.Data;
 
 public class HeadStartDbContext(
     DbContextOptions<HeadStartDbContext> options,
-    ICurrentUserService? currentUserService) : DbContext(options)
+    IHttpContextAccessor? httpContextAccessor) : DbContext(options)
 {
+    private ICurrentUserService? CurrentUserService =>
+        httpContextAccessor?.HttpContext?.RequestServices.GetService<ICurrentUserService>();
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<Utilisateur> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
@@ -52,7 +55,7 @@ public class HeadStartDbContext(
     {
         var auditableEntries = ChangeTracker.Entries<IAuditable>();
         var now = DateTime.UtcNow;
-        var userId = currentUserService?.IsAuthenticated == true ? currentUserService.UserId : (Guid?)null;
+        var userId = CurrentUserService?.IsAuthenticated == true ? CurrentUserService.UserId : (Guid?)null;
         // Update audit fields
         foreach (var entry in auditableEntries)
         {

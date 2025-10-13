@@ -1,6 +1,8 @@
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
 namespace HeadStart.IntegrationTests.Helpers;
@@ -23,8 +25,11 @@ public static class DbContextHelper
         var optionsBuilder = new DbContextOptionsBuilder<HeadStartDbContext>();
         optionsBuilder.UseNpgsql(dataSource);
 
+        // Create a mock HttpContextAccessor with a service provider that can resolve ICurrentUserService
+        var httpContextAccessor = new HttpContextAccessorMock();
+
         // Create a db context instance with the connection string
-        var dbContext = new HeadStartDbContext(optionsBuilder.Options, new CurrentUserServiceMock());
+        var dbContext = new HeadStartDbContext(optionsBuilder.Options, httpContextAccessor);
 
         // Ensure the ltree extension is installed
         try
@@ -37,6 +42,27 @@ public static class DbContextHelper
         }
         await dbContext.Database.EnsureCreatedAsync();
         return dbContext;
+    }
+}
+
+public class HttpContextAccessorMock : IHttpContextAccessor
+{
+    public HttpContext? HttpContext { get; set; }
+
+    public HttpContextAccessorMock()
+    {
+        // Create a service collection and register the mock CurrentUserService
+        var services = new ServiceCollection();
+        services.AddScoped<ICurrentUserService, CurrentUserServiceMock>();
+        var serviceProvider = services.BuildServiceProvider();
+
+        // Create a mock HttpContext with the service provider
+        var httpContext = new DefaultHttpContext
+        {
+            RequestServices = serviceProvider.CreateScope().ServiceProvider
+        };
+
+        HttpContext = httpContext;
     }
 }
 
