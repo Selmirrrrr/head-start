@@ -24,7 +24,8 @@ public static class UpdateLanguage
 
         public override void Configure()
         {
-            Patch("/me/language");
+            Patch("/language");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

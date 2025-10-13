@@ -9,7 +9,7 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel : IParsable
+    public partial class HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The id property</summary>
@@ -31,12 +31,12 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel();
         }
         /// <summary>
         /// The deserialization information for the current model

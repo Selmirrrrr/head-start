@@ -35,11 +35,11 @@ else
 }
 
 @code {
-    private List<HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel>? _tenants;
+    private List<HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel>? _tenants;
 
     protected override async Task OnInitializedAsync()
     {
-        _tenants = (await ApiClientV1.Api.V1.Tenants.GetAsync())?.Tenants;
+        _tenants = (await ApiClientV1.Api.V1.Admin.Tenants.GetAsync())?.Tenants;
     }
 
 }

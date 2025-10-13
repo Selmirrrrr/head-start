@@ -16,7 +16,8 @@ public static class GetMe
 
         public override void Configure()
         {
-            Get("/me");
+            Get("/");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

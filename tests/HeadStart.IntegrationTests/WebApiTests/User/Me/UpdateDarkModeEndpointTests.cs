@@ -1,11 +1,10 @@
-using Ardalis.GuardClauses;
 using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
 using HeadStart.IntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 
-namespace HeadStart.IntegrationTests.WebApiTests.Me;
+namespace HeadStart.IntegrationTests.WebApiTests.User.Me;
 
 [ClassDataSource<ApiTestDataClass>]
 public class UpdateDarkModeEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTest
