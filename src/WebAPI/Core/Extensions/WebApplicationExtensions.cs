@@ -3,6 +3,7 @@ using FastEndpoints;
 using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Core.Filters;
+using HeadStart.WebAPI.Core.Processors;
 using HeadStart.WebAPI.Data;
 using Kiota.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -74,7 +75,7 @@ internal static class WebApplicationExtensions
 
             var evolve = new Evolve(new NpgsqlConnection(app.Configuration.GetConnectionString("postgresdb")), msg => logger.LogInformation(msg))
             {
-                MetadataTableSchema = "Audit",
+                MetadataTableSchema = "audit",
                 Locations = ["Data/Scripts"],
                 IsEraseDisabled = !app.Environment.IsDevelopment(),
             };
@@ -129,6 +130,7 @@ internal static class WebApplicationExtensions
                 c.Versioning.PrependToRoute = true;
                 c.Endpoints.Configurator = ep =>
                 {
+                    ep.PostProcessor<AuditRequestProcessor>(Order.After);
                     ep.Options(b => b.AddEndpointFilter<OperationCancelledFilter>());
                 };
             })

@@ -31,7 +31,7 @@ public class AuditTrailEntityTypeConfiguration : IEntityTypeConfiguration<AuditT
 {
     public void Configure(EntityTypeBuilder<AuditTrail> builder)
     {
-        builder.ToTable("Trails", "Audit");
+        builder.ToTable("Trails", "audit");
 
         builder.HasKey(a => a.Id);
 

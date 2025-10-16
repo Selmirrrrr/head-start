@@ -32,6 +32,7 @@ public class HeadStartDbContext(
         modelBuilder.ApplyConfiguration(new AuditTrailEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new FonctionaliteEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new RoleFonctionaliteEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new AuditRequestEntityTypeConfiguration());
 
         // Configure audit records for all auditable entities
         ConfigureAuditRecords(modelBuilder);
@@ -103,7 +104,7 @@ public class HeadStartDbContext(
                 PrimaryKey = entry.Properties
                     .FirstOrDefault(p => p.Metadata.IsPrimaryKey())
                     ?.CurrentValue?.ToString(),
-                TraceId = httpContextAccessor.HttpContext?.TraceIdentifier,
+                TraceId = httpContextAccessor?.HttpContext?.TraceIdentifier,
                 UserId = userId,
                 DateUtc = dateUtc,
                 EntityName = entry.Metadata.ClrType.Name,

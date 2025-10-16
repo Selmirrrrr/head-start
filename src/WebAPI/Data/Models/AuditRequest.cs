@@ -11,9 +11,9 @@ public class AuditRequest : IMayHaveTenant
     public Guid? ImpersonatedByUserId { get; init; }
     public Utilisateur? ImpersonatedByUser { get; init; }
     public DateTime DateUtc { get; init; } = DateTime.UtcNow;
-    public string RequestId { get; init; }
-    public string RequestPath { get; init; }
-    public string RequestMethod { get; init; }
+    public required string RequestId { get; init; }
+    public required string RequestPath { get; init; }
+    public required string RequestMethod { get; init; }
     public string? RequestBody { get; init; }
     public int? ResponseStatusCode { get; init; }
 
@@ -26,7 +26,7 @@ public class AuditRequestEntityTypeConfiguration : IEntityTypeConfiguration<Audi
 {
     public void Configure(EntityTypeBuilder<AuditRequest> builder)
     {
-        builder.ToTable("Requests", "Audit");
+        builder.ToTable("Requests", "audit");
 
         builder.HasKey(e => e.Id);
 
@@ -41,12 +41,15 @@ public class AuditRequestEntityTypeConfiguration : IEntityTypeConfiguration<Audi
             .IsRequired();
 
         builder.Property(e => e.RequestPath)
+            .HasMaxLength(1024)
             .IsRequired();
 
         builder.Property(e => e.RequestMethod)
+            .HasMaxLength(10)
             .IsRequired();
 
         builder.Property(e => e.RequestBody)
+            .HasColumnType("jsonb")
             .IsRequired(false);
 
         builder.Property(e => e.ResponseStatusCode)

@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using HeadStart.WebAPI.Core.Processors;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
@@ -57,6 +58,7 @@ internal static class ServiceCollectionExtensions
         services.AddSignalR();
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<AuditRequestProcessor>();
     }
 
     internal static void AddDatabaseServices(this IHostApplicationBuilder builder)
