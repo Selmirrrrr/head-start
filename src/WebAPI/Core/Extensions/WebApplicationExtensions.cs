@@ -74,7 +74,7 @@ internal static class WebApplicationExtensions
 
             var evolve = new Evolve(new NpgsqlConnection(app.Configuration.GetConnectionString("postgresdb")), msg => logger.LogInformation(msg))
             {
-                MetadataTableSchema = "core",
+                MetadataTableSchema = "Audit",
                 Locations = ["Data/Scripts"],
                 IsEraseDisabled = !app.Environment.IsDevelopment(),
             };

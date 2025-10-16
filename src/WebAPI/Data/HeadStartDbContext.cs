@@ -1,6 +1,5 @@
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadStart.WebAPI.Data;
@@ -18,7 +17,7 @@ public class HeadStartDbContext(
     public DbSet<AuditTrail> AuditTrails { get; set; }
     public DbSet<Fonctionalite> Fonctionalites { get; set; }
     public DbSet<RoleFonctionalite> RoleFonctionalites { get; set; }
-
+    public DbSet<AuditRequest> Requests { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -93,17 +92,18 @@ public class HeadStartDbContext(
         var auditTrails = new List<AuditTrail>();
 
         var entries = ChangeTracker.Entries()
-            .Where(e => e.Entity is not AuditTrail && e.Entity is not Audit && e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
+            .Where(e => e.Entity is not AuditTrail && e.Entity is not AuditRequest && e.Entity is not Audit && e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
 
         foreach (var entry in entries)
         {
             var auditTrail = new AuditTrail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.CreateVersion7(),
                 PrimaryKey = entry.Properties
                     .FirstOrDefault(p => p.Metadata.IsPrimaryKey())
                     ?.CurrentValue?.ToString(),
+                TraceId = httpContextAccessor.HttpContext?.TraceIdentifier,
                 UserId = userId,
                 DateUtc = dateUtc,
                 EntityName = entry.Metadata.ClrType.Name,
