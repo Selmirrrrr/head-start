@@ -1,7 +1,7 @@
 using FastEndpoints;
 using HeadStart.WebAPI.Data;
 
-namespace HeadStart.WebAPI.Features.Admin.Tenants;
+namespace HeadStart.WebAPI.Features.PlatformAdmin.Tenants;
 
 public static class TenantsGetList
 {
@@ -12,7 +12,7 @@ public static class TenantsGetList
         public override void Configure()
         {
             Get("/tenants");
-            Group<AdministrationEndpointGroup>();
+            Group<PlatformAdminEndpointGroup>();
             Version(1);
         }
 

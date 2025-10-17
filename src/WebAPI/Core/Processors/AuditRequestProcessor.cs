@@ -32,16 +32,12 @@ public class AuditRequestProcessor : IGlobalPostProcessor
             dbContext.Requests.Add(auditRequest);
             await dbContext.SaveChangesAsync(ct);
 
-            logger.LogInformation("Audit request created for {Method} {Path}",
-                context.HttpContext.Request.Method,
-                context.HttpContext.Request.Path);
+            logger.LogInformation("Audit request created for {Method} {Path}", context.HttpContext.Request.Method, context.HttpContext.Request.Path);
         }
         catch (Exception ex)
         {
             // Log the error but don't fail the request
-            logger.LogError(ex, "Failed to create audit request for {Method} {Path}",
-                context.HttpContext.Request.Method,
-                context.HttpContext.Request.Path);
+            logger.LogError(ex, "Failed to create audit request for {Method} {Path}", context.HttpContext.Request.Method, context.HttpContext.Request.Path);
         }
     }
 
@@ -52,7 +48,7 @@ public class AuditRequestProcessor : IGlobalPostProcessor
 
         // Check if user is authenticated
         Guid? userId = null;
-        if (user?.Identity?.IsAuthenticated == true && currentUserService != null)
+        if (user.Identity?.IsAuthenticated == true && currentUserService != null)
         {
             userId = currentUserService.UserId;
         }

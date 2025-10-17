@@ -50,6 +50,14 @@ public class MenuService : IMenuService
                     Icon = Icons.Material.Filled.CalendarToday,
                     Href = "/planning",
                     PageStatus = PageStatus.ComingSoon
+                },
+                new()
+                {
+                    Title = "Audit",
+                    Roles = [RoleName.PlatformAdmin],
+                    Icon = Icons.Material.Filled.Security,
+                    Href = "/audit",
+                    PageStatus = PageStatus.Completed
                 }
             }
         },

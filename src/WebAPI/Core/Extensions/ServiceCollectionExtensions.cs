@@ -89,7 +89,7 @@ internal static class ServiceCollectionExtensions
                     context.Set<Role>().Add(new Role { Id = roleAdminId, Code = "Admin", CodeTrads = new Dictionary<string, string> { { "fr", "Administrateur" }, { "de", "Administrator" }, { "it", "Amministratore" }, { "en", "Administrator" } }, TenantPath = "HeadStart" });
                     context.Set<Role>().Add(new Role { Id = roleUserId, Code = "User", CodeTrads = new Dictionary<string, string> { { "fr", "Utilisteur" }, { "de", "Benutzer" }, { "it", "Utilizatore" }, { "en", "User" } }, TenantPath = "HeadStart" });
 
-
+                    context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.Parse("73F21245-2214-4CFE-9591-8177A410280C"), Email = "platformadmin1@headstart.com", Nom = "PlatformAdmin1P", Prenom = "PlatformAdmin1N", LanguageCode = "fr", DarkMode = false });
                     var superAdmin = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.Parse("05623570-9015-4149-A52E-B01975772D32"), Email = "superadmin@headstart.com", Nom = "Super", Prenom = "Admin", LanguageCode = "fr", DarkMode = false });
 
                     var userApiTest1 = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.Parse("A599B326-C0BF-4F29-91CF-463ADA378253"), Email = "user.api.1@test.com", Nom = "UserApiTest1N", Prenom = "UserApiTest1P", LanguageCode = "fr", DarkMode = false, DernierTenantSelectionneId = "HeadStart" });
@@ -163,6 +163,7 @@ internal static class ServiceCollectionExtensions
                 }
                 options.Audience = "headstart.api";
             });
+
         services.AddAuthorizationBuilder();
     }
 }

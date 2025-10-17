@@ -9,26 +9,34 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_Response : IParsable
+    public partial class HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_TenantViewModel : IParsable
     #pragma warning restore CS1591
     {
-        /// <summary>The tenants property</summary>
+        /// <summary>The id property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel>? Tenants { get; set; }
+        public string? Id { get; set; }
 #nullable restore
 #else
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel> Tenants { get; set; }
+        public string Id { get; set; }
+#endif
+        /// <summary>The name property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? Name { get; set; }
+#nullable restore
+#else
+        public string Name { get; set; }
 #endif
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_Response"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_TenantViewModel"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_Response CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_TenantViewModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_Response();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_TenantViewModel();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -38,7 +46,8 @@ namespace HeadStart.Client.Generated.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "tenants", n => { Tenants = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel.CreateFromDiscriminatorValue)?.AsList(); } },
+                { "id", n => { Id = n.GetStringValue(); } },
+                { "name", n => { Name = n.GetStringValue(); } },
             };
         }
         /// <summary>
@@ -48,7 +57,8 @@ namespace HeadStart.Client.Generated.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
-            writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesAdminTenantsTenantsGetList_TenantViewModel>("tenants", Tenants);
+            writer.WriteStringValue("id", Id);
+            writer.WriteStringValue("name", Name);
         }
     }
 }

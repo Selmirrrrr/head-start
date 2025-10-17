@@ -46,7 +46,7 @@ try
 }
 catch (Exception ex)
 {
-    if (Log.Logger.GetType()?.Name == "SilentLogger")
+    if (Log.Logger.GetType().Name == "SilentLogger")
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
