@@ -1,3 +1,4 @@
+using HeadStart.SharedKernel.Models.Constants;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Services;
 using Microsoft.AspNetCore.Http;
@@ -71,9 +72,10 @@ public class CurrentUserServiceMock : ICurrentUserService
     public Guid UserId { get; } = Users.AdminApiTest1.Id;
     public string? SelectedTenantPath { get; }
     public bool IsAuthenticated { get; } = true;
-    public bool IsImpersonated { get; } = false;
-    public Guid? ImpersonatedByUserId { get; } = null;
+    public bool IsImpersonated { get; }
+    public Guid? ImpersonatedByUserId { get; }
     public string Email { get; } = Users.AdminApiTest1.UserEmail;
     public string GivenName { get; } = Users.AdminApiTest1.UserFirstName;
     public string Surname { get; } = Users.AdminApiTest1.UserLastName;
+    public string[] PlatformRoles { get; } = [RoleName.PlatformAdmin];
 }

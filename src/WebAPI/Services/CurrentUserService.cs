@@ -12,6 +12,7 @@ public interface ICurrentUserService
     string Email { get; }
     string GivenName { get; }
     string Surname { get; }
+    string[] PlatformRoles { get; }
 }
 
 /// <summary>
@@ -27,7 +28,7 @@ public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
     private bool _isImpersonated;
     private Guid? _impersonatedByUserId;
     private string? _selectedTenantPath;
-
+    private string[] _platformRoles;
     private ClaimsPrincipal User => httpContextAccessor.HttpContext?.User
                                     ?? throw new InvalidOperationException("No user context available");
 
@@ -51,5 +52,5 @@ public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
 
     public Guid? ImpersonatedByUserId => _impersonatedByUserId;
 
-
+    public string[] PlatformRoles => _platformRoles ??= User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToArray() ?? [];
 }

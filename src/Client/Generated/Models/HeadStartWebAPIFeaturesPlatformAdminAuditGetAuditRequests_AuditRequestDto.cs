@@ -9,11 +9,11 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto : IParsable
+    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The dateUtc property</summary>
-        public DateTimeOffset? DateUtc { get; set; }
+        public DateTime? DateUtc { get; set; }
         /// <summary>The hasError property</summary>
         public bool? HasError { get; set; }
         /// <summary>The id property</summary>
@@ -82,6 +82,14 @@ namespace HeadStart.Client.Generated.Models
 #else
         public string RequestPath { get; set; }
 #endif
+        /// <summary>The requestQuery property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? RequestQuery { get; set; }
+#nullable restore
+#else
+        public string RequestQuery { get; set; }
+#endif
         /// <summary>The responseStatusCode property</summary>
         public int? ResponseStatusCode { get; set; }
         /// <summary>The tenantPath property</summary>
@@ -119,12 +127,12 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -134,7 +142,7 @@ namespace HeadStart.Client.Generated.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "dateUtc", n => { DateUtc = n.GetDateTimeOffsetValue(); } },
+                { "dateUtc", n => { DateUtc = n.GetDateTimeOffsetValue().GetValueOrDefault().DateTime; } },
                 { "hasError", n => { HasError = n.GetBoolValue(); } },
                 { "id", n => { Id = n.GetStringValue(); } },
                 { "impersonatedByUserEmail", n => { ImpersonatedByUserEmail = n.GetStringValue(); } },
@@ -145,6 +153,7 @@ namespace HeadStart.Client.Generated.Models
                 { "requestId", n => { RequestId = n.GetStringValue(); } },
                 { "requestMethod", n => { RequestMethod = n.GetStringValue(); } },
                 { "requestPath", n => { RequestPath = n.GetStringValue(); } },
+                { "requestQuery", n => { RequestQuery = n.GetStringValue(); } },
                 { "responseStatusCode", n => { ResponseStatusCode = n.GetIntValue(); } },
                 { "tenantPath", n => { TenantPath = n.GetStringValue(); } },
                 { "userEmail", n => { UserEmail = n.GetStringValue(); } },
@@ -170,6 +179,7 @@ namespace HeadStart.Client.Generated.Models
             writer.WriteStringValue("requestId", RequestId);
             writer.WriteStringValue("requestMethod", RequestMethod);
             writer.WriteStringValue("requestPath", RequestPath);
+            writer.WriteStringValue("requestQuery", RequestQuery);
             writer.WriteIntValue("responseStatusCode", ResponseStatusCode);
             writer.WriteStringValue("tenantPath", TenantPath);
             writer.WriteStringValue("userEmail", UserEmail);

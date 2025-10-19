@@ -5,7 +5,7 @@ using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HeadStart.WebAPI.Features.PlatformAdmin.AuditRequests;
+namespace HeadStart.WebAPI.Features.PlatformAdmin.Audit;
 
 public static class GetAuditRequests
 {
@@ -23,7 +23,7 @@ public static class GetAuditRequests
 
         public override void Configure()
         {
-            Get("/audit-requests");
+            Get("/audit/requests");
             Group<PlatformAdminEndpointGroup>();
             Version(1);
 
@@ -60,6 +60,7 @@ public static class GetAuditRequests
                 .AddMap("dateUtc", r => r.DateUtc)
                 .AddMap("requestId", r => r.RequestId)
                 .AddMap("requestPath", r => r.RequestPath)
+                .AddMap("requestQuery", r => r.RequestQuery)
                 .AddMap("requestMethod", r => r.RequestMethod)
                 .AddMap("responseStatusCode", r => r.ResponseStatusCode)
                 .AddMap("statusCode", r => r.ResponseStatusCode) // Alias for convenience
@@ -96,6 +97,7 @@ public static class GetAuditRequests
                 DateUtc = r.DateUtc,
                 RequestId = r.RequestId,
                 RequestPath = r.RequestPath,
+                RequestQuery = r.RequestQuery,
                 RequestMethod = r.RequestMethod,
                 RequestBody = r.RequestBody,
                 ResponseStatusCode = r.ResponseStatusCode,
@@ -144,6 +146,7 @@ public static class GetAuditRequests
         public DateTime DateUtc { get; init; }
         public required string RequestId { get; init; }
         public required string RequestPath { get; init; }
+        public string? RequestQuery { get; init; }
         public required string RequestMethod { get; init; }
         public string? RequestBody { get; init; }
         public int? ResponseStatusCode { get; init; }

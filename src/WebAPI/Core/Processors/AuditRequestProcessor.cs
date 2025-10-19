@@ -82,7 +82,8 @@ public class AuditRequestProcessor : IGlobalPostProcessor
             RequestMethod = request.Method,
             RequestBody = await GetRequestBodyAsync(request),
             ResponseStatusCode = responseStatusCode,
-            TenantPath = string.IsNullOrWhiteSpace(tenantPath) ? null : new LTree(tenantPath)
+            RequestQuery = request.QueryString.Value,
+            TenantPath = string.IsNullOrWhiteSpace(tenantPath) ? null! : new LTree(tenantPath)
         };
     }
 
@@ -120,7 +121,7 @@ public class AuditRequestProcessor : IGlobalPostProcessor
             // Truncate very large bodies
             if (body.Length is > 5000 and > 0)
             {
-                body = body.Substring(0, 5000) + "...[truncated]";
+                body = body[..5000] + "...[truncated]";
             }
 
             return string.IsNullOrEmpty(body) ? null : body;
@@ -137,12 +138,12 @@ public class AuditRequestProcessor : IGlobalPostProcessor
         var path = httpContext.Request.Path.Value?.ToLowerInvariant() ?? string.Empty;
 
         // Skip health checks
-        if (path.Contains("/health") || path.Contains("/alive") || path.Contains("/ready"))
+        if (path.Contains("/health"))
         {
             return true;
         }
 
         // Skip static files
-        return path.StartsWith("/wwwroot/") || path.Contains('.') && !path.Contains("/api/");
+        return path.StartsWith("/wwwroot/");
     }
 }

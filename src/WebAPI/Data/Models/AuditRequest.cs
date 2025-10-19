@@ -16,6 +16,7 @@ public class AuditRequest : IMayHaveTenant
     public required string RequestMethod { get; init; }
     public string? RequestBody { get; init; }
     public int? ResponseStatusCode { get; init; }
+    public string? RequestQuery { get; init; }
 
     // IMayHaveTenant
     public LTree? TenantPath { get; set; }
@@ -54,6 +55,9 @@ public class AuditRequestEntityTypeConfiguration : IEntityTypeConfiguration<Audi
 
         builder.Property(e => e.ResponseStatusCode)
             .IsRequired();
+
+        builder.Property(e => e.RequestQuery)
+            .IsRequired(false);
 
         builder.HasOne(e => e.User)
             .WithMany()

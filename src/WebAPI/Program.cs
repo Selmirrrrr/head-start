@@ -1,8 +1,11 @@
 using FastEndpoints.ClientGen.Kiota;
+using Gridify;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Core.Extensions;
 using Serilog;
+
+GridifyGlobalConfiguration.EnableEntityFrameworkCompatibilityLayer();
 
 var builder = WebApplication.CreateBuilder(args);
 

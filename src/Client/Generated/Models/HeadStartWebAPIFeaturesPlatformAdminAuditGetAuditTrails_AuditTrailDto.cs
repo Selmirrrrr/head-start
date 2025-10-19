@@ -9,7 +9,7 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto : IParsable
+    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The changedColumns property</summary>
@@ -41,18 +41,18 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>The newValues property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_newValues? NewValues { get; set; }
+        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_newValues? NewValues { get; set; }
 #nullable restore
 #else
-        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_newValues NewValues { get; set; }
+        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_newValues NewValues { get; set; }
 #endif
         /// <summary>The oldValues property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_oldValues? OldValues { get; set; }
+        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_oldValues? OldValues { get; set; }
 #nullable restore
 #else
-        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_oldValues OldValues { get; set; }
+        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_oldValues OldValues { get; set; }
 #endif
         /// <summary>The primaryKey property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
@@ -99,12 +99,12 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -118,8 +118,8 @@ namespace HeadStart.Client.Generated.Models
                 { "dateUtc", n => { DateUtc = n.GetDateTimeOffsetValue(); } },
                 { "entityName", n => { EntityName = n.GetStringValue(); } },
                 { "id", n => { Id = n.GetStringValue(); } },
-                { "newValues", n => { NewValues = n.GetObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_newValues>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_newValues.CreateFromDiscriminatorValue); } },
-                { "oldValues", n => { OldValues = n.GetObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_oldValues>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_oldValues.CreateFromDiscriminatorValue); } },
+                { "newValues", n => { NewValues = n.GetObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_newValues>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_newValues.CreateFromDiscriminatorValue); } },
+                { "oldValues", n => { OldValues = n.GetObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_oldValues>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_oldValues.CreateFromDiscriminatorValue); } },
                 { "primaryKey", n => { PrimaryKey = n.GetStringValue(); } },
                 { "traceId", n => { TraceId = n.GetStringValue(); } },
                 { "type", n => { Type = n.GetIntValue(); } },
@@ -139,8 +139,8 @@ namespace HeadStart.Client.Generated.Models
             writer.WriteDateTimeOffsetValue("dateUtc", DateUtc);
             writer.WriteStringValue("entityName", EntityName);
             writer.WriteStringValue("id", Id);
-            writer.WriteObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_newValues>("newValues", NewValues);
-            writer.WriteObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto_oldValues>("oldValues", OldValues);
+            writer.WriteObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_newValues>("newValues", NewValues);
+            writer.WriteObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto_oldValues>("oldValues", OldValues);
             writer.WriteStringValue("primaryKey", PrimaryKey);
             writer.WriteStringValue("traceId", TraceId);
             writer.WriteIntValue("type", Type);

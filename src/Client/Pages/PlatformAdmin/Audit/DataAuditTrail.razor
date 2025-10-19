@@ -1,0 +1,325 @@
+@page "/platform-admin/audit/data"
+@using HeadStart.Client.Generated
+@using HeadStart.Client.Generated.Models
+@inject ApiClientV1 ApiClient
+@inject IStringLocalizer<DataAuditTrail> LC
+
+<PageTitle>Data Audit Trail</PageTitle>
+
+<MudText Typo="Typo.h4" Class="my-4">Data Audit Trail</MudText>
+<MudText Typo="Typo.body2" Class="mb-4 text-gray-600">
+    Track all data changes including Create, Update, and Delete operations
+</MudText>
+
+<MudDataGrid T="HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto"
+             ServerData="LoadServerData"
+             Filterable="true"
+             FilterMode="DataGridFilterMode.Simple"
+             Sortable="true"
+             Dense="true"
+             Hover="true"
+             RowsPerPage="20">
+    <Columns>
+        <PropertyColumn Property="x => x.DateUtc"
+                       Title="Date/Time"
+                       Format="yyyy-MM-dd HH:mm:ss"
+                       Sortable="true"
+                       Filterable="true" />
+
+        <PropertyColumn Property="x => x.Type"
+                       Title="Action Type"
+                       Sortable="true"
+                       Filterable="true">
+            <CellTemplate>
+                @{
+                    var typeText = context.Item.Type switch
+                    {
+                        0 => "None",
+                        1 => "Create",
+                        2 => "Update",
+                        3 => "Delete",
+                        _ => "Unknown"
+                    };
+                    var color = context.Item.Type switch
+                    {
+                        0 => Color.Info,
+                        1 => Color.Success,
+                        2 => Color.Warning,
+                        3 => Color.Error,
+                        _ => Color.Default
+                    };
+                }
+                <MudChip Size="Size.Small" Color="@color">@typeText</MudChip>
+            </CellTemplate>
+        </PropertyColumn>
+
+        <PropertyColumn Property="x => x.EntityName"
+                       Title="Entity"
+                       Sortable="true"
+                       Filterable="true" />
+
+        <PropertyColumn Property="x => x.PrimaryKey"
+                       Title="Record ID"
+                       Sortable="false"
+                       Filterable="false" />
+
+        <PropertyColumn Property="x => x.UserName"
+                       Title="User"
+                       Sortable="true"
+                       Filterable="true" />
+
+        <PropertyColumn Property="x => x.UserEmail"
+                       Title="Email"
+                       Sortable="false"
+                       Filterable="true" />
+
+        <PropertyColumn Property="x => x.TraceId"
+                       Title="Trace ID"
+                       Sortable="false"
+                       Filterable="false">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.TraceId))
+                {
+                    <MudText Typo="Typo.caption" Class="font-mono">@context.Item.TraceId[..8]...</MudText>
+                }
+            </CellTemplate>
+        </PropertyColumn>
+
+        <TemplateColumn Title="Changed Fields" Sortable="false" Filterable="false">
+            <CellTemplate>
+                @if (context.Item.ChangedColumns?.Any() == true)
+                {
+                    <MudText Typo="Typo.caption">@string.Join(", ", context.Item.ChangedColumns.Take(3))</MudText>
+                    @if (context.Item.ChangedColumns.Count > 3)
+                    {
+                        <MudText Typo="Typo.caption" Class="text-gray-500">+@(context.Item.ChangedColumns.Count - 3) more</MudText>
+                    }
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn Title="Actions" Sortable="false" Filterable="false">
+            <CellTemplate>
+                <MudTooltip Text="View Details">
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility"
+                                  Size="Size.Small"
+                                  OnClick="@(() => ShowDetails(context.Item))" />
+                </MudTooltip>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+
+    <PagerContent>
+        <MudDataGridPager T="HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto"
+                         RowsPerPageString="Items per page:" />
+    </PagerContent>
+</MudDataGrid>
+
+<MudDialog @bind-Visible="_showDetailsDialog" Options="_dialogOptions">
+    <DialogContent>
+        @if (_selectedItem != null)
+        {
+            <MudText Typo="Typo.h6" Class="mb-4">Audit Trail Details</MudText>
+
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudText Typo="Typo.subtitle2" Class="font-semibold">Date/Time</MudText>
+                    <MudText Typo="Typo.body2">@_selectedItem.DateUtc?.ToString("yyyy-MM-dd HH:mm:ss")</MudText>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudText Typo="Typo.subtitle2" Class="font-semibold">Action Type</MudText>
+                    <MudText Typo="Typo.body2">@GetTypeText(_selectedItem.Type)</MudText>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudText Typo="Typo.subtitle2" Class="font-semibold">Entity</MudText>
+                    <MudText Typo="Typo.body2">@_selectedItem.EntityName</MudText>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudText Typo="Typo.subtitle2" Class="font-semibold">Record ID</MudText>
+                    <MudText Typo="Typo.body2" Class="font-mono">@_selectedItem.PrimaryKey</MudText>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudText Typo="Typo.subtitle2" Class="font-semibold">User</MudText>
+                    <MudText Typo="Typo.body2">@_selectedItem.UserName</MudText>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudText Typo="Typo.subtitle2" Class="font-semibold">Email</MudText>
+                    <MudText Typo="Typo.body2">@_selectedItem.UserEmail</MudText>
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudText Typo="Typo.subtitle2" Class="font-semibold">Trace ID</MudText>
+                    <MudText Typo="Typo.body2" Class="font-mono">@_selectedItem.TraceId</MudText>
+                </MudItem>
+            </MudGrid>
+
+            @if (_selectedItem.ChangedColumns?.Any() == true)
+            {
+                <MudDivider Class="my-4" />
+                <MudText Typo="Typo.h6" Class="mb-2">Changed Fields</MudText>
+                <MudChipSet T="string">
+                    @foreach (var column in _selectedItem.ChangedColumns)
+                    {
+                        <MudChip T="string" Size="Size.Small">@column</MudChip>
+                    }
+                </MudChipSet>
+            }
+
+            @if (_selectedItem.OldValues?.AdditionalData?.Any() == true || _selectedItem.NewValues?.AdditionalData?.Any() == true)
+            {
+                <MudDivider Class="my-4" />
+                <MudGrid>
+                    @if (_selectedItem.OldValues?.AdditionalData?.Any() == true)
+                    {
+                        <MudItem xs="12" md="6">
+                            <MudText Typo="Typo.h6" Class="mb-2">Old Values</MudText>
+                            <MudPaper Class="pa-2" Elevation="0" Outlined="true">
+                                <pre style="max-height: 300px; overflow-y: auto; font-size: 0.75rem;">@System.Text.Json.JsonSerializer.Serialize(_selectedItem.OldValues.AdditionalData, new System.Text.Json.JsonSerializerOptions { WriteIndented = true })</pre>
+                            </MudPaper>
+                        </MudItem>
+                    }
+
+                    @if (_selectedItem.NewValues?.AdditionalData?.Any() == true)
+                    {
+                        <MudItem xs="12" md="6">
+                            <MudText Typo="Typo.h6" Class="mb-2">New Values</MudText>
+                            <MudPaper Class="pa-2" Elevation="0" Outlined="true">
+                                <pre style="max-height: 300px; overflow-y: auto; font-size: 0.75rem;">@System.Text.Json.JsonSerializer.Serialize(_selectedItem.NewValues.AdditionalData, new System.Text.Json.JsonSerializerOptions { WriteIndented = true })</pre>
+                            </MudPaper>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => _showDetailsDialog = false)" Color="Color.Primary">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private bool _showDetailsDialog = false;
+    private HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto? _selectedItem;
+
+    private readonly DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Large,
+        FullWidth = true,
+        CloseButton = true
+    };
+
+    private async Task<GridData<HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto>> LoadServerData(GridState<HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto> state)
+    {
+        try
+        {
+            // Build Gridify filter string from MudDataGrid filter definitions
+            var filters = new List<string>();
+
+            foreach (var filterDefinition in state.FilterDefinitions)
+            {
+                if (filterDefinition.Value != null && !string.IsNullOrWhiteSpace(filterDefinition.Value.ToString()))
+                {
+                    var propertyName = filterDefinition.Column?.PropertyName;
+                    var value = filterDefinition.Value.ToString();
+
+                    // Map MudDataGrid property names to Gridify field names
+                    var gridifyField = propertyName switch
+                    {
+                        nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.Type) => "type",
+                        nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.EntityName) => "entityName",
+                        nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.UserName) => "userName",
+                        nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.UserEmail) => "userEmail",
+                        _ => propertyName?.ToLowerInvariant()
+                    };
+
+                    if (!string.IsNullOrEmpty(gridifyField))
+                    {
+                        // Use wildcard search for string fields
+                        if (propertyName is nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.EntityName)
+                            or nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.UserName)
+                            or nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.UserEmail))
+                        {
+                            filters.Add($"{gridifyField}=*{value}*");
+                        }
+                        else
+                        {
+                            filters.Add($"{gridifyField}={value}");
+                        }
+                    }
+                }
+            }
+
+            // Build Gridify sort string
+            var sortDefinition = state.SortDefinitions.FirstOrDefault();
+            string? orderBy = null;
+
+            if (sortDefinition != null)
+            {
+                var propertyName = sortDefinition.SortBy;
+                var gridifyField = propertyName switch
+                {
+                    nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.DateUtc) => "dateUtc",
+                    nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.Type) => "type",
+                    nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.EntityName) => "entityName",
+                    nameof(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto.UserName) => "userName",
+                    _ => propertyName?.ToLowerInvariant()
+                };
+
+                if (!string.IsNullOrEmpty(gridifyField))
+                {
+                    orderBy = sortDefinition.Descending ? $"{gridifyField} desc" : gridifyField;
+                }
+            }
+            else
+            {
+                // Default sort by date descending
+                orderBy = "dateUtc desc";
+            }
+
+            // Make API call
+            var response = await ApiClient.Api.V1.PlatformAdmin.Audit.Trails.GetAsync(config =>
+            {
+                config.QueryParameters.Page = state.Page + 1; // MudDataGrid is 0-indexed, API is 1-indexed
+                config.QueryParameters.PageSize = state.PageSize;
+                config.QueryParameters.Filter = filters.Any() ? string.Join(",", filters) : null;
+                config.QueryParameters.OrderBy = orderBy;
+            });
+
+            return new GridData<HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto>
+            {
+                Items = response?.Data ?? new List<HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto>(),
+                TotalItems = response?.TotalCount ?? 0
+            };
+        }
+        catch (Exception ex)
+        {
+            return new GridData<HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto>
+            {
+                Items = new List<HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto>(),
+                TotalItems = 0
+            };
+        }
+    }
+
+    private void ShowDetails(HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_AuditTrailDto item)
+    {
+        _selectedItem = item;
+        _showDetailsDialog = true;
+    }
+
+    private static string GetTypeText(int? type)
+    {
+        return type switch
+        {
+            0 => "Create",
+            1 => "Update",
+            2 => "Delete",
+            _ => "Unknown"
+        };
+    }
+}

@@ -9,47 +9,47 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails
+namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails
 {
     /// <summary>
-    /// Builds and executes requests for operations under \api\v1\platform-admin\audit-trails
+    /// Builds and executes requests for operations under \api\v1\platform-admin\audit\trails
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-    public partial class AuditTrailsRequestBuilder : BaseRequestBuilder
+    public partial class TrailsRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AuditTrailsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit-trails?page={page}&pageSize={pageSize}{&filter*,orderBy*}", pathParameters)
+        public TrailsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit/trails?page={page}&pageSize={pageSize}{&filter*,orderBy*}", pathParameters)
         {
         }
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AuditTrailsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit-trails?page={page}&pageSize={pageSize}{&filter*,orderBy*}", rawUrl)
+        public TrailsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit/trails?page={page}&pageSize={pageSize}{&filter*,orderBy*}", rawUrl)
         {
         }
         /// <summary>
         ///                     Supports Gridify filtering syntax:                    - Filter examples:                      - type=Create                      - entityName=*User                      - dateUtc&gt;2024-01-01                      - userEmail=*@example.com                      - (type=Update|type=Delete),entityName=Order                    - OrderBy examples:                      - dateUtc desc                      - entityName asc, dateUtc desc                      - userName, type desc
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_Response"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_Response"/></returns>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_Response?> GetAsync(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder.AuditTrailsRequestBuilderGetQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
+        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_Response?> GetAsync(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder.TrailsRequestBuilderGetQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
 #nullable restore
 #else
-        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_Response> GetAsync(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder.AuditTrailsRequestBuilderGetQueryParameters>> requestConfiguration = default, CancellationToken cancellationToken = default)
+        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_Response> GetAsync(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder.TrailsRequestBuilderGetQueryParameters>> requestConfiguration = default, CancellationToken cancellationToken = default)
         {
 #endif
             var requestInfo = ToGetRequestInformation(requestConfiguration);
-            return await RequestAdapter.SendAsync<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_Response>(requestInfo, global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_Response.CreateFromDiscriminatorValue, default, cancellationToken).ConfigureAwait(false);
+            return await RequestAdapter.SendAsync<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_Response>(requestInfo, global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditTrails_Response.CreateFromDiscriminatorValue, default, cancellationToken).ConfigureAwait(false);
         }
         /// <summary>
         ///                     Supports Gridify filtering syntax:                    - Filter examples:                      - type=Create                      - entityName=*User                      - dateUtc&gt;2024-01-01                      - userEmail=*@example.com                      - (type=Update|type=Delete),entityName=Order                    - OrderBy examples:                      - dateUtc desc                      - entityName asc, dateUtc desc                      - userName, type desc
@@ -58,11 +58,11 @@ namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public RequestInformation ToGetRequestInformation(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder.AuditTrailsRequestBuilderGetQueryParameters>>? requestConfiguration = default)
+        public RequestInformation ToGetRequestInformation(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder.TrailsRequestBuilderGetQueryParameters>>? requestConfiguration = default)
         {
 #nullable restore
 #else
-        public RequestInformation ToGetRequestInformation(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder.AuditTrailsRequestBuilderGetQueryParameters>> requestConfiguration = default)
+        public RequestInformation ToGetRequestInformation(Action<RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder.TrailsRequestBuilderGetQueryParameters>> requestConfiguration = default)
         {
 #endif
             var requestInfo = new RequestInformation(Method.GET, UrlTemplate, PathParameters);
@@ -73,17 +73,17 @@ namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails
         /// <summary>
         /// Returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder"/></returns>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
-        public global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder WithUrl(string rawUrl)
+        public global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder WithUrl(string rawUrl)
         {
-            return new global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder(rawUrl, RequestAdapter);
+            return new global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder(rawUrl, RequestAdapter);
         }
         /// <summary>
         ///                     Supports Gridify filtering syntax:                    - Filter examples:                      - type=Create                      - entityName=*User                      - dateUtc&gt;2024-01-01                      - userEmail=*@example.com                      - (type=Update|type=Delete),entityName=Order                    - OrderBy examples:                      - dateUtc desc                      - entityName asc, dateUtc desc                      - userName, type desc
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-        public partial class AuditTrailsRequestBuilderGetQueryParameters 
+        public partial class TrailsRequestBuilderGetQueryParameters 
         {
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -113,7 +113,7 @@ namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails
         /// </summary>
         [Obsolete("This class is deprecated. Please use the generic RequestConfiguration class generated by the generator.")]
         [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-        public partial class AuditTrailsRequestBuilderGetRequestConfiguration : RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditTrails.AuditTrailsRequestBuilder.AuditTrailsRequestBuilderGetQueryParameters>
+        public partial class TrailsRequestBuilderGetRequestConfiguration : RequestConfiguration<global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Audit.Trails.TrailsRequestBuilder.TrailsRequestBuilderGetQueryParameters>
         {
         }
     }

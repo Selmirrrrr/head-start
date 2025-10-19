@@ -5,7 +5,7 @@ using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HeadStart.WebAPI.Features.PlatformAdmin.AuditTrails;
+namespace HeadStart.WebAPI.Features.PlatformAdmin.Audit;
 
 public static class GetAuditTrails
 {
@@ -23,7 +23,7 @@ public static class GetAuditTrails
 
         public override void Configure()
         {
-            Get("/audit-trails");
+            Get("/audit/trails");
             Group<PlatformAdminEndpointGroup>();
             Version(1);
 

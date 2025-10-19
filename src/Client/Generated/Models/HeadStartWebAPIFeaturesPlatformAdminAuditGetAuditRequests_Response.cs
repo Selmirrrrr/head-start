@@ -9,7 +9,7 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_Response : IParsable
+    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_Response : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The appliedFilter property</summary>
@@ -31,10 +31,10 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>The data property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto>? Data { get; set; }
+        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto>? Data { get; set; }
 #nullable restore
 #else
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto> Data { get; set; }
+        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto> Data { get; set; }
 #endif
         /// <summary>The hasNextPage property</summary>
         public bool? HasNextPage { get; set; }
@@ -51,12 +51,12 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_Response"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_Response"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_Response CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_Response CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_Response();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_Response();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -68,7 +68,7 @@ namespace HeadStart.Client.Generated.Models
             {
                 { "appliedFilter", n => { AppliedFilter = n.GetStringValue(); } },
                 { "appliedOrderBy", n => { AppliedOrderBy = n.GetStringValue(); } },
-                { "data", n => { Data = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto.CreateFromDiscriminatorValue)?.AsList(); } },
+                { "data", n => { Data = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto.CreateFromDiscriminatorValue)?.AsList(); } },
                 { "hasNextPage", n => { HasNextPage = n.GetBoolValue(); } },
                 { "hasPreviousPage", n => { HasPreviousPage = n.GetBoolValue(); } },
                 { "pageNumber", n => { PageNumber = n.GetIntValue(); } },
@@ -86,7 +86,7 @@ namespace HeadStart.Client.Generated.Models
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
             writer.WriteStringValue("appliedFilter", AppliedFilter);
             writer.WriteStringValue("appliedOrderBy", AppliedOrderBy);
-            writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto>("data", Data);
+            writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditGetAuditRequests_AuditRequestDto>("data", Data);
             writer.WriteBoolValue("hasNextPage", HasNextPage);
             writer.WriteBoolValue("hasPreviousPage", HasPreviousPage);
             writer.WriteIntValue("pageNumber", PageNumber);
