@@ -1,4 +1,5 @@
 using FastEndpoints;
+using HeadStart.SharedKernel.Models.Extensions;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
@@ -32,12 +33,12 @@ public class AuditRequestProcessor : IGlobalPostProcessor
             dbContext.Requests.Add(auditRequest);
             await dbContext.SaveChangesAsync(ct);
 
-            logger.LogInformation("Audit request created for {Method} {Path}", context.HttpContext.Request.Method, context.HttpContext.Request.Path);
+            logger.LogInformation("Audit request created for {Method} {Path}", context.HttpContext.Request.Method, context.HttpContext.Request.Path.Value.SanitizeForLogging());
         }
         catch (Exception ex)
         {
             // Log the error but don't fail the request
-            logger.LogError(ex, "Failed to create audit request for {Method} {Path}", context.HttpContext.Request.Method, context.HttpContext.Request.Path);
+            logger.LogError(ex, "Failed to create audit request for {Method} {Path}", context.HttpContext.Request.Method, context.HttpContext.Request.Path.Value.SanitizeForLogging());
         }
     }
 
@@ -64,13 +65,6 @@ public class AuditRequestProcessor : IGlobalPostProcessor
             tenantPath = httpContext.Request.Headers["X-Tenant-Path"].ToString();
         }
 
-        // Try to get response status code from HttpContext
-        int? responseStatusCode = null;
-        if (httpContext.Response?.StatusCode > 0)
-        {
-            responseStatusCode = httpContext.Response.StatusCode;
-        }
-
         return new AuditRequest
         {
             Id = Guid.CreateVersion7(),
@@ -78,11 +72,11 @@ public class AuditRequestProcessor : IGlobalPostProcessor
             ImpersonatedByUserId = impersonatedByUserId,
             DateUtc = DateTime.UtcNow,
             RequestId = httpContext.TraceIdentifier,
-            RequestPath = request.Path.Value ?? string.Empty,
+            RequestPath = request.Path.Value.SanitizeForLogging() ?? string.Empty,
             RequestMethod = request.Method,
             RequestBody = await GetRequestBodyAsync(request),
-            ResponseStatusCode = responseStatusCode,
-            RequestQuery = request.QueryString.Value,
+            ResponseStatusCode = httpContext.Response?.StatusCode ?? 0,
+            RequestQuery = request.QueryString.Value.SanitizeForLogging(),
             TenantPath = string.IsNullOrWhiteSpace(tenantPath) ? null! : new LTree(tenantPath)
         };
     }

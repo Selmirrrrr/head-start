@@ -15,7 +15,7 @@ public class AuditRequest : IMayHaveTenant
     public required string RequestPath { get; init; }
     public required string RequestMethod { get; init; }
     public string? RequestBody { get; init; }
-    public int? ResponseStatusCode { get; init; }
+    public int ResponseStatusCode { get; init; }
     public string? RequestQuery { get; init; }
 
     // IMayHaveTenant
@@ -76,5 +76,10 @@ public class AuditRequestEntityTypeConfiguration : IEntityTypeConfiguration<Audi
             .HasForeignKey(e => e.TenantPath)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(e => e.DateUtc);
+        builder.HasIndex(e => e.UserId);
+        builder.HasIndex(e => e.ResponseStatusCode);
+        builder.HasIndex(e => new { e.DateUtc, e.ResponseStatusCode });
     }
 }
