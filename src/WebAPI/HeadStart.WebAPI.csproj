@@ -13,6 +13,8 @@
     <PackageReference Include="FastEndpoints" />
     <PackageReference Include="FastEndpoints.ClientGen.Kiota" />
     <PackageReference Include="FastEndpoints.Swagger" />
+    <PackageReference Include="Gridify" />
+    <PackageReference Include="Gridify.EntityFramework" />
     <PackageReference Include="Scalar.AspNetCore" />
   </ItemGroup>
   <ItemGroup>

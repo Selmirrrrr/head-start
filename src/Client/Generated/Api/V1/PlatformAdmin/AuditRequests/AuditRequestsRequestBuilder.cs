@@ -22,7 +22,7 @@ namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditRequests
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AuditRequestsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit-requests?page={page}&pageSize={pageSize}&sortDesc={sortDesc}{&dateFrom*,dateTo*,requestMethod*,requestPath*,responseStatusCode*,search*,sortBy*}", pathParameters)
+        public AuditRequestsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit-requests?page={page}&pageSize={pageSize}{&filter*,orderBy*}", pathParameters)
         {
         }
         /// <summary>
@@ -30,9 +30,12 @@ namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditRequests
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AuditRequestsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit-requests?page={page}&pageSize={pageSize}&sortDesc={sortDesc}{&dateFrom*,dateTo*,requestMethod*,requestPath*,responseStatusCode*,search*,sortBy*}", rawUrl)
+        public AuditRequestsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/audit-requests?page={page}&pageSize={pageSize}{&filter*,orderBy*}", rawUrl)
         {
         }
+        /// <summary>
+        ///                     Supports Gridify filtering syntax:                    - Filter examples:                      - requestMethod=POST                      - requestPath=*/api/users*                      - responseStatusCode&gt;=400                      - dateUtc&gt;2024-01-01,dateUtc&lt;2024-12-31                      - userEmail=*@example.com                      - (responseStatusCode=404|responseStatusCode=500)                      - requestMethod=GET,responseStatusCode&lt;300                    - OrderBy examples:                      - dateUtc desc (default)                      - responseStatusCode asc, dateUtc desc                      - requestMethod, requestPath                      - userName desc, dateUtc desc
+        /// </summary>
         /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_Response"/></returns>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
@@ -48,6 +51,9 @@ namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditRequests
             var requestInfo = ToGetRequestInformation(requestConfiguration);
             return await RequestAdapter.SendAsync<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_Response>(requestInfo, global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_Response.CreateFromDiscriminatorValue, default, cancellationToken).ConfigureAwait(false);
         }
+        /// <summary>
+        ///                     Supports Gridify filtering syntax:                    - Filter examples:                      - requestMethod=POST                      - requestPath=*/api/users*                      - responseStatusCode&gt;=400                      - dateUtc&gt;2024-01-01,dateUtc&lt;2024-12-31                      - userEmail=*@example.com                      - (responseStatusCode=404|responseStatusCode=500)                      - requestMethod=GET,responseStatusCode&lt;300                    - OrderBy examples:                      - dateUtc desc (default)                      - responseStatusCode asc, dateUtc desc                      - requestMethod, requestPath                      - userName desc, dateUtc desc
+        /// </summary>
         /// <returns>A <see cref="RequestInformation"/></returns>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
@@ -73,59 +79,34 @@ namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditRequests
         {
             return new global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.AuditRequests.AuditRequestsRequestBuilder(rawUrl, RequestAdapter);
         }
+        /// <summary>
+        ///                     Supports Gridify filtering syntax:                    - Filter examples:                      - requestMethod=POST                      - requestPath=*/api/users*                      - responseStatusCode&gt;=400                      - dateUtc&gt;2024-01-01,dateUtc&lt;2024-12-31                      - userEmail=*@example.com                      - (responseStatusCode=404|responseStatusCode=500)                      - requestMethod=GET,responseStatusCode&lt;300                    - OrderBy examples:                      - dateUtc desc (default)                      - responseStatusCode asc, dateUtc desc                      - requestMethod, requestPath                      - userName desc, dateUtc desc
+        /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-        #pragma warning disable CS1591
         public partial class AuditRequestsRequestBuilderGetQueryParameters 
-        #pragma warning restore CS1591
         {
-            [QueryParameter("dateFrom")]
-            public DateTimeOffset? DateFrom { get; set; }
-            [QueryParameter("dateTo")]
-            public DateTimeOffset? DateTo { get; set; }
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("filter")]
+            public string? Filter { get; set; }
+#nullable restore
+#else
+            [QueryParameter("filter")]
+            public string Filter { get; set; }
+#endif
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("orderBy")]
+            public string? OrderBy { get; set; }
+#nullable restore
+#else
+            [QueryParameter("orderBy")]
+            public string OrderBy { get; set; }
+#endif
             [QueryParameter("page")]
             public int? Page { get; set; }
             [QueryParameter("pageSize")]
             public int? PageSize { get; set; }
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            [QueryParameter("requestMethod")]
-            public string? RequestMethod { get; set; }
-#nullable restore
-#else
-            [QueryParameter("requestMethod")]
-            public string RequestMethod { get; set; }
-#endif
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            [QueryParameter("requestPath")]
-            public string? RequestPath { get; set; }
-#nullable restore
-#else
-            [QueryParameter("requestPath")]
-            public string RequestPath { get; set; }
-#endif
-            [QueryParameter("responseStatusCode")]
-            public int? ResponseStatusCode { get; set; }
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            [QueryParameter("search")]
-            public string? Search { get; set; }
-#nullable restore
-#else
-            [QueryParameter("search")]
-            public string Search { get; set; }
-#endif
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            [QueryParameter("sortBy")]
-            public string? SortBy { get; set; }
-#nullable restore
-#else
-            [QueryParameter("sortBy")]
-            public string SortBy { get; set; }
-#endif
-            [QueryParameter("sortDesc")]
-            public bool? SortDesc { get; set; }
         }
         /// <summary>
         /// Configuration for the request such as headers, query parameters, and middleware options.

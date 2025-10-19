@@ -12,22 +12,42 @@ namespace HeadStart.Client.Generated.Models
     public partial class HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_Response : IParsable
     #pragma warning restore CS1591
     {
-        /// <summary>The auditTrails property</summary>
+        /// <summary>The appliedFilter property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailViewModel>? AuditTrails { get; set; }
+        public string? AppliedFilter { get; set; }
 #nullable restore
 #else
-        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailViewModel> AuditTrails { get; set; }
+        public string AppliedFilter { get; set; }
 #endif
-        /// <summary>The pagination property</summary>
+        /// <summary>The appliedOrderBy property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_PaginationViewModel? Pagination { get; set; }
+        public string? AppliedOrderBy { get; set; }
 #nullable restore
 #else
-        public global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_PaginationViewModel Pagination { get; set; }
+        public string AppliedOrderBy { get; set; }
 #endif
+        /// <summary>The data property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto>? Data { get; set; }
+#nullable restore
+#else
+        public List<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto> Data { get; set; }
+#endif
+        /// <summary>The hasNextPage property</summary>
+        public bool? HasNextPage { get; set; }
+        /// <summary>The hasPreviousPage property</summary>
+        public bool? HasPreviousPage { get; set; }
+        /// <summary>The pageNumber property</summary>
+        public int? PageNumber { get; set; }
+        /// <summary>The pageSize property</summary>
+        public int? PageSize { get; set; }
+        /// <summary>The totalCount property</summary>
+        public int? TotalCount { get; set; }
+        /// <summary>The totalPages property</summary>
+        public int? TotalPages { get; set; }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -46,8 +66,15 @@ namespace HeadStart.Client.Generated.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "auditTrails", n => { AuditTrails = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailViewModel>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailViewModel.CreateFromDiscriminatorValue)?.AsList(); } },
-                { "pagination", n => { Pagination = n.GetObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_PaginationViewModel>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_PaginationViewModel.CreateFromDiscriminatorValue); } },
+                { "appliedFilter", n => { AppliedFilter = n.GetStringValue(); } },
+                { "appliedOrderBy", n => { AppliedOrderBy = n.GetStringValue(); } },
+                { "data", n => { Data = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto.CreateFromDiscriminatorValue)?.AsList(); } },
+                { "hasNextPage", n => { HasNextPage = n.GetBoolValue(); } },
+                { "hasPreviousPage", n => { HasPreviousPage = n.GetBoolValue(); } },
+                { "pageNumber", n => { PageNumber = n.GetIntValue(); } },
+                { "pageSize", n => { PageSize = n.GetIntValue(); } },
+                { "totalCount", n => { TotalCount = n.GetIntValue(); } },
+                { "totalPages", n => { TotalPages = n.GetIntValue(); } },
             };
         }
         /// <summary>
@@ -57,8 +84,15 @@ namespace HeadStart.Client.Generated.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
-            writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailViewModel>("auditTrails", AuditTrails);
-            writer.WriteObjectValue<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_PaginationViewModel>("pagination", Pagination);
+            writer.WriteStringValue("appliedFilter", AppliedFilter);
+            writer.WriteStringValue("appliedOrderBy", AppliedOrderBy);
+            writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetAuditTrails_AuditTrailDto>("data", Data);
+            writer.WriteBoolValue("hasNextPage", HasNextPage);
+            writer.WriteBoolValue("hasPreviousPage", HasPreviousPage);
+            writer.WriteIntValue("pageNumber", PageNumber);
+            writer.WriteIntValue("pageSize", PageSize);
+            writer.WriteIntValue("totalCount", TotalCount);
+            writer.WriteIntValue("totalPages", TotalPages);
         }
     }
 }

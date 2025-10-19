@@ -9,11 +9,13 @@ namespace HeadStart.Client.Generated.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestViewModel : IParsable
+    public partial class HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The dateUtc property</summary>
         public DateTimeOffset? DateUtc { get; set; }
+        /// <summary>The hasError property</summary>
+        public bool? HasError { get; set; }
         /// <summary>The id property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -46,6 +48,8 @@ namespace HeadStart.Client.Generated.Models
 #else
         public string ImpersonatedByUserName { get; set; }
 #endif
+        /// <summary>The isImpersonated property</summary>
+        public bool? IsImpersonated { get; set; }
         /// <summary>The requestBody property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -115,12 +119,12 @@ namespace HeadStart.Client.Generated.Models
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestViewModel"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestViewModel CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestViewModel();
+            return new global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminAuditRequestsGetAuditRequests_AuditRequestDto();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -131,10 +135,12 @@ namespace HeadStart.Client.Generated.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "dateUtc", n => { DateUtc = n.GetDateTimeOffsetValue(); } },
+                { "hasError", n => { HasError = n.GetBoolValue(); } },
                 { "id", n => { Id = n.GetStringValue(); } },
                 { "impersonatedByUserEmail", n => { ImpersonatedByUserEmail = n.GetStringValue(); } },
                 { "impersonatedByUserId", n => { ImpersonatedByUserId = n.GetStringValue(); } },
                 { "impersonatedByUserName", n => { ImpersonatedByUserName = n.GetStringValue(); } },
+                { "isImpersonated", n => { IsImpersonated = n.GetBoolValue(); } },
                 { "requestBody", n => { RequestBody = n.GetStringValue(); } },
                 { "requestId", n => { RequestId = n.GetStringValue(); } },
                 { "requestMethod", n => { RequestMethod = n.GetStringValue(); } },
@@ -154,10 +160,12 @@ namespace HeadStart.Client.Generated.Models
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
             writer.WriteDateTimeOffsetValue("dateUtc", DateUtc);
+            writer.WriteBoolValue("hasError", HasError);
             writer.WriteStringValue("id", Id);
             writer.WriteStringValue("impersonatedByUserEmail", ImpersonatedByUserEmail);
             writer.WriteStringValue("impersonatedByUserId", ImpersonatedByUserId);
             writer.WriteStringValue("impersonatedByUserName", ImpersonatedByUserName);
+            writer.WriteBoolValue("isImpersonated", IsImpersonated);
             writer.WriteStringValue("requestBody", RequestBody);
             writer.WriteStringValue("requestId", RequestId);
             writer.WriteStringValue("requestMethod", RequestMethod);
