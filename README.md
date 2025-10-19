@@ -62,3 +62,10 @@ dotnet run --generateclients true --project src/WebAPI/HeadStart.WebAPI.csproj
   }
 }
 ```
+
+## ToDo
+
+- [ ] Fix audit trail filtering
+- [ ] Implement impersonation
+- [ ] Implement MudTranslations `dotnet add package MudBlazor.Translations`
+- [ ] Implement Finish translation resources files per component
