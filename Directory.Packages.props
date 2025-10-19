@@ -55,7 +55,7 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.14.1" />
-    <PackageVersion Include="Scalar.AspNetCore" Version="2.8.11" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.9.0" />
     <PackageVersion Include="Serilog" Version="4.3.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0+build.694" />
@@ -71,8 +71,8 @@
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.15.0.120848" />
     <PackageVersion Include="System.Net.Http.Json" Version="9.0.10" />
     <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.10" />
-    <PackageVersion Include="TUnit" Version="0.70.2" />
-    <PackageVersion Include="TUnit.Playwright" Version="0.70.2" />
+    <PackageVersion Include="TUnit" Version="0.73.19" />
+    <PackageVersion Include="TUnit.Playwright" Version="0.73.19" />
     <PackageVersion Include="Yarp.ReverseProxy" Version="2.3.0" />
   </ItemGroup>
 </Project>
