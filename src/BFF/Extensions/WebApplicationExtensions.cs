@@ -31,7 +31,12 @@ public static class WebApplicationExtensions
 
     private static void ConfigureSecurityMiddleware(this WebApplication app)
     {
-        app.UseSecurityHeaders(GetSecurityHeaderPolicy(app.Environment.IsDevelopment(), "http://localhost:8080"));
+        // Get Keycloak URL from configuration (Aspire will provide this via service discovery)
+        var keycloakUrl = app.Configuration.GetConnectionString("keycloak")
+            ?? app.Configuration["services:keycloak:http:0"]
+            ?? "http://localhost:8080";
+
+        app.UseSecurityHeaders(GetSecurityHeaderPolicy(app.Environment.IsDevelopment(), keycloakUrl));
         app.UseHttpsRedirection();
     }
 

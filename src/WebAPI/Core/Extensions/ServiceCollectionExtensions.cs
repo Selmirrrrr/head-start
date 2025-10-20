@@ -30,17 +30,25 @@ internal static class ServiceCollectionExtensions
                     s.Title = "HeadStart API";
                     s.Version = "v1";
                     s.DocumentName = "headstart-api-v1";
+
+                    // Get Keycloak URL from service provider (Aspire will provide this)
+                    var sp = services.BuildServiceProvider();
+                    var config = sp.GetRequiredService<IConfiguration>();
+                    var keycloakUrl = config.GetConnectionString("keycloak")
+                        ?? config["services:keycloak:http:0"]
+                        ?? "http://localhost:8080";
+
                     s.AddSecurity("OAuth2", [], new OpenApiSecurityScheme
                     {
                         Type = OpenApiSecuritySchemeType.OAuth2,
-                        Description = "OAuth2 Keyycloak",
+                        Description = "OAuth2 Keycloak",
                         Flow = OpenApiOAuth2Flow.Password,
                         Flows = new OpenApiOAuthFlows()
                         {
                             Password = new OpenApiOAuthFlow()
                             {
-                                AuthorizationUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/auth",
-                                TokenUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/token"
+                                AuthorizationUrl = $"{keycloakUrl}/realms/HeadStart/protocol/openid-connect/auth",
+                                TokenUrl = $"{keycloakUrl}/realms/HeadStart/protocol/openid-connect/token"
                             }
                         }
                     });

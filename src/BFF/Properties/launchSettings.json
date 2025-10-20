@@ -1,5 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/launchsettings.json",
+    // NOTE: These settings are only used when running this project directly (dotnet run --project src/BFF)
+    // When running through Aspire (dotnet run --project src/Aspire/AppHost), Aspire manages ports and URLs automatically
     "profiles": {
         "HeadStart.BFF": {
             "commandName": "Project",
