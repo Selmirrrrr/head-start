@@ -18,7 +18,7 @@ builder.Host.UseSerilog((builderContext, loggerConfig) =>
         builderContext.HostingEnvironment,
         "HeadStart.WebAPI"));
 
-builder.Services.AddApiFramework();
+builder.Services.AddApiFramework(builder.Configuration);
 builder.AddDatabaseServices();
 builder.Services.AddSecurityServices();
 builder.Services.AddAuth(builder.Environment.IsDevelopment());

@@ -18,9 +18,19 @@ namespace HeadStart.WebAPI.Core.Extensions;
 /// </summary>
 internal static class ServiceCollectionExtensions
 {
-    internal static void AddApiFramework(this IServiceCollection services)
+    internal static void AddApiFramework(this IServiceCollection services, IConfiguration configuration)
     {
         Guard.Against.Null(services);
+        Guard.Against.Null(configuration);
+
+        var authority = configuration["OpenIDConnectSettings:Authority"];
+        var realm = configuration["OpenIDConnectSettings:Realm"];
+
+        Guard.Against.Null(authority);
+        Guard.Against.Null(realm);
+
+        var authorizationUrl = $"{authority}/realms/{realm}/protocol/openid-connect/auth";
+        var tokenUrl = $"{authority}/realms/{realm}/protocol/openid-connect/token";
 
         services.AddFastEndpoints()
             .SwaggerDocument(o =>
@@ -40,8 +50,8 @@ internal static class ServiceCollectionExtensions
                         {
                             Password = new OpenApiOAuthFlow()
                             {
-                                AuthorizationUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/auth",
-                                TokenUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/token"
+                                AuthorizationUrl = authorizationUrl,
+                                TokenUrl = tokenUrl
                             }
                         }
                     });

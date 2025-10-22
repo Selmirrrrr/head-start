@@ -3,7 +3,6 @@ using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
 namespace HeadStart.IntegrationTests.Helpers;

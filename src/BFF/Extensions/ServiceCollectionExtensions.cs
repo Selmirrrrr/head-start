@@ -131,7 +131,6 @@ public static class ServiceCollectionExtensions
                 options =>
                 {
                     options.ClientId = "HeadStartWeb";
-                    options.UsePkce = true;
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     // Request refresh token
@@ -186,7 +185,7 @@ public static class ServiceCollectionExtensions
             .AddServiceDiscoveryDestinationResolver()
             .AddTransforms(builder => builder.AddRequestTransform(async context =>
             {
-                // Use Duende's IUserTokenManagementService for automatic token refresh
+                // Use Duende's automatic token management
                 var tokenManagementService = context.HttpContext.RequestServices.GetRequiredService<IUserTokenManager>();
                 var tokenResult = await tokenManagementService.GetAccessTokenAsync(context.HttpContext.User);
 
