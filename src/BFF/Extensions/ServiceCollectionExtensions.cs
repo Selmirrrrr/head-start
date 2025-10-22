@@ -131,7 +131,7 @@ public static class ServiceCollectionExtensions
                 options =>
                 {
                     options.ClientId = "HeadStartWeb";
-                    options.ClientSecret = configuration["OpenIDConnectSettings:ClientSecret"];
+                    options.UsePkce = true;
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     // Request refresh token
@@ -174,8 +174,16 @@ public static class ServiceCollectionExtensions
         Guard.Against.Null(services);
         Guard.Against.Null(configuration);
 
+        // Validate that ReverseProxy configuration section exists
+        var reverseProxySection = configuration.GetSection("ReverseProxy");
+        if (!reverseProxySection.Exists())
+        {
+            throw new InvalidOperationException("ReverseProxy configuration section is missing from appsettings.json");
+        }
+
         services.AddReverseProxy()
-            .LoadFromConfig(configuration.GetSection("ReverseProxy"))
+            .LoadFromConfig(reverseProxySection)
+            .AddServiceDiscoveryDestinationResolver()
             .AddTransforms(builder => builder.AddRequestTransform(async context =>
             {
                 // Use Duende's IUserTokenManagementService for automatic token refresh
