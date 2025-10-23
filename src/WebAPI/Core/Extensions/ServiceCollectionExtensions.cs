@@ -23,11 +23,9 @@ internal static class ServiceCollectionExtensions
         Guard.Against.Null(services);
         Guard.Against.Null(configuration);
 
-        var authority = configuration["OpenIDConnectSettings:Authority"];
-        var realm = configuration["OpenIDConnectSettings:Realm"];
-
-        Guard.Against.Null(authority);
-        Guard.Against.Null(realm);
+        // String empty by default to enable Kiota client generation
+        var authority = configuration["OpenIDConnectSettings:Authority"] ?? string.Empty;
+        var realm = configuration["OpenIDConnectSettings:Realm"] ?? string.Empty;
 
         var authorizationUrl = $"{authority}/realms/{realm}/protocol/openid-connect/auth";
         var tokenUrl = $"{authority}/realms/{realm}/protocol/openid-connect/token";
