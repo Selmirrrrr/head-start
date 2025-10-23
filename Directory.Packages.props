@@ -29,6 +29,7 @@
     <PackageVersion Include="IdentityModel.AspNetCore" Version="4.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.10" />
@@ -60,6 +61,7 @@
     <PackageVersion Include="Serilog" Version="4.3.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0+build.694" />
+    <PackageVersion Include="Serilog.Expressions" Version="5.0.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.2" />
     <PackageVersion Include="Serilog.Settings.Configuration" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Async" Version="2.1.0" />
@@ -68,6 +70,7 @@
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
     <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
+    <PackageVersion Include="Serilog.Sinks.Postgresql.Alternative" Version="4.2.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.15.0.120848" />
     <PackageVersion Include="System.Net.Http.Json" Version="9.0.10" />

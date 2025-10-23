@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Exceptions;
+using Serilog.Expressions;
 
 namespace HeadStart.SharedKernel.Extensions;
 
@@ -49,8 +50,9 @@ public static class LoggingExtensions
             .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.Hosting.Lifetime", Serilog.Events.LogEventLevel.Information)
-            .MinimumLevel.Override("CorrelationId", Serilog.Events.LogEventLevel.Information)
+            .MinimumLevel.Override("Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware", Serilog.Events.LogEventLevel.Information)
             .MinimumLevel.Override("HeadStart", isDevelopment ? Serilog.Events.LogEventLevel.Debug : Serilog.Events.LogEventLevel.Information)
+            .Filter.ByExcluding("RequestPath like '%/health%' or RequestPath like '%/alive%' or RequestPath like '%/liveness%' or RequestPath like '%/readiness%'")
             .Enrich.FromLogContext()
             .Enrich.WithInstanceId()
             .Enrich.WithExceptionDetails()

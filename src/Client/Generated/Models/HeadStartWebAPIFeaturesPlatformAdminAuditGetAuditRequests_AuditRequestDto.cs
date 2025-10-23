@@ -13,7 +13,7 @@ namespace HeadStart.Client.Generated.Models
     #pragma warning restore CS1591
     {
         /// <summary>The dateUtc property</summary>
-        public DateTime? DateUtc { get; set; }
+        public DateTimeOffset? DateUtc { get; set; }
         /// <summary>The hasError property</summary>
         public bool? HasError { get; set; }
         /// <summary>The id property</summary>
@@ -142,7 +142,7 @@ namespace HeadStart.Client.Generated.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "dateUtc", n => { DateUtc = n.GetDateTimeOffsetValue().GetValueOrDefault().DateTime; } },
+                { "dateUtc", n => { DateUtc = n.GetDateTimeOffsetValue(); } },
                 { "hasError", n => { HasError = n.GetBoolValue(); } },
                 { "id", n => { Id = n.GetStringValue(); } },
                 { "impersonatedByUserEmail", n => { ImpersonatedByUserEmail = n.GetStringValue(); } },

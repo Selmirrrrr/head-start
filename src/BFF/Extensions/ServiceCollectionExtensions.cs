@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
         services.AddSecurityServices();
         services.AddRateLimitingServices();
         services.AddReverseProxyConfiguration(configuration);
-        services.AddAuthentication(configuration, isDevelopment);
+        services.AddAuthentication(isDevelopment);
         services.AddAuthorization();
         services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
     }
@@ -113,7 +113,7 @@ public static class ServiceCollectionExtensions
         });
     }
 
-    private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
+    private static void AddAuthentication(this IServiceCollection services, bool isDevelopment)
     {
         Guard.Against.Null(services);
 

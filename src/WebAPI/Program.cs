@@ -4,10 +4,21 @@ using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Core.Extensions;
 using Serilog;
+using Serilog.Debugging;
 
 GridifyGlobalConfiguration.EnableEntityFrameworkCompatibilityLayer();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Enable Serilog internal logging to troubleshoot issues
+if (builder.Configuration["Serilog:SelfLog:Enabled"] == "true")
+{
+    SelfLog.Enable(msg =>
+    {
+        Console.WriteLine($"[Serilog SelfLog] {msg}");
+        System.Diagnostics.Debug.WriteLine($"[Serilog SelfLog] {msg}");
+    });
+}
 
 builder.AddServiceDefaults();
 

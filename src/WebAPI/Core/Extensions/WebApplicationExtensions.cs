@@ -3,7 +3,6 @@ using FastEndpoints;
 using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
 using HeadStart.WebAPI.Core.Filters;
-using HeadStart.WebAPI.Core.Processors;
 using HeadStart.WebAPI.Data;
 using Kiota.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -108,7 +107,40 @@ internal static class WebApplicationExtensions
     internal static void ConfigureRequestProcessing(this WebApplication app)
     {
         app.UseHttpsRedirection();
-        app.UseSerilogRequestLogging();
+        app.UseHttpLogging();
+        app.UseSerilogRequestLogging(options =>
+        {
+            options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+            {
+                // Add custom properties for audit logging
+                diagnosticContext.Set("LogId", Guid.NewGuid());
+                diagnosticContext.Set("RequestId", httpContext.TraceIdentifier);
+                diagnosticContext.Set("RequestMethod", httpContext.Request.Method);
+                diagnosticContext.Set("RequestPath", httpContext.Request.Path.Value ?? string.Empty);
+                diagnosticContext.Set("ResponseStatusCode", httpContext.Response.StatusCode);
+
+                if (httpContext.Request.QueryString.HasValue)
+                {
+                    diagnosticContext.Set("RequestQuery", httpContext.Request.QueryString.Value);
+                }
+
+                // Add user information if authenticated
+                if (httpContext.User?.Identity?.IsAuthenticated == true)
+                {
+                    var userIdClaim = httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                    if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
+                    {
+                        diagnosticContext.Set("UserId", userId);
+                    }
+                }
+
+                // Add tenant path from header
+                if (httpContext.Request.Headers.TryGetValue("X-Tenant-Path", out var tenantPath))
+                {
+                    diagnosticContext.Set("TenantPath", tenantPath.ToString());
+                }
+            };
+        });
         app.UseRouting();
     }
 
@@ -130,7 +162,6 @@ internal static class WebApplicationExtensions
                 c.Versioning.PrependToRoute = true;
                 c.Endpoints.Configurator = ep =>
                 {
-                    ep.PostProcessor<AuditRequestProcessor>(Order.After);
                     ep.Options(b => b.AddEndpointFilter<OperationCancelledFilter>());
                 };
             })

@@ -2,7 +2,6 @@ using System.Net.Mime;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
-using HeadStart.WebAPI.Core.Processors;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
@@ -66,7 +65,20 @@ internal static class ServiceCollectionExtensions
         services.AddSignalR();
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddSingleton<AuditRequestProcessor>();
+
+        // Add HTTP request/response logging
+        services.AddHttpLogging(logging =>
+        {
+            logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPath |
+                                   Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestMethod |
+                                   Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestQuery |
+                                   Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestBody |
+                                   Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseStatusCode;
+            logging.RequestBodyLogLimit = 5000; // Match the truncation limit we had before
+            logging.ResponseBodyLogLimit = 0; // We don't need response body for audit
+            logging.MediaTypeOptions.AddText("application/json");
+            logging.CombineLogs = true;
+        });
     }
 
     internal static void AddDatabaseServices(this IHostApplicationBuilder builder)

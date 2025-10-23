@@ -14,11 +14,14 @@
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Serilog.Exceptions" />
+    <PackageReference Include="Serilog.Expressions" />
     <PackageReference Include="Serilog.Extensions.Logging" />
     <PackageReference Include="Serilog.Settings.Configuration" />
     <PackageReference Include="Serilog.Sinks.Async" />
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.Debug" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
+    <PackageReference Include="Serilog.Sinks.Postgresql.Alternative" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
   </ItemGroup>
 </Project>
