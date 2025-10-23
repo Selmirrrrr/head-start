@@ -103,15 +103,6 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         // Verify the greeting is still in English
         await AssertGreetingAsync("en");
 
-        // Navigate to another page
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Tenants" }).ClickAsync();
-
-        // Wait for the page to load
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
-
-        // Verify the greeting is still in English
-        await AssertGreetingAsync("en");
-
         // Test switching to German
         await languageIcon.ClickAsync();
         await Page.Locator("p:has-text('Deutsch')").WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 10000 });
@@ -119,7 +110,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
         // Wait for the page to reload
         await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded, new() { Timeout = 30000 });
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting changed to German
         await AssertGreetingAsync("de");
@@ -135,7 +126,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
         // Wait for the page to reload
         await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded, new() { Timeout = 30000 });
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting changed to Italian
         await AssertGreetingAsync("it");
@@ -151,7 +142,7 @@ public class LanguageSelectorTests(AspireDataClass playwrightDataClass) : Playwr
 
         // Wait for the page to reload
         await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded, new() { Timeout = 30000 });
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync(new() { Timeout = 15000 });
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Claimly" }).First.WaitForAsync(new() { Timeout = 15000 });
 
         // Verify the greeting is back to French
         await AssertGreetingAsync("fr");

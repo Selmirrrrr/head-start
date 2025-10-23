@@ -1,10 +1,24 @@
 using FastEndpoints.ClientGen.Kiota;
+using Gridify;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
 using HeadStart.WebAPI.Core.Extensions;
 using Serilog;
+using Serilog.Debugging;
+
+GridifyGlobalConfiguration.EnableEntityFrameworkCompatibilityLayer();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Enable Serilog internal logging to troubleshoot issues
+if (builder.Configuration["Serilog:SelfLog:Enabled"] == "true")
+{
+    SelfLog.Enable(msg =>
+    {
+        Console.WriteLine($"[Serilog SelfLog] {msg}");
+        System.Diagnostics.Debug.WriteLine($"[Serilog SelfLog] {msg}");
+    });
+}
 
 builder.AddServiceDefaults();
 
@@ -15,8 +29,8 @@ builder.Host.UseSerilog((builderContext, loggerConfig) =>
         builderContext.HostingEnvironment,
         "HeadStart.WebAPI"));
 
-builder.Services.AddApiFramework();
-builder.Services.AddDatabaseServices(builder.Configuration);
+builder.Services.AddApiFramework(builder.Configuration);
+builder.AddDatabaseServices();
 builder.Services.AddSecurityServices();
 builder.Services.AddAuth(builder.Environment.IsDevelopment());
 
@@ -46,7 +60,7 @@ try
 }
 catch (Exception ex)
 {
-    if (Log.Logger.GetType()?.Name == "SilentLogger")
+    if (Log.Logger.GetType().Name == "SilentLogger")
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()

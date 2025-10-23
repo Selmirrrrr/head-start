@@ -1,4 +1,4 @@
-using CorrelationId;
+using EvolveDb;
 using FastEndpoints;
 using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
@@ -6,6 +6,7 @@ using HeadStart.WebAPI.Core.Filters;
 using HeadStart.WebAPI.Data;
 using Kiota.Builder;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -39,34 +40,47 @@ internal static class WebApplicationExtensions
         {
             logger.LogInformation("Ensuring database is created...");
 
-            // Create database if it doesn't exist
-            var created = await context.Database.EnsureCreatedAsync();
-            if (created)
+            // Use the execution strategy to handle retry logic properly
+            var strategy = context.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
             {
-                logger.LogInformation("Database created successfully");
-            }
-            else
-            {
-                logger.LogInformation("Database already exists");
-            }
+                // Create database if it doesn't exist
+                var created = await context.Database.EnsureCreatedAsync();
+                if (created)
+                {
+                    logger.LogInformation("Database created successfully");
+                }
+                else
+                {
+                    logger.LogInformation("Database already exists");
+                }
 
-            // Apply any pending migrations
-            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-            var migrations = pendingMigrations.ToList();
-            if (migrations.Count != 0)
-            {
-                logger.LogInformation("Applying {Count} pending migrations: {Migrations}",
-                    migrations.Count, string.Join(", ", migrations));
+                // Apply any pending migrations
+                var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+                var migrations = pendingMigrations.ToList();
+                if (migrations.Count != 0)
+                {
+                    logger.LogInformation("Applying {Count} pending migrations: {Migrations}",
+                        migrations.Count, string.Join(", ", migrations));
 
-                await context.Database.MigrateAsync();
-                logger.LogInformation("Migrations applied successfully");
-            }
-            else
-            {
-                logger.LogInformation("No pending migrations");
-            }
+                    await context.Database.MigrateAsync();
+                    logger.LogInformation("Migrations applied successfully");
+                }
+                else
+                {
+                    logger.LogInformation("No pending migrations");
+                }
+            });
 
-            // Seed data (this will run automatically due to UseAsyncSeeding configuration)
+            var evolve = new Evolve(new NpgsqlConnection(app.Configuration.GetConnectionString("postgresdb")), msg => logger.LogInformation(msg))
+            {
+                MetadataTableSchema = "audit",
+                Locations = ["Data/Scripts"],
+                IsEraseDisabled = !app.Environment.IsDevelopment(),
+            };
+
+            evolve.Migrate();
+
             logger.LogInformation("Database initialization completed");
         }
         catch (Exception ex)
@@ -93,8 +107,40 @@ internal static class WebApplicationExtensions
     internal static void ConfigureRequestProcessing(this WebApplication app)
     {
         app.UseHttpsRedirection();
-        app.UseCorrelationId();
-        app.UseSerilogRequestLogging();
+        app.UseHttpLogging();
+        app.UseSerilogRequestLogging(options =>
+        {
+            options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+            {
+                // Add custom properties for audit logging
+                diagnosticContext.Set("LogId", Guid.NewGuid());
+                diagnosticContext.Set("RequestId", httpContext.TraceIdentifier);
+                diagnosticContext.Set("RequestMethod", httpContext.Request.Method);
+                diagnosticContext.Set("RequestPath", httpContext.Request.Path.Value ?? string.Empty);
+                diagnosticContext.Set("ResponseStatusCode", httpContext.Response.StatusCode);
+
+                if (httpContext.Request.QueryString.HasValue)
+                {
+                    diagnosticContext.Set("RequestQuery", httpContext.Request.QueryString.Value);
+                }
+
+                // Add user information if authenticated
+                if (httpContext.User?.Identity?.IsAuthenticated == true)
+                {
+                    var userIdClaim = httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                    if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
+                    {
+                        diagnosticContext.Set("UserId", userId);
+                    }
+                }
+
+                // Add tenant path from header
+                if (httpContext.Request.Headers.TryGetValue("X-Tenant-Path", out var tenantPath))
+                {
+                    diagnosticContext.Set("TenantPath", tenantPath.ToString());
+                }
+            };
+        });
         app.UseRouting();
     }
 

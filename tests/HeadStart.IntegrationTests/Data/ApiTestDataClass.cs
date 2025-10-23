@@ -18,6 +18,7 @@ public sealed class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
     private HttpClient? _authenticatedHttpClient;
 
     public ApiClientV1 Admin1ApiClient { get; private set; } = null!;
+    public ApiClientV1 PlatformAdmin1ApiClient { get; private set; } = null!;
     public ApiClientV1 Admin2ApiClient { get; private set; } = null!;
     public ApiClientV1 Admin3ApiClient { get; private set; } = null!;
 
@@ -55,6 +56,7 @@ public sealed class ApiTestDataClass : IAsyncInitializer, IAsyncDisposable
         }
 
         // Create authenticated API client that goes directly to WebAPI
+        PlatformAdmin1ApiClient = await SetupApiClientAsync(Users.PlatformAdmin1.UserEmail, Users.PlatformAdmin1.UserPassword);
         Admin1ApiClient = await SetupApiClientAsync(Users.AdminApiTest1.UserEmail, Users.AdminApiTest1.UserPassword);
         Admin2ApiClient = await SetupApiClientAsync(Users.AdminApiTest2.UserEmail, Users.AdminApiTest2.UserPassword);
         Admin3ApiClient = await SetupApiClientAsync(Users.AdminApiTest3.UserEmail, Users.AdminApiTest3.UserPassword);

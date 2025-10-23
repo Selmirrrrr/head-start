@@ -24,7 +24,8 @@ public static class UpdateLastSelectedTenant
 
         public override void Configure()
         {
-            Patch("/me/tenant");
+            Patch("/tenant");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

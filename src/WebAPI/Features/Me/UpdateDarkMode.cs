@@ -24,7 +24,8 @@ public static class UpdateDarkMode
 
         public override void Configure()
         {
-            Patch("/me/dark-mode");
+            Patch("/dark-mode");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

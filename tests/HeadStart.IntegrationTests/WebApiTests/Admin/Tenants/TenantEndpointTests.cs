@@ -1,20 +1,20 @@
 using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
-using Microsoft.Kiota.Abstractions;
 using Shouldly;
 
-namespace HeadStart.IntegrationTests.WebApiTests.Tenants;
+namespace HeadStart.IntegrationTests.WebApiTests.Admin.Tenants;
 
 [ClassDataSource<ApiTestDataClass>]
 public class TenantEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTest
 {
+
     [Test]
     [Category(TestConfiguration.Categories.Standard)]
     [Timeout(TestConfiguration.Timeouts.QuickTest)]
-    public async Task GetTenants_WithValidAuth_ReturnsListOfTenantsAsync(CancellationToken cancellationToken)
+    public async Task GetTenants_WithValidAuthAndPlatformAdmin_ReturnsListOfTenantsAsync(CancellationToken cancellationToken)
     {
         // Act
-        var response = await apiTestDataClass.Admin1ApiClient.Api.V1.Tenants.GetAsync(cancellationToken: cancellationToken);
+        var response = await apiTestDataClass.PlatformAdmin1ApiClient.Api.V1.PlatformAdmin.Tenants.GetAsync(cancellationToken: cancellationToken);
 
         // Assert
         response.ShouldNotBeNull();
@@ -32,12 +32,20 @@ public class TenantEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTes
     [Test]
     [Category(TestConfiguration.Categories.Security)]
     [Timeout(TestConfiguration.Timeouts.QuickTest)]
+    public async Task GetTenants_WithValidAuthButNotPlatformAdmin_ReturnsForbiddenAsync(CancellationToken cancellationToken)
+    {
+        // Act
+        await AssertForbiddenAsync(async () =>
+            await apiTestDataClass.Admin1ApiClient.Api.V1.PlatformAdmin.Tenants.GetAsync(cancellationToken: cancellationToken));
+    }
+
+    [Test]
+    [Category(TestConfiguration.Categories.Security)]
+    [Timeout(TestConfiguration.Timeouts.QuickTest)]
     public async Task GetTenants_WithoutAuth_ReturnsUnauthorizedAsync(CancellationToken cancellationToken)
     {
         // Act & Assert
-        var exception = await Should.ThrowAsync<ApiException>(async () =>
-            await apiTestDataClass.AnonymousApiClient.Api.V1.Tenants.GetAsync(cancellationToken: cancellationToken));
-
-        exception.ResponseStatusCode.ShouldBe(401);
+        await AssertUnauthorizedAsync(async () =>
+            await apiTestDataClass.AnonymousApiClient.Api.V1.PlatformAdmin.Tenants.GetAsync(cancellationToken: cancellationToken));
     }
 }

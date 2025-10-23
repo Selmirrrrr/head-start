@@ -1,4 +1,3 @@
-using Ardalis.GuardClauses;
 using HeadStart.IntegrationTests.Core;
 using HeadStart.IntegrationTests.Data;
 using HeadStart.IntegrationTests.Helpers;
@@ -6,7 +5,7 @@ using HeadStart.SharedKernel.Models.Constants;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 
-namespace HeadStart.IntegrationTests.WebApiTests.Me;
+namespace HeadStart.IntegrationTests.WebApiTests.User.Me;
 
 [ClassDataSource<ApiTestDataClass>]
 public class UpdateLanguageEndpointTests(ApiTestDataClass apiTestDataClass) : BaseApiTest

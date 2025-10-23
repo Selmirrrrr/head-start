@@ -20,7 +20,9 @@ var webapi = builder.AddProject<Projects.HeadStart_WebAPI>("webapi")
     .WaitFor(keycloak)
     .WithReference(postgresdb)
     .WaitFor(postgresdb)
-    .WithReference(mailpit);
+    .WithReference(mailpit)
+    .WithEnvironment("OpenIDConnectSettings__Authority", keycloak.Resource.GetEndpoint("http"))
+    .WithEnvironment("OpenIDConnectSettings__Realm", "HeadStart");
 
 builder.AddProject<Projects.HeadStart_BFF>("bff")
     .WithExternalHttpEndpoints()
