@@ -38,7 +38,6 @@ public static class WebApplicationExtensions
     {
         app.UseBlazorFrameworkFiles();
         app.UseStaticFiles();
-        app.UseSerilogRequestLogging();
         app.UseRouting();
         app.UseRateLimiter();
     }

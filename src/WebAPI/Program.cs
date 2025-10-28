@@ -2,6 +2,7 @@ using FastEndpoints.ClientGen.Kiota;
 using Gridify;
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.SharedKernel.Extensions;
+using HeadStart.SharedKernel.Logging;
 using HeadStart.WebAPI.Core.Extensions;
 using Serilog;
 using Serilog.Debugging;
@@ -45,6 +46,13 @@ try
     app.ConfigureExceptionHandling();
     app.ConfigureRequestProcessing();
     app.ConfigureAuthentication();
+
+    // UserDataLoggingMiddleware wraps everything that follows with LogContext
+    app.UseMiddleware<UserDataLoggingMiddleware>();
+
+    // HTTP logging will now run within the enriched LogContext and inherit UserId
+    app.UseHttpLogging();
+
     app.ConfigureApiDocumentation();
 
     if (app.IsNotGenerationMode())

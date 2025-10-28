@@ -11,7 +11,7 @@ public class AuditRequest : IMayHaveTenant
     public Guid? ImpersonatedByUserId { get; init; }
     public Utilisateur? ImpersonatedByUser { get; init; }
     public DateTime DateUtc { get; init; } = DateTime.UtcNow;
-    public required string RequestId { get; init; }
+    public required string TraceId { get; init; }
     public required string RequestPath { get; init; }
     public required string RequestMethod { get; init; }
     public string? RequestBody { get; init; }
@@ -38,7 +38,7 @@ public class AuditRequestEntityTypeConfiguration : IEntityTypeConfiguration<Audi
             .ValueGeneratedOnAdd()
             .IsRequired();
 
-        builder.Property(e => e.RequestId)
+        builder.Property(e => e.TraceId)
             .IsRequired();
 
         builder.Property(e => e.RequestPath)

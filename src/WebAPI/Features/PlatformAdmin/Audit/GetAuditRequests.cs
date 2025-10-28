@@ -58,7 +58,7 @@ public static class GetAuditRequests
                 .AddMap("userId", r => r.UserId)
                 .AddMap("impersonatedByUserId", r => r.ImpersonatedByUserId)
                 .AddMap("dateUtc", r => r.DateUtc)
-                .AddMap("requestId", r => r.RequestId)
+                .AddMap("traceId", r => r.TraceId)
                 .AddMap("requestPath", r => r.RequestPath)
                 .AddMap("requestQuery", r => r.RequestQuery)
                 .AddMap("requestMethod", r => r.RequestMethod)
@@ -95,7 +95,7 @@ public static class GetAuditRequests
                 ImpersonatedByUserName = r.ImpersonatedByUser != null ? $"{r.ImpersonatedByUser.Nom} {r.ImpersonatedByUser.Prenom}" : null,
                 IsImpersonated = r.ImpersonatedByUserId != null,
                 DateUtc = r.DateUtc,
-                RequestId = r.RequestId,
+                RequestId = r.TraceId,
                 RequestPath = r.RequestPath,
                 RequestQuery = r.RequestQuery,
                 RequestMethod = r.RequestMethod,

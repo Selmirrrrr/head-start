@@ -1,19 +1,8 @@
 using System.Security.Claims;
+using HeadStart.SharedKernel.Models.Constants;
+using HeadStart.SharedKernel.Services;
 
 namespace HeadStart.WebAPI.Services;
-
-public interface ICurrentUserService
-{
-    Guid UserId { get; }
-    string? SelectedTenantPath { get; }
-    bool IsAuthenticated { get; }
-    bool IsImpersonated { get; }
-    Guid? ImpersonatedByUserId { get; }
-    string Email { get; }
-    string GivenName { get; }
-    string Surname { get; }
-    string[] PlatformRoles { get; }
-}
 
 /// <summary>
 /// Service that provides access to the current authenticated user's information from JWT claims.
@@ -28,7 +17,7 @@ public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
     private bool _isImpersonated;
     private Guid? _impersonatedByUserId;
     private string? _selectedTenantPath;
-    private string[] _platformRoles;
+    private string[]? _platformRoles;
     private ClaimsPrincipal User => httpContextAccessor.HttpContext?.User
                                     ?? throw new InvalidOperationException("No user context available");
 
@@ -48,9 +37,19 @@ public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
     public string Surname => _surname ??= User.FindFirst(ClaimTypes.Surname)?.Value
         ?? throw new InvalidOperationException("Surname claim is missing");
 
-    public string? SelectedTenantPath => _selectedTenantPath ??= httpContextAccessor.HttpContext?.Request.Headers["X-Tenant-Path"].ToString();
+    public string? SelectedTenantPath => _selectedTenantPath ??= httpContextAccessor.HttpContext?.Request.Headers[AppHttpHeaders.TenantHeader].ToString();
 
     public Guid? ImpersonatedByUserId => _impersonatedByUserId;
 
-    public string[] PlatformRoles => _platformRoles ??= User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToArray() ?? [];
+    public string[] PlatformRoles => _platformRoles ??= GetRoles();
+
+    private string[] GetRoles()
+    {
+        var roles = User.Claims
+            .Where(c => c.Type == ClaimTypes.Role || c.Type == "role")
+            .Select(c => c.Value)
+            .ToArray();
+
+        return roles;
+    }
 }
