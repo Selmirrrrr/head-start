@@ -1,6 +1,7 @@
 using HeadStart.Aspire.ServiceDefaults;
 using HeadStart.BFF.Extensions;
 using HeadStart.SharedKernel.Extensions;
+using HeadStart.SharedKernel.Logging;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

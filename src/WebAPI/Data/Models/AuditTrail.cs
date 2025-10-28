@@ -16,6 +16,7 @@ public class AuditTrail
 {
     public Guid Id { get; init; }
     public Guid? UserId { get; init; }
+    public string? TraceId { get; set; }
     public Utilisateur? User { get; init; }
     public TrailType Type { get; init; }
     public DateTime DateUtc { get; init; }
@@ -30,12 +31,16 @@ public class AuditTrailEntityTypeConfiguration : IEntityTypeConfiguration<AuditT
 {
     public void Configure(EntityTypeBuilder<AuditTrail> builder)
     {
-        builder.ToTable("AuditTrails");
+        builder.ToTable("Trails", "audit");
 
         builder.HasKey(a => a.Id);
 
         builder.Property(a => a.Id)
             .ValueGeneratedOnAdd();
+
+        builder.Property(a => a.TraceId)
+            .IsRequired(false)
+            .HasMaxLength(100);
 
         builder.Property(a => a.Type)
             .IsRequired();

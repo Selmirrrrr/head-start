@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
         services.AddSecurityServices();
         services.AddRateLimitingServices();
         services.AddReverseProxyConfiguration(configuration);
-        services.AddAuthentication(configuration, isDevelopment);
+        services.AddAuthentication(isDevelopment);
         services.AddAuthorization();
         services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
     }
@@ -113,7 +113,7 @@ public static class ServiceCollectionExtensions
         });
     }
 
-    private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
+    private static void AddAuthentication(this IServiceCollection services, bool isDevelopment)
     {
         Guard.Against.Null(services);
 
@@ -131,7 +131,6 @@ public static class ServiceCollectionExtensions
                 options =>
                 {
                     options.ClientId = "HeadStartWeb";
-                    options.ClientSecret = configuration["OpenIDConnectSettings:ClientSecret"];
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     // Request refresh token
@@ -174,11 +173,19 @@ public static class ServiceCollectionExtensions
         Guard.Against.Null(services);
         Guard.Against.Null(configuration);
 
+        // Validate that ReverseProxy configuration section exists
+        var reverseProxySection = configuration.GetSection("ReverseProxy");
+        if (!reverseProxySection.Exists())
+        {
+            throw new InvalidOperationException("ReverseProxy configuration section is missing from appsettings.json");
+        }
+
         services.AddReverseProxy()
-            .LoadFromConfig(configuration.GetSection("ReverseProxy"))
+            .LoadFromConfig(reverseProxySection)
+            .AddServiceDiscoveryDestinationResolver()
             .AddTransforms(builder => builder.AddRequestTransform(async context =>
             {
-                // Use Duende's IUserTokenManagementService for automatic token refresh
+                // Use Duende's automatic token management
                 var tokenManagementService = context.HttpContext.RequestServices.GetRequiredService<IUserTokenManager>();
                 var tokenResult = await tokenManagementService.GetAccessTokenAsync(context.HttpContext.User);
 

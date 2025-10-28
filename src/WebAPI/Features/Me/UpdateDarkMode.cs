@@ -1,4 +1,5 @@
 using FastEndpoints;
+using HeadStart.SharedKernel.Services;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,8 @@ public static class UpdateDarkMode
 
         public override void Configure()
         {
-            Patch("/me/dark-mode");
+            Patch("/dark-mode");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

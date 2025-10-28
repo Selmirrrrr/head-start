@@ -51,3 +51,21 @@ To generate the API clients, run the following command:
 ```bash
 dotnet run --generateclients true --project src/WebAPI/HeadStart.WebAPI.csproj
 ```
+
+> [!TIP]
+> A placeholder connection string must be set in the `appsettings.json` file to  run the API client generation.
+
+```json
+{
+  "ConnectionStrings": {
+    "postgresdb": "Host=localhost;Port=5432;Database=headstart;Username=postgres;Password=postgres"
+  }
+}
+```
+
+## ToDo
+
+- [ ] Fix audit trail filtering
+- [ ] Implement impersonation
+- [ ] Implement MudTranslations `dotnet add package MudBlazor.Translations`
+- [ ] Implement Finish translation resources files per component

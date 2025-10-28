@@ -31,6 +31,6 @@ public static class SupportedLocalization
 
 public class LanguageCode
 {
-    public string DisplayName { get; set; } = "Français";
-    public string Code { get; set; } = "fr";
+    public string DisplayName { get; init; } = "Français";
+    public string Code { get; init; } = "fr";
 }

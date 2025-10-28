@@ -29,16 +29,7 @@ public class MenuService : IMenuService
                 },
                 new()
                 {
-                    Title = "Tenants",
-                    Roles = [RoleName.Admin, RoleName.Users],
-                    Icon = Icons.Material.Filled.Compare,
-                    Href = "/tenants",
-                    PageStatus = PageStatus.Completed
-                },
-                new()
-                {
                     Title = "Analytics",
-                    Roles = [RoleName.Admin, RoleName.Users],
                     Icon = Icons.Material.Filled.Analytics,
                     Href = "/analytics",
                     PageStatus = PageStatus.ComingSoon
@@ -46,10 +37,24 @@ public class MenuService : IMenuService
                 new()
                 {
                     Title = "Planning",
-                    Roles = [RoleName.Admin, RoleName.Users],
                     Icon = Icons.Material.Filled.CalendarToday,
                     Href = "/planning",
                     PageStatus = PageStatus.ComingSoon
+                },
+                new()
+                {
+                    Title = "Admin",
+                    Roles = [RoleName.PlatformAdmin],
+                    Icon = Icons.Material.Filled.Security,
+                    Href = "/admin",
+                    PageStatus = PageStatus.Completed,
+                    IsParent = true,
+                    MenuItems = (List<MenuSectionSubItemModel>)
+                    [
+                        new() { Title = "Tenants", Href = "/platform-admin/tenants", PageStatus = PageStatus.Completed, Roles = [RoleName.PlatformAdmin]},
+                        new() { Title = "Data audit trail", Href = "/platform-admin/audit/data", PageStatus = PageStatus.Completed, Roles = [RoleName.PlatformAdmin]},
+                        new() { Title = "Requests audit trail", Href = "/platform-admin/audit/request", PageStatus = PageStatus.Completed, Roles = [RoleName.PlatformAdmin]}
+                    ]
                 }
             }
         },

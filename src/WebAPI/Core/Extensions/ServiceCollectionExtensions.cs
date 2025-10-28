@@ -2,6 +2,8 @@ using System.Net.Mime;
 using Ardalis.GuardClauses;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using HeadStart.SharedKernel.Logging;
+using HeadStart.SharedKernel.Services;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
@@ -17,9 +19,17 @@ namespace HeadStart.WebAPI.Core.Extensions;
 /// </summary>
 internal static class ServiceCollectionExtensions
 {
-    internal static void AddApiFramework(this IServiceCollection services)
+    internal static void AddApiFramework(this IServiceCollection services, IConfiguration configuration)
     {
         Guard.Against.Null(services);
+        Guard.Against.Null(configuration);
+
+        // String empty by default to enable Kiota client generation
+        var authority = configuration["OpenIDConnectSettings:Authority"] ?? string.Empty;
+        var realm = configuration["OpenIDConnectSettings:Realm"] ?? string.Empty;
+
+        var authorizationUrl = $"{authority}/realms/{realm}/protocol/openid-connect/auth";
+        var tokenUrl = $"{authority}/realms/{realm}/protocol/openid-connect/token";
 
         services.AddFastEndpoints()
             .SwaggerDocument(o =>
@@ -39,8 +49,8 @@ internal static class ServiceCollectionExtensions
                         {
                             Password = new OpenApiOAuthFlow()
                             {
-                                AuthorizationUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/auth",
-                                TokenUrl = "http://localhost:8080/realms/HeadStart/protocol/openid-connect/token"
+                                AuthorizationUrl = authorizationUrl,
+                                TokenUrl = tokenUrl
                             }
                         }
                     });
@@ -57,19 +67,43 @@ internal static class ServiceCollectionExtensions
         services.AddSignalR();
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        // Add HTTP request/response logging (for request body logging)
+        services.AddHttpLogging(logging =>
+        {
+            logging.RequestBodyLogLimit = 5000;
+            logging.ResponseBodyLogLimit = 0;
+            logging.MediaTypeOptions.AddText("application/json");
+            logging.CombineLogs = true;
+        });
+
+        // Only log API requests
+        services.AddHttpLoggingInterceptor<IgnoreLoggingInterceptor>();
     }
 
-    internal static void AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
+    internal static void AddDatabaseServices(this IHostApplicationBuilder builder)
     {
-        Guard.Against.Null(services);
-        Guard.Against.Null(configuration);
+        Guard.Against.Null(builder);
 
-        services.AddDbContext<HeadStartDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("postgresdb") ?? throw new InvalidOperationException("Connection string 'postgresdb' not found."))
-                .UseAsyncSeeding(async (context, _, cancellationToken) =>
+        builder.AddNpgsqlDbContext<HeadStartDbContext>("postgresdb",
+            configureSettings: settings =>
+            {
+                if (builder.Environment.IsDevelopment())
                 {
-                    var tenant = await context.Set<Tenant>().FirstOrDefaultAsync(cancellationToken);
-                    if (tenant == null)
+                    settings.ConnectionString += ";Include Error Detail=true";
+                }
+            },
+            configureDbContextOptions: options =>
+            {
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.EnableSensitiveDataLogging();
+                    options.EnableDetailedErrors();
+                }
+
+                options.UseAsyncSeeding(async (context, _, cancellationToken) =>
+                {
+                    if (!await context.Set<Tenant>().AnyAsync(cancellationToken))
                     {
                         var roleAdminId = Guid.CreateVersion7();
                         var roleUserId = Guid.CreateVersion7();
@@ -83,7 +117,7 @@ internal static class ServiceCollectionExtensions
                         context.Set<Role>().Add(new Role { Id = roleAdminId, Code = "Admin", CodeTrads = new Dictionary<string, string> { { "fr", "Administrateur" }, { "de", "Administrator" }, { "it", "Amministratore" }, { "en", "Administrator" } }, TenantPath = "HeadStart" });
                         context.Set<Role>().Add(new Role { Id = roleUserId, Code = "User", CodeTrads = new Dictionary<string, string> { { "fr", "Utilisteur" }, { "de", "Benutzer" }, { "it", "Utilizatore" }, { "en", "User" } }, TenantPath = "HeadStart" });
 
-
+                        context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.Parse("73F21245-2214-4CFE-9591-8177A410280C"), Email = "platformadmin1@headstart.com", Nom = "PlatformAdmin1P", Prenom = "PlatformAdmin1N", LanguageCode = "fr", DarkMode = false });
                         var superAdmin = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.Parse("05623570-9015-4149-A52E-B01975772D32"), Email = "superadmin@headstart.com", Nom = "Super", Prenom = "Admin", LanguageCode = "fr", DarkMode = false });
 
                         var userApiTest1 = context.Set<Utilisateur>().Add(new Utilisateur { Id = Guid.Parse("A599B326-C0BF-4F29-91CF-463ADA378253"), Email = "user.api.1@test.com", Nom = "UserApiTest1N", Prenom = "UserApiTest1P", LanguageCode = "fr", DarkMode = false, DernierTenantSelectionneId = "HeadStart" });
@@ -114,7 +148,8 @@ internal static class ServiceCollectionExtensions
 
                         await context.SaveChangesAsync(cancellationToken);
                     }
-                }));
+                });
+        });
     }
 
     internal static void AddSecurityServices(this IServiceCollection services)
@@ -156,6 +191,7 @@ internal static class ServiceCollectionExtensions
                 }
                 options.Audience = "headstart.api";
             });
+
         services.AddAuthorizationBuilder();
     }
 }

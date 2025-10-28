@@ -45,6 +45,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IStorageService, LocalStorageService>();
         services.AddScoped<DialogServiceHelper>();
     }
+
     /// <summary>
     /// Registers dependencies for the Blazor Client Application.
     /// </summary>
