@@ -1,4 +1,3 @@
-using CorrelationId;
 using Serilog;
 
 namespace HeadStart.BFF.Extensions;
@@ -39,8 +38,6 @@ public static class WebApplicationExtensions
     {
         app.UseBlazorFrameworkFiles();
         app.UseStaticFiles();
-        app.UseCorrelationId();
-        app.UseSerilogRequestLogging();
         app.UseRouting();
         app.UseRateLimiter();
     }

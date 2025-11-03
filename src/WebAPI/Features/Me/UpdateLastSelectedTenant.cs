@@ -1,4 +1,5 @@
 using FastEndpoints;
+using HeadStart.SharedKernel.Services;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,8 @@ public static class UpdateLastSelectedTenant
 
         public override void Configure()
         {
-            Patch("/me/tenant");
+            Patch("/tenant");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

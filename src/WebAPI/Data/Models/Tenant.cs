@@ -12,7 +12,7 @@ public class Tenant : IAuditable
 
     public ICollection<Droit> Droits { get; set; } = new List<Droit>();
 
-    public Audit Audit { get; set; } = new Audit();
+    public Audit Audit { get; set; } = new();
 }
 
 public class TenantEntityTypeConfiguration : IEntityTypeConfiguration<Tenant>

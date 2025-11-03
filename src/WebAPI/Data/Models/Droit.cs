@@ -23,7 +23,7 @@ public class Droit : IHaveTenant, IAuditable
     public Tenant Tenant { get; init; } = null!;
 
     // IAuditable
-    public Audit Audit { get; set; } = new Audit();
+    public Audit Audit { get; set; } = new();
 
     public static Droit New(Guid userId, LTree tenantPath, Guid roleId, DateTime dateDebutValidite, DateTime dateFinValidite)
     {

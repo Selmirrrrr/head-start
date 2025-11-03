@@ -1,4 +1,5 @@
 ﻿@using HeadStart.Client.Services.Navigation
+@using HeadStart.Client.Services.Users
 @using HeadStart.SharedKernel.Models.Extensions
 @using HeadStart.SharedKernel.Models.NavigationMenu
 @inject IMenuService MenuService
@@ -15,7 +16,7 @@
     </MudDrawerHeader>
 
     <MudNavMenu>
-        @foreach (var section in MenuSections)
+        @foreach (var section in MenuSections.Where(s => s.Roles is null || s.Roles.Intersect(_userState.PlatformRoles).Any()))
         {
             <div class="ml-6 my-3">
                 <MudText Typo="Typo.subtitle1">
@@ -28,7 +29,7 @@
 
             @if (section.SectionItems is not null)
             {
-                @foreach (var sectionItem in section.SectionItems)
+                @foreach (var sectionItem in section.SectionItems.Where(s => s.Roles is null || s.Roles.Intersect(_userState.PlatformRoles).Any()))
                 {
                     @if (sectionItem is { IsParent: true, MenuItems: not null })
                     {
@@ -97,6 +98,8 @@
 
 @code
 {
+    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
+    private UserState _userState => UserState.CurrentState;
     [CascadingParameter] private Task<AuthenticationState> AuthState { get; set; } = default!;
     [EditorRequired] [Parameter] public EventCallback<bool> DrawerOpenChanged { get; set; }
 

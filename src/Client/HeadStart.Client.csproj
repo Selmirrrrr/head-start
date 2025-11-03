@@ -36,4 +36,13 @@
   <ItemGroup>
     <ProjectReference Include="..\SharedKernel.Models\HeadStart.SharedKernel.Models.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\PlatformAdmin\" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Tenants\Tenants.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="Pages\PlatformAdmin\Tenants\Tenants.razor" />
+  </ItemGroup>
 </Project>

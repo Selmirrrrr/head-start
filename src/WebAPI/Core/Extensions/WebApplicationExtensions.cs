@@ -1,4 +1,4 @@
-using CorrelationId;
+using EvolveDb;
 using FastEndpoints;
 using FastEndpoints.ClientGen.Kiota;
 using FastEndpoints.Swagger;
@@ -6,6 +6,7 @@ using HeadStart.WebAPI.Core.Filters;
 using HeadStart.WebAPI.Data;
 using Kiota.Builder;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -39,34 +40,48 @@ internal static class WebApplicationExtensions
         {
             logger.LogInformation("Ensuring database is created...");
 
-            // Create database if it doesn't exist
-            var created = await context.Database.EnsureCreatedAsync();
-            if (created)
+            // Use the execution strategy to handle retry logic properly
+            var strategy = context.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
             {
-                logger.LogInformation("Database created successfully");
-            }
-            else
-            {
-                logger.LogInformation("Database already exists");
-            }
+                // Create database if it doesn't exist
+                var created = await context.Database.EnsureCreatedAsync();
+                if (created)
+                {
+                    logger.LogInformation("Database created successfully");
+                }
+                else
+                {
+                    logger.LogInformation("Database already exists");
+                }
 
-            // Apply any pending migrations
-            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-            var migrations = pendingMigrations.ToList();
-            if (migrations.Count != 0)
-            {
-                logger.LogInformation("Applying {Count} pending migrations: {Migrations}",
-                    migrations.Count, string.Join(", ", migrations));
+                // Apply any pending migrations
+                var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+                var migrations = pendingMigrations.ToList();
+                if (migrations.Count != 0)
+                {
+                    logger.LogInformation("Applying {Count} pending migrations: {Migrations}",
+                        migrations.Count, string.Join(", ", migrations));
 
-                await context.Database.MigrateAsync();
-                logger.LogInformation("Migrations applied successfully");
-            }
-            else
-            {
-                logger.LogInformation("No pending migrations");
-            }
+                    await context.Database.MigrateAsync();
+                    logger.LogInformation("Migrations applied successfully");
+                }
+                else
+                {
+                    logger.LogInformation("No pending migrations");
+                }
+            });
 
-            // Seed data (this will run automatically due to UseAsyncSeeding configuration)
+            var evolve = new Evolve(new NpgsqlConnection(app.Configuration.GetConnectionString("postgresdb")), msg => logger.LogInformation(msg))
+            {
+                MetadataTableName = "Scripts",
+                MetadataTableSchema = "audit",
+                Locations = ["Data/Scripts"],
+                IsEraseDisabled = !app.Environment.IsDevelopment(),
+            };
+
+            evolve.Migrate();
+
             logger.LogInformation("Database initialization completed");
         }
         catch (Exception ex)
@@ -93,8 +108,6 @@ internal static class WebApplicationExtensions
     internal static void ConfigureRequestProcessing(this WebApplication app)
     {
         app.UseHttpsRedirection();
-        app.UseCorrelationId();
-        app.UseSerilogRequestLogging();
         app.UseRouting();
     }
 

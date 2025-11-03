@@ -16,7 +16,7 @@
                         @L[AppSettings.AppName]
                     </MudText>
                     <MudText Typo="Typo.subtitle1" Class="mud-secondary-text">
-                        @(_userState.DernierTenantSelectionne ?? "No Organization")
+                        @(UserState.DernierTenantSelectionne ?? "No Organization")
                     </MudText>
                 </MudStack>
                 <MudIcon Icon="@Icons.Material.Outlined.KeyboardDoubleArrowDown" Size="Size.Small" Class="mr-4" />
@@ -55,7 +55,7 @@
                                     </MudText>
 
                                 </MudStack>
-                                @if (tenant.Id == _userState.DernierTenantSelectionne)
+                                @if (tenant.Id == UserState.DernierTenantSelectionne)
                                 {
                                     <MudIcon Icon="@Icons.Material.Filled.Check" Class="ml-2" Color="Color.Primary" />
                                 }
@@ -81,26 +81,26 @@
 {
     [Inject]
     private ApiClientV1 Apiclient { get; set; } = null!;
-    
-    [CascadingParameter] public UserStateContainer UserState { get; set; } = null!;
 
-    private List<HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel>? _availableTenants;
-    private UserState _userState => UserState.CurrentState;
-    private bool _isSwitching = false;
+    [CascadingParameter] public UserStateContainer UserStateContainer { get; set; } = null!;
+
+    private List<HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_TenantViewModel>? _availableTenants;
+    private UserState UserState => UserStateContainer.CurrentState;
+    private bool _isSwitching;
     private const bool HasSwitchPermission = true;
 
     protected override async Task OnInitializedAsync()
     {
-        _availableTenants = (await Apiclient.Api.V1.Tenants.GetAsync())?.Tenants;
+        _availableTenants = (await Apiclient.Api.V1.PlatformAdmin.Tenants.GetAsync())?.Tenants;
     }
 
     private async Task SwitchToTenant(string? tenantId)
     {
         _isSwitching = true;
         StateHasChanged();
-        
-        await UserState.SetLastSelectedTenantAsync(tenantId);
-        
+
+        await UserStateContainer.SetLastSelectedTenantAsync(tenantId);
+
         _isSwitching = false;
         StateHasChanged();
     }

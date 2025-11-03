@@ -1,3 +1,4 @@
+using HeadStart.SharedKernel.Services;
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +7,10 @@ namespace HeadStart.WebAPI.Data;
 
 public class HeadStartDbContext(
     DbContextOptions<HeadStartDbContext> options,
-    ICurrentUserService? currentUserService) : DbContext(options)
+    IHttpContextAccessor? httpContextAccessor) : DbContext(options)
 {
+    private ICurrentUserService? CurrentUserService =>
+        httpContextAccessor?.HttpContext?.RequestServices.GetService<ICurrentUserService>();
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<Utilisateur> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
@@ -15,7 +18,7 @@ public class HeadStartDbContext(
     public DbSet<AuditTrail> AuditTrails { get; set; }
     public DbSet<Fonctionalite> Fonctionalites { get; set; }
     public DbSet<RoleFonctionalite> RoleFonctionalites { get; set; }
-
+    public DbSet<AuditRequest> Requests { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -30,6 +33,7 @@ public class HeadStartDbContext(
         modelBuilder.ApplyConfiguration(new AuditTrailEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new FonctionaliteEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new RoleFonctionaliteEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new AuditRequestEntityTypeConfiguration());
 
         // Configure audit records for all auditable entities
         ConfigureAuditRecords(modelBuilder);
@@ -52,7 +56,7 @@ public class HeadStartDbContext(
     {
         var auditableEntries = ChangeTracker.Entries<IAuditable>();
         var now = DateTime.UtcNow;
-        var userId = currentUserService?.IsAuthenticated == true ? currentUserService.UserId : (Guid?)null;
+        var userId = CurrentUserService?.IsAuthenticated == true ? CurrentUserService.UserId : (Guid?)null;
         // Update audit fields
         foreach (var entry in auditableEntries)
         {
@@ -90,17 +94,18 @@ public class HeadStartDbContext(
         var auditTrails = new List<AuditTrail>();
 
         var entries = ChangeTracker.Entries()
-            .Where(e => e.Entity is not AuditTrail && e.Entity is not Audit && e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
+            .Where(e => e.Entity is not AuditTrail && e.Entity is not AuditRequest && e.Entity is not Audit && e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
 
         foreach (var entry in entries)
         {
             var auditTrail = new AuditTrail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.CreateVersion7(),
                 PrimaryKey = entry.Properties
                     .FirstOrDefault(p => p.Metadata.IsPrimaryKey())
                     ?.CurrentValue?.ToString(),
+                TraceId = httpContextAccessor?.HttpContext?.TraceIdentifier,
                 UserId = userId,
                 DateUtc = dateUtc,
                 EntityName = entry.Metadata.ClrType.Name,

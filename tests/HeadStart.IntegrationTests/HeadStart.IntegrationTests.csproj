@@ -28,4 +28,8 @@
     <Using Include="Aspire.Hosting.ApplicationModel" />
     <Using Include="Aspire.Hosting.Testing" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WebApiTests\Admin\" />
+    <Folder Include="WebApiTests\User\" />
+  </ItemGroup>
 </Project>

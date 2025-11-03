@@ -1,4 +1,4 @@
-﻿@page "/tenants"
+﻿@page "/platform-admin/tenants"
 @using HeadStart.Client.Generated
 @using HeadStart.Client.Generated.Models
 @inject ApiClientV1 ApiClientV1
@@ -35,11 +35,11 @@ else
 }
 
 @code {
-    private List<HeadStartWebAPIFeaturesTenantsTenantsGetList_TenantViewModel>? _tenants;
+    private List<HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_TenantViewModel>? _tenants;
 
     protected override async Task OnInitializedAsync()
     {
-        _tenants = (await ApiClientV1.Api.V1.Tenants.GetAsync())?.Tenants;
+        _tenants = (await ApiClientV1.Api.V1.PlatformAdmin.Tenants.GetAsync())?.Tenants;
     }
 
 }

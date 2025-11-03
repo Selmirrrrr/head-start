@@ -73,17 +73,6 @@ public class DarkModeSelectorTests(AspireDataClass playwrightDataClass) : Playwr
         persistedColor.ShouldBe(DarkModeColor);
         persistedBackgroundColor.ShouldBe(DarkModeBackground);
 
-        // Naviguer vers une autre page
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Tenants" }).ClickAsync();
-
-        // Attendre que la page se recharge
-        await Page.GetByRole(AriaRole.Heading, new() { Name = "Tenants" }).First.WaitForAsync();
-
-        // Vérifier les couleurs mises à jour
-        var (tenantsBackgroundColor, tenantsColor) = await GetColorsAsync();
-        tenantsColor.ShouldBe(DarkModeColor);
-        tenantsBackgroundColor.ShouldBe(DarkModeBackground);
-
         // Basculer de nouveau vers le mode clair
         await darkModeToggle.ClickAsync();
 

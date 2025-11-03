@@ -1,4 +1,5 @@
 using FastEndpoints;
+using HeadStart.SharedKernel.Services;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,8 @@ public static class GetMeTenants
 
         public override void Configure()
         {
-            Get("/me/tenants");
+            Get("/tenants");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

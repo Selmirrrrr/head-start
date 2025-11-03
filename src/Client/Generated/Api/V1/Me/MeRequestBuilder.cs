@@ -4,6 +4,7 @@ using HeadStart.Client.Generated.Api.V1.Me.Claims;
 using HeadStart.Client.Generated.Api.V1.Me.DarkMode;
 using HeadStart.Client.Generated.Api.V1.Me.Language;
 using HeadStart.Client.Generated.Api.V1.Me.Tenant;
+using HeadStart.Client.Generated.Api.V1.Me.Tenants;
 using HeadStart.Client.Generated.Models;
 using Microsoft.Kiota.Abstractions.Extensions;
 using Microsoft.Kiota.Abstractions.Serialization;
@@ -40,6 +41,11 @@ namespace HeadStart.Client.Generated.Api.V1.Me
         public global::HeadStart.Client.Generated.Api.V1.Me.Tenant.TenantRequestBuilder Tenant
         {
             get => new global::HeadStart.Client.Generated.Api.V1.Me.Tenant.TenantRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The tenants property</summary>
+        public global::HeadStart.Client.Generated.Api.V1.Me.Tenants.TenantsRequestBuilder Tenants
+        {
+            get => new global::HeadStart.Client.Generated.Api.V1.Me.Tenants.TenantsRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>
         /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.Me.MeRequestBuilder"/> and sets the default values.
