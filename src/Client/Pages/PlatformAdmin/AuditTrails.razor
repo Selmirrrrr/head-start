@@ -1,0 +1,351 @@
+@page "/platform-admin/audit-trails"
+@using HeadStart.Client.Generated
+@using HeadStart.Client.Generated.Models
+@using Microsoft.AspNetCore.WebUtilities
+@inject ApiClientV1 ApiClient
+@inject IStringLocalizer<AuditTrails> LC
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+<PageTitle>@LC["Audit Trails"]</PageTitle>
+
+<MudText Typo="Typo.h4" Class="my-4">@LC["Audit Trails"]</MudText>
+
+<MudPaper Class="pa-4" Elevation="2">
+    <MudDataGrid @ref="_dataGrid"
+                 T="HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto"
+                 ServerData="LoadServerData"
+                 Filterable="true"
+                 FilterMode="DataGridFilterMode.ColumnFilterRow"
+                 SortMode="SortMode.Multiple"
+                 Hideable="true"
+                 ColumnResizeMode="ResizeMode.Column"
+                 Dense="false"
+                 Hover="true"
+                 Loading="@_loading"
+                 LoadingProgressColor="Color.Info"
+                 FixedHeader="true"
+                 Height="calc(100vh - 280px)">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">@LC["Audit Trail Records"]</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString"
+                          Placeholder="@LC["Search"]"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          IconSize="Size.Medium"
+                          Class="mt-0"
+                          Immediate="true"
+                          DebounceInterval="500"
+                          OnDebounceIntervalElapsed="OnSearchChanged">
+            </MudTextField>
+            <MudIconButton Icon="@Icons.Material.Filled.Refresh"
+                           OnClick="RefreshData"
+                           Color="Color.Primary"
+                           Class="ml-2">
+            </MudIconButton>
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.DateUtc"
+                            Title="@LC["Date"]"
+                            Sortable="true"
+                            Filterable="true">
+                <CellTemplate>
+                    <MudText Typo="Typo.body2">@context.Item.DateUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</MudText>
+                </CellTemplate>
+                <FilterTemplate>
+                    <MudDatePicker @bind-Date="_dateFilter"
+                                   Placeholder="@LC["Filter by date"]"
+                                   DateFormat="yyyy-MM-dd"
+                                   MaxDate="DateTime.Today"
+                                   Class="mt-0" />
+                </FilterTemplate>
+            </PropertyColumn>
+
+            <PropertyColumn Property="x => x.EntityName"
+                            Title="@LC["Entity"]"
+                            Sortable="true"
+                            Filterable="true">
+                <FilterTemplate>
+                    <MudTextField @bind-Value="_entityFilter"
+                                  Placeholder="@LC["Filter by entity"]"
+                                  Immediate="true"
+                                  Class="mt-0" />
+                </FilterTemplate>
+            </PropertyColumn>
+
+            <PropertyColumn Property="x => x.Type"
+                            Title="@LC["Type"]"
+                            Sortable="true"
+                            Filterable="true">
+                <CellTemplate>
+                    <MudChip T="string"
+                             Color="@GetTypeColor(context.Item.Type)"
+                             Size="Size.Small">
+                        @context.Item.Type
+                    </MudChip>
+                </CellTemplate>
+                <FilterTemplate>
+                    <MudSelect @bind-Value="_typeFilter"
+                               Placeholder="@LC["All Types"]"
+                               Clearable="true"
+                               Class="mt-0">
+                        <MudSelectItem Value="@("Create")">Create</MudSelectItem>
+                        <MudSelectItem Value="@("Update")">Update</MudSelectItem>
+                        <MudSelectItem Value="@("Delete")">Delete</MudSelectItem>
+                    </MudSelect>
+                </FilterTemplate>
+            </PropertyColumn>
+
+            <PropertyColumn Property="x => x.UserName"
+                            Title="@LC["User"]"
+                            Sortable="true"
+                            Filterable="true">
+                <CellTemplate>
+                    <MudText Typo="Typo.body2">@(context.Item.UserName ?? LC["System"])</MudText>
+                </CellTemplate>
+                <FilterTemplate>
+                    <MudTextField @bind-Value="_userFilter"
+                                  Placeholder="@LC["Filter by user"]"
+                                  Immediate="true"
+                                  Class="mt-0" />
+                </FilterTemplate>
+            </PropertyColumn>
+
+            <PropertyColumn Property="x => x.PrimaryKey"
+                            Title="@LC["Record ID"]"
+                            Sortable="true"
+                            Filterable="false">
+                <CellTemplate>
+                    <MudText Typo="Typo.caption">@context.Item.PrimaryKey</MudText>
+                </CellTemplate>
+            </PropertyColumn>
+
+            <PropertyColumn Property="x => x.ChangedColumns"
+                            Title="@LC["Changes"]"
+                            Sortable="false"
+                            Filterable="false">
+                <CellTemplate>
+                    @if (context.Item.ChangedColumns?.Any() == true)
+                    {
+                        <MudChip T="string" Size="Size.Small" Color="Color.Info">
+                            @context.Item.ChangedColumns.Count @LC["fields"]
+                        </MudChip>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption">-</MudText>
+                    }
+                </CellTemplate>
+            </PropertyColumn>
+
+            <TemplateColumn Sortable="false" Filterable="false" CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye"
+                                   Size="Size.Small"
+                                   Color="Color.Primary"
+                                   OnClick="@(() => ShowDetails(context.Item))"
+                                   Title="@LC["View Details"]">
+                    </MudIconButton>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto" />
+        </PagerContent>
+    </MudDataGrid>
+</MudPaper>
+
+@code {
+    private MudDataGrid<HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto>? _dataGrid;
+    private bool _loading;
+    private string? _searchString;
+    private DateTime? _dateFilter;
+    private string? _entityFilter;
+    private string? _typeFilter;
+    private string? _userFilter;
+
+    protected override void OnInitialized()
+    {
+        // Load state from URL query parameters
+        LoadStateFromUrl();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Subscribe to filter changes to sync to URL
+            if (_dataGrid != null)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void LoadStateFromUrl()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var queryParams = QueryHelpers.ParseQuery(uri.Query);
+
+        if (queryParams.TryGetValue("search", out var search))
+            _searchString = search.ToString();
+
+        if (queryParams.TryGetValue("entity", out var entity))
+            _entityFilter = entity.ToString();
+
+        if (queryParams.TryGetValue("type", out var type))
+            _typeFilter = type.ToString();
+
+        if (queryParams.TryGetValue("user", out var user))
+            _userFilter = user.ToString();
+
+        if (queryParams.TryGetValue("date", out var date) && DateTime.TryParse(date, out var parsedDate))
+            _dateFilter = parsedDate;
+    }
+
+    private void UpdateUrl()
+    {
+        var queryParams = new Dictionary<string, string?>();
+
+        if (!string.IsNullOrWhiteSpace(_searchString))
+            queryParams["search"] = _searchString;
+
+        if (!string.IsNullOrWhiteSpace(_entityFilter))
+            queryParams["entity"] = _entityFilter;
+
+        if (!string.IsNullOrWhiteSpace(_typeFilter))
+            queryParams["type"] = _typeFilter;
+
+        if (!string.IsNullOrWhiteSpace(_userFilter))
+            queryParams["user"] = _userFilter;
+
+        if (_dateFilter.HasValue)
+            queryParams["date"] = _dateFilter.Value.ToString("yyyy-MM-dd");
+
+        var url = NavigationManager.GetUriWithQueryParameters(queryParams);
+        NavigationManager.NavigateTo(url, replace: true);
+    }
+
+    private async Task<GridData<HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto>> LoadServerData(GridState<HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto> state)
+    {
+        _loading = true;
+
+        try
+        {
+            // Build Gridify filter expression
+            var filters = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(_searchString))
+            {
+                filters.Add($"(EntityName|UserName|PrimaryKey)@=*{_searchString}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_entityFilter))
+            {
+                filters.Add($"EntityName@=*{_entityFilter}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_typeFilter))
+            {
+                filters.Add($"Type={_typeFilter}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_userFilter))
+            {
+                filters.Add($"UserName@=*{_userFilter}");
+            }
+
+            if (_dateFilter.HasValue)
+            {
+                var dateStart = _dateFilter.Value.Date;
+                var dateEnd = dateStart.AddDays(1);
+                filters.Add($"DateUtc>={dateStart:yyyy-MM-dd},DateUtc<{dateEnd:yyyy-MM-dd}");
+            }
+
+            var filterString = filters.Any() ? string.Join(",", filters) : null;
+
+            // Build Gridify sort expression from MudBlazor sort definitions
+            string? orderBy = null;
+            if (state.SortDefinitions.Any())
+            {
+                var sortExpressions = state.SortDefinitions.Select(s =>
+                    $"{s.SortBy} {(s.Descending ? "desc" : "asc")}");
+                orderBy = string.Join(", ", sortExpressions);
+            }
+
+            // Update URL with current filter state
+            UpdateUrl();
+
+            // Call API with Gridify parameters
+            var response = await ApiClient.Api.V1.PlatformAdmin.AuditTrails.GetAsync(requestConfiguration =>
+            {
+                requestConfiguration.QueryParameters.Page = state.Page + 1; // Gridify uses 1-based pages
+                requestConfiguration.QueryParameters.PageSize = state.PageSize;
+                requestConfiguration.QueryParameters.Filter = filterString;
+                requestConfiguration.QueryParameters.OrderBy = orderBy;
+            });
+
+            return new GridData<HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto>
+            {
+                Items = response?.Data ?? [],
+                TotalItems = response?.TotalCount ?? 0
+            };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading audit trails: {ex.Message}");
+            return new GridData<HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto>
+            {
+                Items = [],
+                TotalItems = 0
+            };
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task OnSearchChanged()
+    {
+        if (_dataGrid != null)
+        {
+            await _dataGrid.ReloadServerData();
+        }
+    }
+
+    private async Task RefreshData()
+    {
+        if (_dataGrid != null)
+        {
+            await _dataGrid.ReloadServerData();
+        }
+    }
+
+    private Color GetTypeColor(string? type) => type switch
+    {
+        "Create" => Color.Success,
+        "Update" => Color.Info,
+        "Delete" => Color.Error,
+        _ => Color.Default
+    };
+
+    private async Task ShowDetails(HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto auditTrail)
+    {
+        var parameters = new DialogParameters<AuditTrailDetailDialog>
+        {
+            { x => x.AuditTrail, auditTrail }
+        };
+
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            FullWidth = true,
+            CloseButton = true,
+            DisableBackdropClick = false
+        };
+
+        await DialogService.ShowAsync<AuditTrailDetailDialog>(LC["Audit Trail Details"], parameters, options);
+    }
+}

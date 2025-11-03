@@ -1,0 +1,228 @@
+@using HeadStart.Client.Generated.Models
+@using System.Text.Json
+@inject IStringLocalizer<AuditTrailDetailDialog> LC
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Receipt" Class="mr-2" />
+            @LC["Audit Trail Details"]
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (AuditTrail != null)
+        {
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                        <MudText Typo="Typo.subtitle2" Color="Color.Primary" GutterBottom="true">
+                            @LC["General Information"]
+                        </MudText>
+                        <MudDivider Class="mb-3" />
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["ID"]</MudText>
+                        <MudText Typo="Typo.body2" Class="mb-2">@AuditTrail.Id</MudText>
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["Date & Time"]</MudText>
+                        <MudText Typo="Typo.body2" Class="mb-2">
+                            @AuditTrail.DateUtc.ToLocalTime().ToString("F")
+                        </MudText>
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["Action Type"]</MudText>
+                        <MudChip T="string" Color="@GetTypeColor(AuditTrail.Type)" Size="Size.Small" Class="mb-2">
+                            @AuditTrail.Type
+                        </MudChip>
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["Entity Type"]</MudText>
+                        <MudText Typo="Typo.body2" Class="mb-2">@AuditTrail.EntityName</MudText>
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["Record ID"]</MudText>
+                        <MudText Typo="Typo.body2" Class="mb-2">@(AuditTrail.PrimaryKey ?? "-")</MudText>
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["User"]</MudText>
+                        <MudText Typo="Typo.body2" Class="mb-2">
+                            @if (AuditTrail.UserId.HasValue)
+                            {
+                                <span>@(AuditTrail.UserName ?? AuditTrail.UserId.ToString())</span>
+                            }
+                            else
+                            {
+                                <MudChip T="string" Size="Size.Small" Color="Color.Default">@LC["System"]</MudChip>
+                            }
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                        <MudText Typo="Typo.subtitle2" Color="Color.Primary" GutterBottom="true">
+                            @LC["Changes Summary"]
+                        </MudText>
+                        <MudDivider Class="mb-3" />
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["Modified Fields"]</MudText>
+                        @if (AuditTrail.ChangedColumns?.Any() == true)
+                        {
+                            <div class="mb-3">
+                                @foreach (var column in AuditTrail.ChangedColumns)
+                                {
+                                    <MudChip T="string" Size="Size.Small" Class="ma-1">@column</MudChip>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Class="mb-3">@LC["No field changes recorded"]</MudText>
+                        }
+
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@LC["Total Fields Changed"]</MudText>
+                        <MudText Typo="Typo.h6" Color="Color.Info" Class="mb-2">
+                            @(AuditTrail.ChangedColumns?.Count ?? 0)
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+
+                @if (AuditTrail.Type == "Update" && AuditTrail.ChangedColumns?.Any() == true)
+                {
+                    <MudItem xs="12">
+                        <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                            <MudText Typo="Typo.subtitle2" Color="Color.Primary" GutterBottom="true">
+                                @LC["Field Changes"]
+                            </MudText>
+                            <MudDivider Class="mb-3" />
+
+                            <MudTable Items="@AuditTrail.ChangedColumns"
+                                      Hover="true"
+                                      Dense="true"
+                                      Striped="true"
+                                      Elevation="0">
+                                <HeaderContent>
+                                    <MudTh>@LC["Field Name"]</MudTh>
+                                    <MudTh>@LC["Old Value"]</MudTh>
+                                    <MudTh>@LC["New Value"]</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="@LC["Field Name"]">
+                                        <MudText Typo="Typo.body2" Style="font-weight: 500;">@context</MudText>
+                                    </MudTd>
+                                    <MudTd DataLabel="@LC["Old Value"]">
+                                        <MudText Typo="Typo.body2" Color="Color.Error">
+                                            @FormatValue(AuditTrail.OldValues?.GetValueOrDefault(context))
+                                        </MudText>
+                                    </MudTd>
+                                    <MudTd DataLabel="@LC["New Value"]">
+                                        <MudText Typo="Typo.body2" Color="Color.Success">
+                                            @FormatValue(AuditTrail.NewValues?.GetValueOrDefault(context))
+                                        </MudText>
+                                    </MudTd>
+                                </RowTemplate>
+                            </MudTable>
+                        </MudPaper>
+                    </MudItem>
+                }
+
+                @if (AuditTrail.Type == "Create" && AuditTrail.NewValues?.Any() == true)
+                {
+                    <MudItem xs="12">
+                        <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                            <MudText Typo="Typo.subtitle2" Color="Color.Success" GutterBottom="true">
+                                @LC["Created Values"]
+                            </MudText>
+                            <MudDivider Class="mb-3" />
+
+                            <MudExpansionPanels MultiExpansion="true">
+                                <MudExpansionPanel Text="@LC["View JSON"]">
+                                    <div class="pa-3" style="background-color: #f5f5f5; border-radius: 4px; overflow-x: auto;">
+                                        <pre style="margin: 0; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px;">@FormatJson(AuditTrail.NewValues)</pre>
+                                    </div>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudPaper>
+                    </MudItem>
+                }
+
+                @if (AuditTrail.Type == "Delete" && AuditTrail.OldValues?.Any() == true)
+                {
+                    <MudItem xs="12">
+                        <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                            <MudText Typo="Typo.subtitle2" Color="Color.Error" GutterBottom="true">
+                                @LC["Deleted Values"]
+                            </MudText>
+                            <MudDivider Class="mb-3" />
+
+                            <MudExpansionPanels MultiExpansion="true">
+                                <MudExpansionPanel Text="@LC["View JSON"]">
+                                    <div class="pa-3" style="background-color: #f5f5f5; border-radius: 4px; overflow-x: auto;">
+                                        <pre style="margin: 0; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px;">@FormatJson(AuditTrail.OldValues)</pre>
+                                    </div>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudPaper>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close" Color="Color.Primary" Variant="Variant.Filled">
+            @LC["Close"]
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance? MudDialog { get; set; }
+
+    [Parameter]
+    public HeadStartWebAPIFeaturesPlatformAdminAuditTrailsGetList_AuditTrailDto? AuditTrail { get; set; }
+
+    private void Close() => MudDialog?.Close();
+
+    private Color GetTypeColor(string? type) => type switch
+    {
+        "Create" => Color.Success,
+        "Update" => Color.Info,
+        "Delete" => Color.Error,
+        _ => Color.Default
+    };
+
+    private string FormatValue(object? value)
+    {
+        if (value == null)
+            return "-";
+
+        if (value is JsonElement jsonElement)
+        {
+            return jsonElement.ValueKind switch
+            {
+                JsonValueKind.String => jsonElement.GetString() ?? "-",
+                JsonValueKind.Number => jsonElement.GetRawText(),
+                JsonValueKind.True => "true",
+                JsonValueKind.False => "false",
+                JsonValueKind.Null => "-",
+                _ => jsonElement.GetRawText()
+            };
+        }
+
+        return value.ToString() ?? "-";
+    }
+
+    private string FormatJson(object? obj)
+    {
+        if (obj == null)
+            return "{}";
+
+        try
+        {
+            return JsonSerializer.Serialize(obj, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+        }
+        catch
+        {
+            return obj.ToString() ?? "{}";
+        }
+    }
+}
