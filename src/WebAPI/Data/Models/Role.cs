@@ -24,7 +24,7 @@ public class Role : IMayHaveTenant, IAuditable
     public Tenant Tenant { get; set; } = null!;
 
     // IAuditable
-    public Audit Audit { get; set; } = new Audit();
+    public Audit Audit { get; set; } = new();
 }
 
 public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>

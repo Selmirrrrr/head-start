@@ -75,7 +75,8 @@ public class UserStateContainer(ApiClientV1 apiClient, UserStateService stateSer
                     r.RoleCode ?? string.Empty)).ToList() ?? new List<Droit>(),
                 LangueCode = userProfile.LangueCode ?? LanguesCodes.Français,
                 DarkMode = userProfile.DarkMode ?? false,
-                DernierTenantSelectionne = userProfile.DernierTenantSelectionnePath
+                DernierTenantSelectionne = userProfile.DernierTenantSelectionnePath,
+                PlatformRoles = userProfile.PlatformRoles?.ToArray() ?? []
             };
 
             stateService.IsInitialized = true;
@@ -170,7 +171,7 @@ public sealed record UserState
     public string LangueCode { get; init; } = LanguesCodes.Français;
     public bool DarkMode { get; init; }
     public string? DernierTenantSelectionne { get; init; }
-
+    public string[] PlatformRoles { get; init; } = [];
     public static UserState Default => new()
     {
         Id = Guid.Empty,

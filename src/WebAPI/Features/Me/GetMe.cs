@@ -1,5 +1,6 @@
 using FastEndpoints;
 using HeadStart.SharedKernel.Models.Constants;
+using HeadStart.SharedKernel.Services;
 using HeadStart.WebAPI.Data;
 using HeadStart.WebAPI.Data.Models;
 using HeadStart.WebAPI.Services;
@@ -16,7 +17,8 @@ public static class GetMe
 
         public override void Configure()
         {
-            Get("/me");
+            Get("/");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 
@@ -49,6 +51,7 @@ public static class GetMe
                 user.Prenom,
                 user.Email,
                 user.Droits.Select(utr => new DroitUtilisateur(utr.TenantPath, utr.Role.Code)),
+                CurrentUser.PlatformRoles,
                 user.DernierTenantSelectionneId,
                 user.LanguageCode,
                 user.DarkMode);
@@ -63,6 +66,7 @@ public static class GetMe
     string Prenom,
     string Email,
     IEnumerable<DroitUtilisateur> Roles,
+    string[] PlatformRoles,
     string? DernierTenantSelectionnePath = null,
     string? LangueCode = null,
     bool DarkMode = false);

@@ -2,6 +2,16 @@ namespace HeadStart.IntegrationTests.Helpers;
 
 public static class Users
 {
+    public static UserData PlatformAdmin1  => new()
+    {
+        Id = Guid.Parse("05623570-9015-4149-A52E-B01975772D32"),
+        UserFirstName = "PlatformAdmin1P",
+        UserLastName = "PlatformAdmin1N",
+        UserName = "platformadmin1@headstart.com",
+        UserEmail = "platformadmin1@headstart.com",
+        UserPassword = "platformadmin1"
+    };
+
     public static UserData User1  => new()
     {
         Id = Guid.Parse("580B8928-84DF-465C-9A02-33E9422841A1"),

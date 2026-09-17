@@ -85,6 +85,15 @@
         "clientRole": false,
         "containerId": "86683c73-be28-4380-a014-6316c0404192",
         "attributes": {}
+      },
+      {
+        "id": "a7c4e2d9-5b8f-4c3a-8e1d-9f2b6a4c7e3d",
+        "name": "platform-admin",
+        "description": "Platform Administrator role with full system access",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "86683c73-be28-4380-a014-6316c0404192",
+        "attributes": {}
       }
     ],
     "client": {
@@ -474,6 +483,27 @@
   "webAuthnPolicyPasswordlessExtraOrigins": [],
   "users": [
     {
+      "id": "73F21245-2214-4CFE-9591-8177A410280C",
+      "username": "platformadmin1@headstart.com",
+      "firstName": "PlatformAdmin1P",
+      "lastName": "PlatformAdmin1N",
+      "email": "platformadmin1@headstart.com",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "platformadmin1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "realmRoles": ["default-roles-headstart", "platform-admin"],
+      "attributes": {}
+    },
+    {
       "id": "05623570-9015-4149-A52E-B01975772D32",
       "username": "superadmin@headstart.com",
       "firstName": "Super",
@@ -512,7 +542,7 @@
       "clientRoles": {
         "account": ["view-profile", "manage-account"]
       },
-      "realmRoles": ["default-roles-headstart"],
+      "realmRoles": ["default-roles-headstart", "platform-admin"],
       "attributes": {}
     },
     {
@@ -1852,7 +1882,7 @@
             "user.attribute": "foo",
             "introspection.token.claim": "true",
             "access.token.claim": "true",
-            "claim.name": "realm_access.roles",
+            "claim.name": "roles",
             "jsonType.label": "String",
             "multivalued": "true"
           }

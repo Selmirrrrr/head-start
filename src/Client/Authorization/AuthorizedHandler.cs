@@ -1,8 +1,12 @@
 using System.Net;
+using HeadStart.Client.Services.Users;
+using HeadStart.SharedKernel.Models.Constants;
 
 namespace HeadStart.Client.Authorization;
 
-public class AuthorizedHandler(HostAuthenticationStateProvider authenticationStateProvider) : DelegatingHandler
+public class AuthorizedHandler(
+    HostAuthenticationStateProvider authenticationStateProvider,
+    UserStateService userStateService) : DelegatingHandler
 {
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -16,6 +20,13 @@ public class AuthorizedHandler(HostAuthenticationStateProvider authenticationSta
         }
         else
         {
+            // Add X-Tenant-Path header if user has selected a tenant
+            var selectedTenant = userStateService.CurrentState.DernierTenantSelectionne;
+            if (!string.IsNullOrEmpty(selectedTenant))
+            {
+                request.Headers.TryAddWithoutValidation(AppHttpHeaders.TenantHeader, selectedTenant);
+            }
+
             responseMessage = await base.SendAsync(request, cancellationToken);
         }
 

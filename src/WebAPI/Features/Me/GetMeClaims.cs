@@ -11,7 +11,8 @@ public static class GetMeClaims
 
         public override void Configure()
         {
-            Get("/me/claims");
+            Get("/claims");
+            Group<MeEndpointGroup>();
             Version(1);
         }
 

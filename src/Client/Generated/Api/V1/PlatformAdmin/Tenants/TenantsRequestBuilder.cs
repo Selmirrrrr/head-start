@@ -9,44 +9,44 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-namespace HeadStart.Client.Generated.Api.V1.Tenants
+namespace HeadStart.Client.Generated.Api.V1.PlatformAdmin.Tenants
 {
     /// <summary>
-    /// Builds and executes requests for operations under \api\v1\tenants
+    /// Builds and executes requests for operations under \api\v1\platform-admin\tenants
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public partial class TenantsRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Tenants.TenantsRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public TenantsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/tenants", pathParameters)
+        public TenantsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/tenants", pathParameters)
         {
         }
         /// <summary>
-        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Tenants.TenantsRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public TenantsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/tenants", rawUrl)
+        public TenantsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/api/v1/platform-admin/tenants", rawUrl)
         {
         }
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_Response"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_Response"/></returns>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_Response?> GetAsync(Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
+        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_Response?> GetAsync(Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
 #nullable restore
 #else
-        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_Response> GetAsync(Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default, CancellationToken cancellationToken = default)
+        public async Task<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_Response> GetAsync(Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default, CancellationToken cancellationToken = default)
         {
 #endif
             var requestInfo = ToGetRequestInformation(requestConfiguration);
-            return await RequestAdapter.SendAsync<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_Response>(requestInfo, global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesTenantsTenantsGetList_Response.CreateFromDiscriminatorValue, default, cancellationToken).ConfigureAwait(false);
+            return await RequestAdapter.SendAsync<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_Response>(requestInfo, global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesPlatformAdminTenantsTenantsGetList_Response.CreateFromDiscriminatorValue, default, cancellationToken).ConfigureAwait(false);
         }
         /// <returns>A <see cref="RequestInformation"/></returns>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
@@ -67,11 +67,11 @@ namespace HeadStart.Client.Generated.Api.V1.Tenants
         /// <summary>
         /// Returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
         /// </summary>
-        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder"/></returns>
+        /// <returns>A <see cref="global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Tenants.TenantsRequestBuilder"/></returns>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
-        public global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder WithUrl(string rawUrl)
+        public global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Tenants.TenantsRequestBuilder WithUrl(string rawUrl)
         {
-            return new global::HeadStart.Client.Generated.Api.V1.Tenants.TenantsRequestBuilder(rawUrl, RequestAdapter);
+            return new global::HeadStart.Client.Generated.Api.V1.PlatformAdmin.Tenants.TenantsRequestBuilder(rawUrl, RequestAdapter);
         }
         /// <summary>
         /// Configuration for the request such as headers, query parameters, and middleware options.

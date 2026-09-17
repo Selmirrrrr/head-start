@@ -12,7 +12,7 @@ public class RoleFonctionalite : IAuditable
     public Fonctionalite Fonctionalite { get; init; } = null!;
 
     // IAuditable
-    public Audit Audit { get; set; } = new Audit();
+    public Audit Audit { get; set; } = new();
 }
 
 public class RoleFonctionaliteEntityTypeConfiguration : IEntityTypeConfiguration<RoleFonctionalite>

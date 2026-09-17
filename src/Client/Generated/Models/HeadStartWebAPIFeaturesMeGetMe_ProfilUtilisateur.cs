@@ -54,6 +54,14 @@ namespace HeadStart.Client.Generated.Models
 #else
         public string Nom { get; set; }
 #endif
+        /// <summary>The platformRoles property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public List<string>? PlatformRoles { get; set; }
+#nullable restore
+#else
+        public List<string> PlatformRoles { get; set; }
+#endif
         /// <summary>The prenom property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -94,6 +102,7 @@ namespace HeadStart.Client.Generated.Models
                 { "id", n => { Id = n.GetStringValue(); } },
                 { "langueCode", n => { LangueCode = n.GetStringValue(); } },
                 { "nom", n => { Nom = n.GetStringValue(); } },
+                { "platformRoles", n => { PlatformRoles = n.GetCollectionOfPrimitiveValues<string>()?.AsList(); } },
                 { "prenom", n => { Prenom = n.GetStringValue(); } },
                 { "roles", n => { Roles = n.GetCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur>(global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur.CreateFromDiscriminatorValue)?.AsList(); } },
             };
@@ -111,6 +120,7 @@ namespace HeadStart.Client.Generated.Models
             writer.WriteStringValue("id", Id);
             writer.WriteStringValue("langueCode", LangueCode);
             writer.WriteStringValue("nom", Nom);
+            writer.WriteCollectionOfPrimitiveValues<string>("platformRoles", PlatformRoles);
             writer.WriteStringValue("prenom", Prenom);
             writer.WriteCollectionOfObjectValues<global::HeadStart.Client.Generated.Models.HeadStartWebAPIFeaturesMeGetMe_DroitUtilisateur>("roles", Roles);
         }

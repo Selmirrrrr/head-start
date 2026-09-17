@@ -36,11 +36,14 @@ public static class Extensions
             http.AddServiceDiscovery();
         });
 
-        // Uncomment the following to restrict the allowed schemes for service discovery.
-        builder.Services.Configure<ServiceDiscoveryOptions>(options =>
+        // In development, allow both HTTP and HTTPS for flexibility
+        if (!builder.Environment.IsDevelopment())
         {
-            options.AllowedSchemes = ["https"];
-        });
+            builder.Services.Configure<ServiceDiscoveryOptions>(options =>
+            {
+                options.AllowedSchemes = ["https"];
+            });
+        }
 
         return builder;
     }
